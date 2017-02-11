@@ -28,7 +28,7 @@
 	$GLOBALS['cfg']['db_accounts'] = array(
 		'host'	=> 'localhost',
 		'name'	=> 'thingmonger',       # database name
-		'user'	=> 'boundaryissues',    # database username
+		'user'	=> 'thingmonger',       # database username
 		'auto_connect' => 0,
 	);
 
@@ -229,7 +229,7 @@
 
 	# API feature flags
 
-	$GLOBALS['cfg']['enable_feature_api'] = 1;
+	$GLOBALS['cfg']['enable_feature_api'] = 0;
 
 	$GLOBALS['cfg']['enable_feature_api_documentation'] = 1;
 	$GLOBALS['cfg']['enable_feature_api_explorer'] = 1;

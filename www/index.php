@@ -1,3 +1,5 @@
 <?php
 
-echo 'hi';
+	include('include/init.php');
+
+	// something something

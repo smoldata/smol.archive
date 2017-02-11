@@ -15,7 +15,7 @@ then
 	echo "	\$GLOBALS['cfg']['crypto_crumb_secret'] = '';" >> ${SECRETS}
 	echo "	\$GLOBALS['cfg']['db_main']['pass'] = '';" >> ${SECRETS}
 	echo "	\$GLOBALS['cfg']['db_users']['pass'] = '';" >> ${SECRETS}
-	echo "	\$GLOBALS['cfg']['db_poormans_slaves']['pass'] = '';" >> ${SECRETS}
+	echo "	\$GLOBALS['cfg']['db_accounts']['pass'] = '';" >> ${SECRETS}
 
 	echo "" >> ${SECRETS}
 fi
