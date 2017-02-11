@@ -27,9 +27,20 @@
 
 	Header add Strict-Transport-Security "max-age=15768000"
 
+	<IfModule mod_fastcgi.c>
+		AddHandler php7-fcgi .php
+		Action php7-fcgi /php7-fcgi
+		Alias /php7-fcgi /usr/lib/cgi-bin/php7-fcgi
+		FastCgiExternalServer /usr/lib/cgi-bin/php7-fcgi -socket /var/run/php/php7.0-fpm.sock -pass-header Authorization
+	</IfModule>
+
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
+	</Directory>
+
+	<Directory /usr/lib/cgi-bin>
+		Require all granted
 	</Directory>
 
 	<Directory __PROJECT_ROOT__/www>
