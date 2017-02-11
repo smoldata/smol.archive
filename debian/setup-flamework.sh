@@ -74,3 +74,4 @@ sudo chgrp -R www-data ${ROOT}/www/templates_c
 sudo chmod -R g+ws ${ROOT}/www/templates_c
 
 sudo /etc/init.d/apache2 restart
+sudo /etc/init.d/php7.0-fpm restart
