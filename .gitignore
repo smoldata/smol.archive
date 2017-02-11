@@ -2,3 +2,4 @@
 /apache/thingmonger.conf
 /certified
 /www/templates_c
+/www/include/secrets.php
