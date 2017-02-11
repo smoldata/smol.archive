@@ -47,6 +47,9 @@
 	########################################################################
 
 	function users_acl_get_roles($user) {
+		if (! $user) {
+			return array();
+		}
 		$esc_user_id = addslashes($user['id']);
 		$rsp = db_fetch("
 			SELECT user_role
