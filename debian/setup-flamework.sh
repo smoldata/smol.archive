@@ -8,7 +8,7 @@ ROOT=`dirname $DEBIAN`
 sudo apt-get update
 sudo apt-get -y upgrade
 
-sudo apt-get -y install apache2 apache2-utils mysql-server memcached
+sudo apt-get -y install apache2 apache2-utils mysql-server memcached libapache2-mod-fastcgi
 sudo apt-get -y install php php-cli php-curl php-mcrypt php-memcache php-mysql php-mbstring libphp-predis
 
 for mod in proxy_wstunnel.load rewrite.load proxy.load proxy.conf proxy_http.load ssl.conf ssl.load socache_shmcb.load headers.load
