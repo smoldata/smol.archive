@@ -1,11 +1,9 @@
 <VirtualHost *:80>
-	ServerName dev.thingmonger.org
-	Redirect "/" "https://dev.thingmonger.org/"
+	Redirect "/" "https://localhost/"
 </VirtualHost>
 
 <VirtualHost *:443>
 
-	ServerName dev.thingmonger.org
 	DocumentRoot __PROJECT_ROOT__/www
 
 	SSLEngine on
