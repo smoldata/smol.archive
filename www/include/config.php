@@ -4,7 +4,7 @@
 
 	# Things you may want to change in a hurry
 
-	$GLOBALS['cfg']['site_name'] = 'smol data coop';
+	$GLOBALS['cfg']['site_name'] = 'Smol Data Coop';
 	$GLOBALS['cfg']['environment'] = 'dev';
 
 	$GLOBALS['cfg']['site_disabled'] = 0;

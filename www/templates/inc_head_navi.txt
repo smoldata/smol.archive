@@ -1,33 +1,33 @@
-<div id="nav" class="container">
-	<nav class="navbar" role="navigation" id="header">
-		<div class="navbar-header row">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-head-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="{$cfg.abs_root_url}">{$cfg.site_name|escape}</a>
-		</div>
-		{if !$cfg.site_disabled}
-			<div class="collapse navbar-collapse navbar-head-collapse row">
-				<ul class="nav navbar-nav pull-right">
-					{if "signin"|@features_is_enabled}
-						{if $cfg.user}
-							<li class="dropdown">
-								<a href="#" id="navi-account" class="dropdown-toggle navi-label" data-toggle="dropdown" role="button">Hi, {$cfg.user.username|escape} <b class="caret caret-ch"></b></a>
-								<ul class="dropdown-menu" aria-labelledby="navi-account" role="menu">
-									<li><a href="#" onclick="return false;">Hi <span class="hey-look">{$cfg.user.username|escape}</span></a></li>
-									<li id="signout"><a href="{$cfg.abs_root_url}signout/">Sign out</a></li>
-								</ul>
-							</li>
-						{else}
-							<a href="{$signin_url}" class="btn btn-default">Sign in</a>
-							<a href="{$signup_url}" class="btn btn-success">Sign up</a>
-						{/if}
-					{/if}
-				</ul>
+	<nav class="navbar navbar-default" role="navigation" id="header">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-head-collapse" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="{$cfg.abs_root_url}">{$cfg.site_name|escape}</a>
 			</div>
-		{/if}
+			{if !$cfg.site_disabled}
+				<div class="collapse navbar-collapse navbar-head-collapse">
+					{if "signin"|@features_is_enabled}
+						<ul class="nav navbar-nav navbar-right">
+							{if $cfg.user}
+								<li class="dropdown">
+									<a href="#" id="navi-account" class="dropdown-toggle navi-label" data-toggle="dropdown" role="button">Hi, {$cfg.user.username|escape} <b class="caret caret-ch"></b></a>
+									<ul class="dropdown-menu" aria-labelledby="navi-account" role="menu">
+										<li><a href="{$cfg.abs_root_url}settings/">Settings</a></li>
+										<li><a href="{$cfg.abs_root_url}signout/">Sign out</a></li>
+									</ul>
+								</li>
+							{else}
+								<li class="{if $nav_tab == 'signin'}active{/if}"><a href="{$signin_url}">Sign in</a></li>
+								<li class="{if $nav_tab == 'signup'}active{/if}"><a href="{$signup_url}">Sign up</a></li>
+							{/if}
+						{/if}
+					</ul>
+				</div>
+			{/if}
+		</div>
 	</nav>
-</div>

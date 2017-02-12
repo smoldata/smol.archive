@@ -1,5 +1,5 @@
-{assign var='page_title' value='Sign in' nav_tab='signin'}
-{include file='inc_head.txt'}
+{assign var='page_title' value='Sign in'}
+{include file='inc_head.txt' nav_tab='signin'}
 
 <div class="container">
 	<div class="row">
@@ -39,7 +39,7 @@
 				{if $cfg.enable_feature_password_retrieval}
 				<a href="{$cfg.abs_root_url}forgot">Forgotten your password?</a>
 				{/if}
-				Don't have an account? <a href="{$cfg.abs_root_url}signup/">Sign up here</a>. 
+				Don't have an account? <a href="{$cfg.abs_root_url}signup">Sign up here</a>. 
 			</small></p>
 
 		</div>
