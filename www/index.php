@@ -2,4 +2,8 @@
 
 	include('include/init.php');
 
-	// something something
+	if ($GLOBALS['cfg']['user']) {
+		$GLOBALS['smarty']->display('page_home.txt');
+	} else {
+		$GLOBALS['smarty']->display('page_signin.txt');
+	}
