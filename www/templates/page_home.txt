@@ -1,0 +1,6 @@
+{assign var='page_title' value='Sign in' nav_tab='signin'}
+{include file='inc_head.txt'}
+
+	Oh hey! You are signed in, {$cfg.user.username}
+
+{include file='inc_foot.txt'}
