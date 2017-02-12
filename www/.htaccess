@@ -57,7 +57,7 @@ RewriteRule ^signup/?$                  signup.php            [L]
 RewriteRule ^signin/?$                  signin.php            [L]
 RewriteRule ^signout/?$                 signout.php           [L]
 RewriteRule ^checkcookie/?$             checkcookie.php       [L]
-RewriteRule ^terms/?$                   terms.php             [L]
+# RewriteRule ^terms/?$                   terms.php             [L]
 
 # Password retrieval stuff
 
@@ -66,11 +66,16 @@ RewriteRule ^reset/([a-zA-Z0-9]+)/?$    reset.php?reset=$1    [L,QSA]
 
 # Account stuff
 
-RewriteRule ^account/?$                 account.php           [L]
-RewriteRule ^account/password/?$        account_password.php  [L]
-RewriteRule ^account/delete/?$          account_delete.php    [L]
+# RewriteRule ^account/?$                 account.php           [L]
+# RewriteRule ^account/password/?$        account_password.php  [L]
+# RewriteRule ^account/delete/?$          account_delete.php    [L]
 
 # Invites
 
-RewriteRule ^invite/?$                  invite.php?%{QUERY_STRING}         [L]
-RewriteRule ^invite(?:/([^/]+))?/?$     invite.php?code=$1&%{QUERY_STRING} [L]
+# RewriteRule ^invite/?$                  invite.php?%{QUERY_STRING}         [L]
+# RewriteRule ^invite(?:/([^/]+))?/?$     invite.php?code=$1&%{QUERY_STRING} [L]
+
+# Twitter stuff
+
+RewriteRule ^twitter/add/?$               twitter_add_account.php            [L]
+RewriteRule ^twitter/auth/?$              twitter_oauth_callback.php         [L]

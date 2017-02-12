@@ -1,0 +1,21 @@
+{include file="inc_head.txt"}
+
+<div class="container">
+
+	<h1>Unable to login to Twitter</h1>
+
+	{if $error_request_token}
+	<p>😿 Something went wrong during the "request token" phase of the Twitter login. Weirdly enough this can be triggered by leaving out the "optional" callback URL in your Twitter OAuth settings.</p>
+	{elseif $error_verifier}
+	<p>😨 Something went wrong during the "token verifier" phase of the Twitter login.</p>
+	{elseif $error_access_token}
+	<p>😢 Something went wrong during the "access token" phase of the Twitter login.</p>
+	{elseif $error_db_insert}
+	<p>😵 Something went wrong saving your Twitter login to the database.</p>
+	{else}
+	<p>😩 Something unexpected happened and that makes me sad.</p>
+	{/if}
+
+</div>
+
+{include file="inc_foot.txt"}
