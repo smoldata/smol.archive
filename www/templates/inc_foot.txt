@@ -1,11 +1,9 @@
 
 		<div class="container">
-			<div class="row">
-				<hr>
-				<footer>
-					<p><small>Thingmonger / Smol Data Cooperative</small></p>
-				</footer>
-			</div>
+			<hr>
+			<footer>
+				<p><small>{$cfg.site_name}</small></p>
+			</footer>
 		</div>
 
 	</body>

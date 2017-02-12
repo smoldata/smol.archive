@@ -4,7 +4,7 @@
 
 	# Things you may want to change in a hurry
 
-	$GLOBALS['cfg']['site_name'] = 'Thingmonger';
+	$GLOBALS['cfg']['site_name'] = 'smol data coop';
 	$GLOBALS['cfg']['environment'] = 'dev';
 
 	$GLOBALS['cfg']['site_disabled'] = 0;

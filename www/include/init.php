@@ -607,9 +607,17 @@
 		if ($redirect == ''){
 			$redirect = '/';
 		}
-		$redirect = urlencode($redirect);
-		$GLOBALS['signin_url'] = "{$GLOBALS['cfg']['abs_root_url']}signin/?redir=$redirect";
+
+		$GLOBALS['signin_url'] = "{$GLOBALS['cfg']['abs_root_url']}signin";
+		$GLOBALS['signup_url'] = "{$GLOBALS['cfg']['abs_root_url']}signup";
+		if ($redirect != '/') {
+			$redirect = preg_replace('/(\?|&)redir=[^&]*/', '', $redirect);
+			$redirect = urlencode($redirect);
+			$GLOBALS['signin_url'] .= "?redir=$redirect";
+			$GLOBALS['signup_url'] .= "?redir=$redirect";
+		}
 		$GLOBALS['smarty']->assign("signin_url", $GLOBALS['signin_url']);
+		$GLOBALS['smarty']->assign("signup_url", $GLOBALS['signup_url']);
 
 		if ($GLOBALS['cfg']['user']) {
 			$branches = array('master');
