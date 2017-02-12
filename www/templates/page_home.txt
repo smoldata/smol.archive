@@ -4,9 +4,9 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			<ul>
+			<ul class="nav nav-pills nav-stacked">
 				{foreach from=$twitter_accounts item=account}
-					<li><strong>{$account.name | @esc}</strong> @{$account.screen_name | @esc}</li>
+					<li><a href="#"><strong>Twitter</strong> @{$account.screen_name | @esc}</a></li>
 				{/foreach}
 			</ul>
 			<a href="{$cfg.abs_root_url}twitter/add" class="btn btn-default">Add Twitter account</a>
