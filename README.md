@@ -20,9 +20,8 @@ make setup
 
 * Accept the defaults for unattended upgrades
 * Choose a password for your Certificate Authority (you will be prompted to enter it three more times)
-* Choose a root MySQL password
-* Enter your root MySQL password when prompted
+* Choose a root MySQL password (you will be prompted to enter it later)
 
 ## Load it up in a browser
 
-If everything goes as planned, you should be able to load up https://dev.thingmonger.org/ in your browser.
+If everything goes as planned, you should be able to load up https://localhost:4700/ in your browser.
