@@ -11,6 +11,9 @@
 			</ul>
 			<a href="{$cfg.abs_root_url}twitter/add" class="btn btn-default">Add Twitter account</a>
 		</div>
+		<div class="col-md-6">
+			{$tweet}
+		</div>
 	</div>
 </div>
 

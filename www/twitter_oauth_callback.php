@@ -32,7 +32,7 @@
 		$GLOBALS['smarty']->display('page_error_twitter_oauth.txt');
 		exit;
 	}
-	dumper($rsp);
+	#dumper($rsp);
 
 	#
 	# where shall we bounce to?
@@ -49,5 +49,5 @@
 	# go!
 	#
 
-	//header("location: {$url}");
+	header("location: {$url}");
 	exit;

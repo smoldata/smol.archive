@@ -57,5 +57,17 @@
 			return array();
 		}
 	}
+
+	#################################################################
+
+	function twitter_users_profile($id) {
+		global $twitter;
+		$rsp = $twitter->get('users/lookup', array(
+			'user_id' => $id
+		));
+		if (! empty($rsp) && is_array($rsp)) {
+			return $rsp[0];
+		}
+	}
 	
 	# the end

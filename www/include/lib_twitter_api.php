@@ -25,9 +25,11 @@
 			return $rsp;
 		}
 
-		$ret = json_decode($rsp['body'], 'as hash');
-		$ret['ok'] = 1;
-		return $ret;
+		$result = json_decode($rsp['body'], 'as hash');
+		return array(
+			'ok' => 1,
+			'result' => $result
+		);
 	}
 
 	#################################################################
@@ -52,9 +54,11 @@
 			return $rsp;
 		}
 
-		$ret = json_decode($rsp['body'], 'as hash');
-		$ret['ok'] = 1;
-		return $ret;
+		$result = json_decode($rsp['body'], 'as hash');
+		return array(
+			'ok' => 1,
+			'result' => $result
+		);
 	}
 
 	#################################################################
