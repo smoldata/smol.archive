@@ -117,12 +117,12 @@ CREATE TABLE `twitter_meta` (
 
 
 
-# Dump of table twitter_tweet
+# Dump of table twitter_status
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `twitter_tweet`;
+DROP TABLE IF EXISTS `twitter_status`;
 
-CREATE TABLE `twitter_tweet` (
+CREATE TABLE `twitter_status` (
   `id` bigint(20) unsigned NOT NULL,
   `href` varchar(255) DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,
