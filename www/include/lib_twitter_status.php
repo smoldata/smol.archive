@@ -1,5 +1,75 @@
 <?php
 
+	loadlib('twitter_api');
+
+	########################################################################
+
+	function twitter_status_get_by_id($req_as_account, $id){
+
+		$esc_id = addslashes($id);
+		$rsp = db_fetch("
+			SELECT *
+			FROM twitter_status
+			WHERE id = $esc_id
+		");
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+		if ($rsp['rows'] &&
+		    ! $rsp['rows'][0]['protected']){
+			$status = json_decode($rsp['rows'][0]['json'], 'as hash');
+			return array(
+				'ok' => 1,
+				'status' => $status,
+				'cached' => true
+			);
+		}
+
+		$rsp = twitter_api_get($req_as_account, "statuses/show/$id", array(
+			'tweet_mode' => 'extended'
+		));
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+		$status = $rsp['result'];
+
+		$rsp = twitter_status_save_status($status);
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+
+		return array(
+			'ok' => 1,
+			'status' => $status,
+			'cached' => false
+		);
+	}
+
+	########################################################################
+
+	function twitter_status_save_status($status){
+		$json = json_encode($status);
+		$href = twitter_status_url($status);
+		$options = array(
+			'plaintext' => true
+		);
+		$content = twitter_status_content($status, $options);
+		$protected = ($status['user']['protected']) ? 1 : 0;
+		$rsp = db_insert('twitter_status', array(
+			'id' => addslashes($status['id']),
+			'href' => addslashes($href),
+			'screen_name' => addslashes($status['user']['screen_name']),
+			'content' => addslashes($content),
+			'json' => addslashes($json),
+			'protected' => $protected,
+			'created_at' => date('Y-m-d H:i:s', strtotime($status['created_at'])),
+			'saved_at' => date('Y-m-d H:i:s')
+		));
+		return $rsp;
+	}
+
+	########################################################################
+
 	function twitter_status_content($status, $options=array()){
 
 		if (! is_array($options)){
@@ -10,10 +80,6 @@
 			'plaintext' => false
 		);
 		$options = array_merge($defaults, $options);
-
-		if ($status['retweeted_status']){
-			return twitter_status_content($status['retweeted_status']);
-		}
 
 		$text = $status['text'];
 
@@ -52,7 +118,7 @@
 		return $content;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_url($status){
 		$screen_name = $status['user']['screen_name'];
@@ -60,7 +126,7 @@
 		return strtolower("https://twitter.com/$screen_name/status/$id");
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_extended_content($status, $options){
 
@@ -75,7 +141,7 @@
 		return '';
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_quoted_content($status, $options) {
 		$quoted_content = '';
@@ -100,7 +166,7 @@
 		return $quoted_content;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_get_entities($status){
 
@@ -130,7 +196,7 @@
 		return $entities;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_insert_entities($status, $text, $entities, $options=array()){
 		$pos = 0;
@@ -144,7 +210,7 @@
 		return $content;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity($status, $entity, $options){
 		switch ($entity['type']){
@@ -165,7 +231,7 @@
 		return '';
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_hashtag($status, $entity, $options){
 		if (! $options['plaintext']){
@@ -176,7 +242,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_url($status, $entity, $options){
 
@@ -197,7 +263,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_user_mention($status, $entity, $options){
 		if (! $options['plaintext']){
@@ -208,7 +274,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_image($status, $entity, $options){
 
@@ -228,7 +294,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_animated_gif($status, $entity, $options){
 
@@ -250,7 +316,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_entity_video($status, $entity, $options){
 
@@ -279,7 +345,7 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_permalink($status, $options=array()) {
 		$url = twitter_status_url($status);
@@ -298,7 +364,7 @@
 		return "<a href=\"$url\" title=\"$date_time\">$label</a>";
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_can_display_tweet($status) {
 		if ($status['user']['protected']) {
@@ -313,7 +379,7 @@
 		return true;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_status_media($tweet_id, $remote_url) {
 
@@ -364,6 +430,8 @@
 		return $path;
 	}
 
+	########################################################################
+
 	function twitter_status_media_get_cached($tweet_id, $remote_url) {
 		$cached = query("
 			SELECT *
@@ -390,6 +458,8 @@
 		}
 	}
 
+	########################################################################
+
 	function twitter_status_media_set_cached($tweet_id, $remote_url, $path) {
 		$now = date('Y-m-d H:i:s');
 		query("
@@ -398,6 +468,8 @@
 			VALUES (?, ?, ?, ?)
 		", array($tweet_id, $remote_url, $path, $now));
 	}
+
+	########################################################################
 
 	function twitter_status_profile_image($tweet) {
 		$url = str_replace('_normal', '_bigger', $tweet['user']['profile_image_url']);
@@ -423,4 +495,4 @@
 		return $path;
 	}
 
-	
+	# the end
