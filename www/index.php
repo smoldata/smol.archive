@@ -17,13 +17,15 @@
 
 		$tweets = $rsp['rows'];
 		foreach ($tweets as $index => $status){
+			$raw_status = json_decode($status['json'], 'as hash');
 			if ($raw_status['retweeted_status']){
 				$id = $raw_status['retweeted_status']['id'];
-				$status = twitter_status_get_by_id($id);
-				$tweets[$index] = $status;
+				$rsp = twitter_status_get_by_id($twitter_accounts[0], $id);
+				//dumper($rsp);
+				$raw_status = $rsp['status'];
+				$tweets[$index]['screen_name'] = $raw_status['user']['screen_name'];
 				$tweets[$index]['retweeted'] = true;
 			}
-			$raw_status = json_decode($status['json'], 'as hash');
 			$tweets[$index]['html'] = twitter_status_content($raw_status);
 			$tweets[$index]['profile_image'] = twitter_status_profile_image($raw_status);
 			$tweets[$index]['display_name'] = $raw_status['user']['name'];
