@@ -1,5 +1,9 @@
 <?php
 
+	loadlib('twitter_api');
+
+	########################################################################
+
 	function twitter_users_add_account($user, $token){
 
 		$esc_user_id = addslashes($user['id']);
@@ -41,7 +45,7 @@
 		return $rsp;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_users_get_accounts($user){
 		$esc_id = addslashes($user['id']);
@@ -58,16 +62,40 @@
 		}
 	}
 
-	#################################################################
+	########################################################################
 
-	function twitter_users_profile($id) {
-		global $twitter;
-		$rsp = $twitter->get('users/lookup', array(
+	function twitter_users_profile($id){
+
+		// Arguably, we should pass in the Twitter account this is being
+		// requested from. This approach was simpler.
+		// (20170224/dphiffer)
+
+		if (! $GLOBALS['cfg']['user']){
+			return array(
+				'ok' => 0,
+				'error' => 'Not signed in.'
+			);
+		}
+
+		$accounts = twitter_users_get_accounts($GLOBALS['cfg']['user']);
+		if (empty($accounts)){
+			return array(
+				'ok' => 0,
+				'error' => 'No Twitter accounts.'
+			);
+		}
+
+		$rsp = twitter_api_get($accounts[0], 'users/lookup', array(
 			'user_id' => $id
 		));
-		if (! empty($rsp) && is_array($rsp)) {
-			return $rsp[0];
+		if (! $rsp['ok']){
+			return $rsp;
 		}
+
+		return array(
+			'ok' => 1,
+			'profile' => $rsp['result'][0]
+		);
 	}
 	
 	# the end

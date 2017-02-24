@@ -6,6 +6,7 @@
 	loadlib('twitter_status');
 	
 	if ($GLOBALS['cfg']['user']){
+
 		$twitter_accounts = twitter_users_get_accounts($GLOBALS['cfg']['user']);
 		$GLOBALS['smarty']->assign_by_ref('twitter_accounts', $twitter_accounts);
 		$rsp = db_fetch("

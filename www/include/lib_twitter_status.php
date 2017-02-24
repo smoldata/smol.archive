@@ -53,19 +53,68 @@
 		$options = array(
 			'plaintext' => true
 		);
+		$esc_id = addslashes($status['id']);
+		$esc_screen_name = addslashes($status['user']['screen_name']);
+		$created_at = date('Y-m-d H:i:s', strtotime($status['created_at']));
+		$now = date('Y-m-d H:i:s');
+
 		$content = twitter_status_content($status, $options);
 		$protected = ($status['user']['protected']) ? 1 : 0;
+		$is_retweet = isset($status['retweeted_status']) ? 1 : 0;
+
+		// From here on out we're talking about the RT'd status
+		if ($is_retweet){
+			$status = $status['retweeted_status'];
+		}
+
+		$favorite_count = $status['favorite_count'];
+		$retweet_count = $status['retweet_count'];
+		$is_reply = empty($status['in_reply_to_status_id']) ? 0 : 1;
+		$has_link = empty($status['entities']['urls']) ? 0 : 1;
+		$has_photo = twitter_status_has_media_type($status, 'photo');
+		$has_gif = twitter_status_has_media_type($status, 'animated_gif');
+		$has_video = twitter_status_has_media_type($status, 'video');
+
 		$rsp = db_insert('twitter_status', array(
-			'id' => addslashes($status['id']),
+			'id' => $esc_id,
 			'href' => addslashes($href),
-			'screen_name' => addslashes($status['user']['screen_name']),
+			'screen_name' => $esc_screen_name,
 			'content' => addslashes($content),
 			'json' => addslashes($json),
 			'protected' => $protected,
-			'created_at' => date('Y-m-d H:i:s', strtotime($status['created_at'])),
-			'saved_at' => date('Y-m-d H:i:s')
+			'favorite_count' => $favorite_count,
+			'retweet_count' => $retweet_count,
+			'is_retweet' => $is_retweet,
+			'is_reply' => $is_reply,
+			'has_link' => $has_link,
+			'has_photo' => $has_photo,
+			'has_gif' => $has_gif,
+			'has_video' => $has_video,
+			'created_at' => $created_at,
+			'saved_at' => $now,
+			'updated_at' => $now
 		));
+
+		if (! $rsp['ok'] && $rsp['error_code'] == 1062){
+			$rsp = db_update('twitter_status', array(
+				'favorite_count' => $favorite_count,
+				'retweet_count' => $retweet_count,
+				'updated_at' => date('Y-m-d H:i:s')
+			), "id = $esc_id");
+		}
+
 		return $rsp;
+	}
+
+	########################################################################
+
+	function twitter_status_has_media_type($status, $type){
+		foreach ($status['entities']['media'] as $entity){
+			if ($entity['type'] == $type){
+				return 1;
+			}
+		}
+		return 0;
 	}
 
 	########################################################################
@@ -347,7 +396,7 @@
 
 	########################################################################
 
-	function twitter_status_permalink($status, $options=array()) {
+	function twitter_status_permalink($status, $options=array()){
 		$url = twitter_status_url($status);
 		$timestamp = strtotime($status['created_at']);
 		$date_time = date('M j, Y, g:i a', $timestamp);
@@ -366,8 +415,8 @@
 
 	########################################################################
 
-	function twitter_status_can_display_tweet($status) {
-		if ($status['user']['protected']) {
+	function twitter_status_can_display_tweet($status){
+		if ($status['user']['protected']){
 			if (! $status['protected']){
 				$esc_id = addslashes($status['id']);
 				db_update('twitter_status', array(
@@ -381,117 +430,123 @@
 
 	########################################################################
 
-	function twitter_status_media($tweet_id, $remote_url) {
+	function twitter_status_media($status_id, $remote_url){
 
-		# not yet
-		return $remote_url;
-
-		$path = twitter_status_media_get_cached($tweet_id, $remote_url);
+		$path = twitter_status_media_get_cached($status_id, $remote_url);
 		if ($path) {
 			return $path;
 		}
-		if (! preg_match('#//(.+)$#', $remote_url, $matches)) {
+		if (! preg_match('#//(.+)$#', $remote_url, $matches)){
 			return $remote_url;
 		}
-		$path = 'data/media/' . $matches[1];
-		if (preg_match('/(\.\w+):\w+$/', $path, $matches)) {
+
+		$path = 'media/' . $matches[1];
+		$abs_path = dirname(__DIR__) . '/' . $path;
+
+		if (preg_match('/(\.\w+):\w+$/', $path, $matches)){
 			// Don't save files that end with '.jpg:large', instead use '.jpg:large.jpg'
 			$path .= $matches[1];
 		}
-		if (file_exists($path)) {
-			twitter_status_media_set_cached($tweet_id, $remote_url, $path);
+		if (file_exists($abs_path)){
+			twitter_status_media_set_cached($status_id, $remote_url, $path);
 			return $path;
 		}
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $remote_url);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_MAXREDIRS, 8);
-		$data = curl_exec($ch);
-		$info = curl_getinfo($ch);
-		curl_close($ch);
-		if ($info['http_code'] < 200 ||
-				$info['http_code'] > 299) {
-			dbug($info);
-			return false;
+		$rsp = http_get($remote_url);
+		if (! $rsp['ok']){
+			return null;
 		}
-		$dir = dirname($path);
-		if (! file_exists($dir)) {
+
+		$dir = dirname($abs_path);
+		if (! file_exists($dir)){
 			mkdir($dir, 0755, true);
 		}
-		if (! file_exists($dir)) {
-			return false;
+		if (! file_exists($dir)){
+			return $remote_url;
 		}
-		file_put_contents($path, $data);
+		file_put_contents($abs_path, $rsp['body']);
 
-		twitter_status_media_set_cached($tweet_id, $remote_url, $path);
+		twitter_status_media_set_cached($status_id, $remote_url, $path);
 
 		return $path;
 	}
 
 	########################################################################
 
-	function twitter_status_media_get_cached($tweet_id, $remote_url) {
-		$cached = query("
+	function twitter_status_media_get_cached($status_id, $remote_url) {
+
+		$esc_status_id = addslashes($status_id);
+		$esc_remote_url = addslashes($remote_url);
+		$rsp = db_fetch("
 			SELECT *
 			FROM twitter_media
-			WHERE tweet_id = ?
-				AND href = ?
-		", array($tweet_id, $remote_url));
-		if (! empty($cached)) {
-			$media = $cached[0];
+			WHERE status_id = $esc_status_id
+			  AND href = '$esc_remote_url'
+		");
+
+		if (! empty($rsp['rows'])) {
+
+			$media = $rsp['rows'];
+
 			if (! empty($media['redirect']) &&
-					$media_redirect != $remote_url) {
-				return twitter_status_media($tweet_id, $media['redirect']);
+			    $media_redirect != $remote_url) {
+				return twitter_status_media($status_id, $media['redirect']);
 			}
+
 			if (file_exists($media['path'])) {
 				return $media['path'];
 			} else {
-				query("
+				$rsp = db_write("
 					DELETE FROM twitter_media
-					WHERE tweet_id = ?
-						AND href = ?
-				", array($tweet_id, $remote_url));
-				return null;
+					WHERE status_id = $esc_status_id
+						AND href = '$esc_remote_url'
+				");
 			}
 		}
+
+		return null;
 	}
 
 	########################################################################
 
-	function twitter_status_media_set_cached($tweet_id, $remote_url, $path) {
+	function twitter_status_media_set_cached($status_id, $remote_url, $path) {
 		$now = date('Y-m-d H:i:s');
-		query("
-			INSERT INTO twitter_media
-			(tweet_id, href, path, saved_at)
-			VALUES (?, ?, ?, ?)
-		", array($tweet_id, $remote_url, $path, $now));
+		$rsp = db_insert('twitter_media', array(
+			'status_id' => addslashes($status_id),
+			'href' => addslashes($remote_url),
+			'path' => addslashes($path),
+			'saved_at' => $now
+		));
+		return $rsp;
 	}
 
 	########################################################################
 
-	function twitter_status_profile_image($tweet) {
-		$url = str_replace('_normal', '_bigger', $tweet['user']['profile_image_url']);
+	function twitter_status_profile_image($status) {
 
-		# not yet
-		return $url;
+		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
+		$path = twitter_status_media($status['id'], $url);
 
-		$path = twitter_status_media($tweet['id'], $url);
 		if (! $path) {
-			$updated_user = twitter_users_profile($tweet['user']['id']);
-			$url = str_replace('_normal', '_bigger', $updated_user['profile_image_url']);
-			$path = twitter_status_media($tweet['id'], $url);
-			$orig_url = str_replace('_normal', '_bigger', $tweet['user']['profile_image_url']);
+			$rsp = twitter_users_profile($status['user']['id']);
+			$profile = $rsp['profile'];
+
+			$url = str_replace('_normal', '_bigger', $profile['profile_image_url']);
+			$path = twitter_status_media($status['id'], $url);
+			$orig_url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
+
 			if ($orig_url != $url) {
+				// Save a redirect for the original URL
 				$now = date('Y-m-d H:i:s');
-				query("
-					INSERT INTO twitter_media
-					(tweet_id, path, href, redirect, saved_at)
-					VALUES (?, ?, ?, ?, ?)
-				", array($tweet['id'], $orig_url, $url, $now));
+				$rsp = db_insert('twitter_media', array(
+					'status_id' => addslashes($status['id']),
+					'path' => null,
+					'href' => $orig_url,
+					'redirect' => $url,
+					'saved_at' => $now
+				));
 			}
 		}
+
 		return $path;
 	}
 
