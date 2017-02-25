@@ -441,7 +441,7 @@
 		}
 
 		$path = 'media/' . $matches[1];
-		$abs_path = dirname(__DIR__) . '/' . $path;
+		$abs_path = $GLOBALS['cfg']['smol_data_dir'] . $path;
 
 		if (preg_match('/(\.\w+):\w+$/', $path, $matches)){
 			// Don't save files that end with '.jpg:large', instead use '.jpg:large.jpg'
