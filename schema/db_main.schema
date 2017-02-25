@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `twitter_media`;
 
 CREATE TABLE `twitter_media` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `tweet_id` int(11) DEFAULT NULL,
+  `status_id` int(11) DEFAULT NULL,
   `href` varchar(255) DEFAULT NULL,
   `redirect` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
