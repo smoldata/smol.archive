@@ -20,17 +20,17 @@
 
 	$GLOBALS['cfg']['db_main'] = array(
 		'host'	=> 'localhost',
-		'name'	=> 'thingmonger',       # database name
-		'user'	=> 'thingmonger',       # database username
+		'name'	=> 'smoldata',       # database name
+		'user'	=> 'smoldata',       # database username
 		'auto_connect' => 0,
 	);
 
-	/*$GLOBALS['cfg']['db_accounts'] = array(
+	$GLOBALS['cfg']['db_accounts'] = array(
 		'host'	=> 'localhost',
-		'name'	=> 'thingmonger',       # database name
-		'user'	=> 'thingmonger',       # database username
+		'name'	=> 'smoldata',       # database name
+		'user'	=> 'smoldata',       # database username
 		'auto_connect' => 0,
-	);*/
+	);
 
 	$GLOBALS['cfg']['db_users'] = array(
 		'host' => array(
