@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `ApiKeys`;
+DROP TABLE IF EXISTS `twitter_users`;
 
 CREATE TABLE `twitter_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
