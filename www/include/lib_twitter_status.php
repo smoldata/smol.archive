@@ -479,6 +479,7 @@
 
 		$esc_status_id = addslashes($status_id);
 		$esc_remote_url = addslashes($remote_url);
+
 		$rsp = db_fetch("
 			SELECT *
 			FROM twitter_media
@@ -501,7 +502,7 @@
 				$rsp = db_write("
 					DELETE FROM twitter_media
 					WHERE status_id = $esc_status_id
-						AND href = '$esc_remote_url'
+					  AND href = '$esc_remote_url'
 				");
 			}
 		}

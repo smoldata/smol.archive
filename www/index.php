@@ -20,7 +20,7 @@
 		foreach ($tweets as $index => $status){
 			$raw_status = json_decode($status['json'], 'as hash');
 			if ($raw_status['retweeted_status']){
-				$id = $raw_status['retweeted_status']['id'];
+				$id = $raw_status['retweeted_status']['id_str'];
 				$rsp = twitter_status_get_by_id($twitter_accounts[0], $id);
 				//dumper($rsp);
 				$raw_status = $rsp['status'];
