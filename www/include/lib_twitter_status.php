@@ -48,17 +48,20 @@
 	########################################################################
 
 	function twitter_status_save_status($status){
+
 		$json = json_encode($status);
 		$href = twitter_status_url($status);
 		$options = array(
 			'plaintext' => true
 		);
-		$esc_id = addslashes($status['id']);
+		$esc_id = addslashes($status['id_str']);
 		$esc_screen_name = addslashes($status['user']['screen_name']);
 		$created_at = date('Y-m-d H:i:s', strtotime($status['created_at']));
 		$now = date('Y-m-d H:i:s');
 
 		$content = twitter_status_content($status, $options);
+		$full_content = twitter_status_content($status); // download media
+
 		$protected = ($status['user']['protected']) ? 1 : 0;
 		$is_retweet = isset($status['retweeted_status']) ? 1 : 0;
 
@@ -171,7 +174,7 @@
 
 	function twitter_status_url($status){
 		$screen_name = $status['user']['screen_name'];
-		$id = $status['id'];
+		$id = $status['id_str'];
 		return strtolower("https://twitter.com/$screen_name/status/$id");
 	}
 
@@ -332,7 +335,7 @@
 			return '';
 		}
 
-		$media_url = twitter_status_media($status['id'], "{$entity['media_url']}:large");
+		$media_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -347,9 +350,9 @@
 
 	function twitter_status_entity_animated_gif($status, $entity, $options){
 
-		$id = "gif-{$status['id']}";
-		$poster_url = twitter_status_media($status['id'], "{$entity['media_url']}:large");
-		$video_url = twitter_status_media($status['id'], $entity['video_info']['variants'][0]['url']);
+		$id = "gif-{$status['id_str']}";
+		$poster_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$video_url = twitter_status_media($status['id_str'], $entity['video_info']['variants'][0]['url']);
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -369,7 +372,7 @@
 
 	function twitter_status_entity_video($status, $entity, $options){
 
-		$poster_url = twitter_status_media($status['id'], "{$entity['media_url']}:large");
+		$poster_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
 
 		$video_urls = array();
 		foreach ($entity['video_info']['variants'] as $variant) {
@@ -381,7 +384,7 @@
 
 		ksort($video_urls);
 		$video_url = array_pop($video_urls);
-		$video_url = twitter_status_media($status['id'], $video_url);
+		$video_url = twitter_status_media($status['id_str'], $video_url);
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -418,7 +421,7 @@
 	function twitter_status_can_display_tweet($status){
 		if ($status['user']['protected']){
 			if (! $status['protected']){
-				$esc_id = addslashes($status['id']);
+				$esc_id = addslashes($status['id_str']);
 				db_update('twitter_status', array(
 					'protected' => 1
 				), "id = $esc_id");
@@ -524,21 +527,21 @@
 	function twitter_status_profile_image($status) {
 
 		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
-		$path = twitter_status_media($status['id'], $url);
+		$path = twitter_status_media($status['id_str'], $url);
 
 		if (! $path) {
-			$rsp = twitter_users_profile($status['user']['id']);
+			$rsp = twitter_users_profile($status['user']['id_str']);
 			$profile = $rsp['profile'];
 
 			$url = str_replace('_normal', '_bigger', $profile['profile_image_url']);
-			$path = twitter_status_media($status['id'], $url);
+			$path = twitter_status_media($status['id_str'], $url);
 			$orig_url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
 
 			if ($orig_url != $url) {
 				// Save a redirect for the original URL
 				$now = date('Y-m-d H:i:s');
 				$rsp = db_insert('twitter_media', array(
-					'status_id' => addslashes($status['id']),
+					'status_id' => addslashes($status['id_str']),
 					'path' => null,
 					'href' => $orig_url,
 					'redirect' => $url,
