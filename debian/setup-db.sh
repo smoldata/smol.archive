@@ -27,7 +27,6 @@ if [ "${MYSQL}" = "" ]
 then
 
 	sudo apt-get update
-	sudo apt-get -y upgrade
 	sudo apt-get install -y mysql-server mysql-client
 fi
 
@@ -64,6 +63,6 @@ unlink /tmp/${DBNAME}.sql
 
 perl -p -i -e "s/GLOBALS\['cfg'\]\['db_main'\]\['pass'\] = '[^']*'/GLOBALS\['cfg'\]\['db_main'\]\['pass'\] = '${PASSWORD}'/" ${SECRETS};
 perl -p -i -e "s/GLOBALS\['cfg'\]\['db_users'\]\['pass'\] = '[^']*'/GLOBALS\['cfg'\]\['db_users'\]\['pass'\] = '${PASSWORD}'/" ${SECRETS};
-perl -p -i -e "s/GLOBALS\['cfg'\]\['db_poormans_slaves'\]\['pass'\] = '[^']*'/GLOBALS\['cfg'\]\['db_poormans_slaves'\]\['pass'\] = '${PASSWORD}'/" ${SECRETS};
+perl -p -i -e "s/GLOBALS\['cfg'\]\['db_accounts'\]\['pass'\] = '[^']*'/GLOBALS\['cfg'\]\['db_accounts'\]\['pass'\] = '${PASSWORD}'/" ${SECRETS};
 
 exit 0
