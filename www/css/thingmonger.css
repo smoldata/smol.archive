@@ -19,6 +19,10 @@ a:hover {
 	margin-bottom: 10px;
 }
 
+.tweet .text {
+	min-height: 33px;
+}
+
 .profile_image {
 	position: absolute;
 	left: 0;

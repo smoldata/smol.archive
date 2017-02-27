@@ -15,7 +15,7 @@
 		# Make sure $user hasn't already added this Twitter account
 		$rsp = db_fetch("
 			SELECT *
-			FROM twitter_users
+			FROM twitter_account
 			WHERE user_id = $esc_user_id
 			  AND twitter_id = $esc_twitter_id
 		");
@@ -23,23 +23,27 @@
 			return $rsp;
 		}
 
+		$now = date('Y-m-d H:i:s');
+
 		if (empty($rsp['rows'])){
 			# Add the account
-			$rsp = db_insert('twitter_users', array(
+			$rsp = db_insert('twitter_account', array(
 				'user_id' => $esc_user_id,
 				'twitter_id' => $esc_twitter_id,
 				'screen_name' => $esc_screen_name,
 				'access_token' => $esc_access_token,
 				'access_secret' => $esc_access_secret,
-				'account_added_at' => date('Y-m-d H:i:s')
+				'added_at' => $now,
+				'updated_at' => $now
 			));
 		} else {
 			# Update token/secret/screen_name
 			$esc_id = addslashes($rsp['rows'][0]['id']);
-			$rsp = db_update('twitter_users', array(
+			$rsp = db_update('twitter_account', array(
 				'access_token' => $esc_access_token,
 				'access_secret' => $esc_access_secret,
-				'screen_name' => $esc_screen_name
+				'screen_name' => $esc_screen_name,
+				'updated_at' => $now
 			), "id = $esc_id");
 		}
 		return $rsp;
@@ -51,9 +55,9 @@
 		$esc_id = addslashes($user['id']);
 		$rsp = db_fetch("
 			SELECT *
-			FROM twitter_users
+			FROM twitter_account
 			WHERE user_id = $esc_id
-			ORDER BY account_added_at DESC
+			ORDER BY added_at DESC
 		");
 		if ($rsp['ok']){
 			return $rsp['rows'];

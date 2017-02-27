@@ -10,9 +10,10 @@
 		$twitter_accounts = twitter_users_get_accounts($GLOBALS['cfg']['user']);
 		$GLOBALS['smarty']->assign_by_ref('twitter_accounts', $twitter_accounts);
 		$rsp = db_fetch("
-			SELECT *
-			FROM twitter_status
-			ORDER BY created_at DESC
+			SELECT twitter_status.*
+			FROM twitter_status, twitter_archive
+			WHERE twitter_archive.status_id = twitter_status.id
+			ORDER BY twitter_status.created_at DESC
 			LIMIT 36
 		");
 

@@ -63,7 +63,7 @@
 		$full_content = twitter_status_content($status); // download media
 
 		$protected = ($status['user']['protected']) ? 1 : 0;
-		$is_retweet = isset($status['retweeted_status']) ? 1 : 0;
+		$is_retweet = ($status['retweeted_status']) ? 1 : 0;
 
 		// From here on out we're talking about the RT'd status
 		if ($is_retweet){
@@ -72,8 +72,8 @@
 
 		$favorite_count = $status['favorite_count'];
 		$retweet_count = $status['retweet_count'];
-		$is_reply = empty($status['in_reply_to_status_id']) ? 0 : 1;
-		$has_link = empty($status['entities']['urls']) ? 0 : 1;
+		$is_reply = ($status['in_reply_to_status_id']) ? 1 : 0;
+		$has_link = ($status['entities']['urls']) ? 1 : 0;
 		$has_photo = twitter_status_has_media_type($status, 'photo');
 		$has_gif = twitter_status_has_media_type($status, 'animated_gif');
 		$has_video = twitter_status_has_media_type($status, 'video');
@@ -98,23 +98,36 @@
 			'updated_at' => $now
 		));
 
-		if (! $rsp['ok'] && $rsp['error_code'] == 1062){
-			$rsp = db_update('twitter_status', array(
-				'favorite_count' => $favorite_count,
-				'retweet_count' => $retweet_count,
-				'updated_at' => date('Y-m-d H:i:s')
-			), "id = $esc_id");
+		if (! $rsp['ok']){
+			if ($rsp['error_code'] == 1062){
+				# primary key dupe
+				$rsp = db_update('twitter_status', array(
+					'favorite_count' => $favorite_count,
+					'retweet_count' => $retweet_count,
+					'updated_at' => date('Y-m-d H:i:s')
+				), "id = $esc_id");
+				if (! $rsp['ok']){
+					return $rsp;
+				}
+			} else {
+				return $rsp;
+			}
 		}
 
-		return $rsp;
+		return array(
+			'ok' => 1,
+			'saved_id' => $esc_id
+		);
 	}
 
 	########################################################################
 
 	function twitter_status_has_media_type($status, $type){
-		foreach ($status['entities']['media'] as $entity){
-			if ($entity['type'] == $type){
-				return 1;
+		if ($status['entities']['media']){
+			foreach ($status['entities']['media'] as $entity){
+				if ($entity['type'] == $type){
+					return 1;
+				}
 			}
 		}
 		return 0;
@@ -160,6 +173,7 @@
 			if ($status['display_text_range']) {
 				$start = $status['display_text_range'][0];
 				$end = $status['display_text_range'][1];
+				# hmm do we even need this?
 			}
 			$content .= $quoted_content;
 		}
@@ -187,10 +201,11 @@
 			return '';
 		}
 
+		$extended_content = '';
 		foreach ($status['extended_entities']['media'] as $entity){
-			return twitter_status_entity($status, $entity, $options);
+			$extended_content .= twitter_status_entity($status, $entity, $options);
 		}
-		return '';
+		return $extended_content;
 	}
 
 	########################################################################
@@ -198,8 +213,7 @@
 	function twitter_status_quoted_content($status, $options) {
 		$quoted_content = '';
 
-		if (! empty($status['quoted_status'])) {
-			$is_quoted = true;
+		if ($status['quoted_status']) {
 			$name = $status['quoted_status']['user']['name'];
 			$screen_name = $status['quoted_status']['user']['screen_name'];
 			$permalink = twitter_status_permalink($status['quoted_status'], $options);
@@ -210,7 +224,8 @@
 				"</a>" .
 				" <span class=\"meta\"> &middot; $permalink</span>" .
 			"</div>";
-			$quoted_content = twitter_status_content($status['quoted_status'], $is_quoted);
+			$options['is_quoted'] = true;
+			$quoted_content = twitter_status_content($status['quoted_status'], $options);
 			$quoted_content = "$quote_user $quoted_content";
 			$quoted_content = "<div class=\"quoted-status\">$quoted_content</div>";
 		}
@@ -392,6 +407,7 @@
 			$content .= "<div class=\"entity media media-video entity-media-video\">";
 			$content .= "<video src=\"$video_url\" poster=\"$poster_url\" preload=\"none\" controls></video>";
 			$content .= "</div>";
+			return $content;
 		}else{
 			return $video_url;
 		}
@@ -444,12 +460,13 @@
 		}
 
 		$path = 'media/' . $matches[1];
+		if (substr($path, -6, 6) == ':large'){
+			// If the path is '.jpg:large' drop the ':large' part
+			$path = substr($path, 0, -6);
+		}
+
 		$abs_path = $GLOBALS['cfg']['smol_data_dir'] . $path;
 
-		if (preg_match('/(\.\w+):\w+$/', $path, $matches)){
-			// Don't save files that end with '.jpg:large', instead use '.jpg:large.jpg'
-			$path .= $matches[1];
-		}
 		if (file_exists($abs_path)){
 			twitter_status_media_set_cached($status_id, $remote_url, $path);
 			return $path;
