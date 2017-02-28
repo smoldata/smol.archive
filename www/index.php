@@ -9,14 +9,38 @@
 
 		$twitter_accounts = twitter_users_get_accounts($GLOBALS['cfg']['user']);
 		$GLOBALS['smarty']->assign_by_ref('twitter_accounts', $twitter_accounts);
-		$rsp = db_fetch("
-			SELECT s.*
-			FROM twitter_status AS s, twitter_archive AS a
+
+		$args = array(
+			'count_fields' => '*'
+		);
+
+		$page = get_int32('page');
+
+		if ($page){
+			$args['page'] = $page;
+		}
+
+		$per_page = get_int32('per_page');
+
+		if ($per_page && $per_page > 0 && $per_page <= 1000){
+			$args['per_page'] = $per_page;
+		} else {
+			$per_page = $GLOBALS['cfg']['pagination_per_page'];
+		}
+
+		$rsp = db_fetch_paginated("
+			SELECT s.* FROM twitter_status AS s, twitter_archive AS a
 			WHERE a.type = 'statuses_user_timeline'
 			  AND a.status_id = s.id
 			ORDER BY s.created_at DESC
-			LIMIT 36
-		");
+		", $args);
+
+		$pagination = $rsp['pagination'];
+		$GLOBALS['smarty']->assign_by_ref("pagination", $pagination);
+
+		$pagination_url = $GLOBALS['cfg']['abs_root_url'];
+		$GLOBALS['smarty']->assign("pagination_url", $pagination_url);
+		$GLOBALS['smarty']->assign("per_page", $per_page);
 
 		$tweets = $rsp['rows'];
 		foreach ($tweets as $index => $tweet){

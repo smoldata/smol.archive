@@ -37,6 +37,11 @@
 			{/foreach}
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-9 col-md-offset-3">
+			{include file="inc_pagination.txt"}
+		</div>
+	</div>
 </div>
 
 {include file='inc_foot.txt'}
