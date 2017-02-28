@@ -517,10 +517,9 @@
 
 		# transform the select portion
 		if (isset($args['count_fields'])){
-
-			$sql = preg_replace('/^SELECT (.*?) FROM/i', "SELECT COUNT({$args['count_fields']}) FROM", $sql);
+			$sql = preg_replace('/SELECT\s+(.*?)\s+FROM/ims', "SELECT COUNT({$args['count_fields']}) FROM", $sql);
 		}else{
-			$sql = preg_replace_callback('/^SELECT (.*?) FROM/i', '_db_count_sql_from', $sql);
+			$sql = preg_replace_callback('/SELECT\s+(.*?)\s+FROM/ims', '_db_count_sql_from', $sql);
 		}
 
 		return $sql;
