@@ -18,21 +18,17 @@
 		");
 
 		$tweets = $rsp['rows'];
-		foreach ($tweets as $index => $status){
-			$raw_status = json_decode($status['json'], 'as hash');
-			if ($raw_status['retweeted_status']){
-				$id = $raw_status['retweeted_status']['id_str'];
-				$rsp = twitter_status_get_by_id($twitter_accounts[0], $id);
-				//dumper($rsp);
-				$raw_status = $rsp['status'];
-				$tweets[$index]['screen_name'] = $raw_status['user']['screen_name'];
+		foreach ($tweets as $index => $tweet){
+			$status = json_decode($tweet['json'], 'as hash');
+			if ($status['retweeted_status']){
+				$status = $status['retweeted_status'];
+				$tweets[$index]['screen_name'] = $status['user']['screen_name'];
 				$tweets[$index]['retweeted'] = true;
 			}
-			$tweets[$index]['html'] = twitter_status_content($raw_status);
-			$tweets[$index]['profile_image'] = twitter_status_profile_image($raw_status);
-			$tweets[$index]['display_name'] = $raw_status['user']['name'];
-			$tweets[$index]['permalink'] = twitter_status_permalink($raw_status);
-			//dumper($tweets[$index]['json']);
+			$tweets[$index]['html'] = twitter_status_content($status);
+			$tweets[$index]['profile_image'] = twitter_status_profile_image($status);
+			$tweets[$index]['display_name'] = $status['user']['name'];
+			$tweets[$index]['permalink'] = twitter_status_permalink($status);
 		}
 
 		$GLOBALS['smarty']->assign_by_ref('tweets', $tweets);

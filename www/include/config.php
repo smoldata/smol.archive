@@ -7,6 +7,7 @@
 	$GLOBALS['cfg']['site_name'] = 'Smol';
 	$GLOBALS['cfg']['environment'] = 'dev';
 	$GLOBALS['cfg']['smol_data_dir'] = '/usr/local/smoldata/data/';
+	$GLOBALS['cfg']['dbug_log_path'] = '/var/log/smol_dbug.log';
 
 	$GLOBALS['cfg']['site_disabled'] = 0;
 	$GLOBALS['cfg']['site_disabled_retry_after'] = 3;	# seconds; if set will return HTTP Retry-After header

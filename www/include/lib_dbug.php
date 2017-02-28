@@ -1,22 +1,25 @@
 <?php
 
-function dbug() {
-	if ($GLOBALS['cfg']['environment'] != 'dev') {
-		return;
-	}
-
-	if (! $GLOBALS['dbug_fh']) {
-		$root = dirname(dirname(__DIR__));
-		$GLOBALS['dbug_fh'] = fopen($GLOBALS['cfg']['dbug_log'], 'a');
-	}
-
-	$args = func_get_args();
-	foreach ($args as $arg) {
-		if (! is_scalar($arg)) {
-			$arg = print_r($arg, true);
+	function dbug() {
+		if ($GLOBALS['cfg']['environment'] != 'dev') {
+			return;
 		}
-		$arg = trim($arg);
-		$prefix = date('[Y-m-d H:i:s] ');
-		fwrite($GLOBALS['dbug_fh'], "$prefix $arg\n");
+
+		if (! $GLOBALS['cfg']['dbug_file_handle']) {
+			$GLOBALS['cfg']['dbug_file_handle'] = fopen($GLOBALS['cfg']['dbug_log_path'], 'a');
+			register_shutdown_function(function() {
+				fclose($GLOBALS['cfg']['dbug_file_handle']);
+			});
+		}
+
+		$fh = $GLOBALS['cfg']['dbug_file_handle'];
+		$timestamp = date('Y-m-d H:i:s');
+
+		$args = func_get_args();
+		foreach ($args as $arg) {
+			$arg = var_export($arg, true);
+			fwrite($fh, "[$timestamp] $arg\n");
+		}
 	}
-}
+
+	# the end

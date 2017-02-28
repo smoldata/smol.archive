@@ -15,6 +15,7 @@
 		if (! $rsp['ok']){
 			return $rsp;
 		}
+
 		if ($rsp['rows'] &&
 		    ! $rsp['rows'][0]['protected']){
 			$status = json_decode($rsp['rows'][0]['json'], 'as hash');
@@ -78,46 +79,59 @@
 		$has_gif = twitter_status_has_media_type($status, 'animated_gif');
 		$has_video = twitter_status_has_media_type($status, 'video');
 
-		$rsp = db_insert('twitter_status', array(
-			'id' => $esc_id,
-			'href' => addslashes($href),
-			'screen_name' => $esc_screen_name,
-			'content' => addslashes($content),
-			'json' => addslashes($json),
-			'protected' => $protected,
-			'favorite_count' => $favorite_count,
-			'retweet_count' => $retweet_count,
-			'is_retweet' => $is_retweet,
-			'is_reply' => $is_reply,
-			'has_link' => $has_link,
-			'has_photo' => $has_photo,
-			'has_gif' => $has_gif,
-			'has_video' => $has_video,
-			'created_at' => $created_at,
-			'saved_at' => $now,
-			'updated_at' => $now
-		));
+		$rsp = db_fetch("
+			SELECT id
+			FROM twitter_status
+			WHERE id = $esc_id
+		");
 
-		if (! $rsp['ok']){
-			if ($rsp['error_code'] == 1062){
-				# primary key dupe
-				$rsp = db_update('twitter_status', array(
-					'favorite_count' => $favorite_count,
-					'retweet_count' => $retweet_count,
-					'updated_at' => date('Y-m-d H:i:s')
-				), "id = $esc_id");
-				if (! $rsp['ok']){
-					return $rsp;
-				}
-			} else {
+		if (empty($rsp['rows'])){
+
+			$rsp = db_insert('twitter_status', array(
+				'id' => $esc_id,
+				'href' => addslashes($href),
+				'screen_name' => $esc_screen_name,
+				'content' => addslashes($content),
+				'json' => addslashes($json),
+				'protected' => $protected,
+				'favorite_count' => $favorite_count,
+				'retweet_count' => $retweet_count,
+				'is_retweet' => $is_retweet,
+				'is_reply' => $is_reply,
+				'has_link' => $has_link,
+				'has_photo' => $has_photo,
+				'has_gif' => $has_gif,
+				'has_video' => $has_video,
+				'created_at' => $created_at,
+				'saved_at' => $now,
+				'updated_at' => $now
+			));
+			if (! $rsp['ok']){
 				return $rsp;
 			}
-		}
 
-		return array(
-			'ok' => 1,
-			'saved_id' => $esc_id
-		);
+			return array(
+				'ok' => 1,
+				'created_id' => $esc_id
+			);
+		}
+		
+		else{
+
+			$rsp = db_update('twitter_status', array(
+				'favorite_count' => $favorite_count,
+				'retweet_count' => $retweet_count,
+				'updated_at' => date('Y-m-d H:i:s')
+			), "id = $esc_id");
+			if (! $rsp['ok']){
+				return $rsp;
+			}
+
+			return array(
+				'ok' => 1,
+				'updated_id' => $esc_id
+			);
+		}
 	}
 
 	########################################################################
