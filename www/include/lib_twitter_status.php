@@ -86,7 +86,6 @@
 		");
 
 		if (empty($rsp['rows'])){
-
 			$rsp = db_insert('twitter_status', array(
 				'id' => $esc_id,
 				'href' => addslashes($href),
@@ -109,15 +108,9 @@
 			if (! $rsp['ok']){
 				return $rsp;
 			}
-
-			return array(
-				'ok' => 1,
-				'created_id' => $esc_id
-			);
 		}
-		
-		else{
 
+		else {
 			$rsp = db_update('twitter_status', array(
 				'favorite_count' => $favorite_count,
 				'retweet_count' => $retweet_count,
@@ -126,12 +119,12 @@
 			if (! $rsp['ok']){
 				return $rsp;
 			}
-
-			return array(
-				'ok' => 1,
-				'updated_id' => $esc_id
-			);
 		}
+		
+		return array(
+			'ok' => 1,
+			'saved_id' => $esc_id
+		);
 	}
 
 	########################################################################
@@ -192,8 +185,8 @@
 			$content .= $quoted_content;
 		}
 
-		$content = preg_replace('/\n+/', "\n", $content);
-		$content = nl2br($content);
+		$content = nl2br($content, false);
+		$content = preg_replace('/(<br>)+/', '<br>', $content);
 
 		return $content;
 	}
