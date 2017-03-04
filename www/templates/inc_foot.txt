@@ -1,9 +1,10 @@
-
-		<div class="container">
-			<hr>
+			</div>
 			<footer>
-				<p><small>{$cfg.site_name}</small></p>
+				<div class="container">
+					<h1>SMOL<br>&nbsp;DATA<br>COOP</h1>
+				</div>
 			</footer>
+
 		</div>
 
 	</body>

@@ -1,4 +1,4 @@
-{assign var='page_title' value='Join Smol Data Coop'}
+{assign var='page_title' value='Welcome'}
 {include file='inc_head.txt' nav_tab='signup'}
 
 <div class="container">
@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 
 			{if $error_missing}         <p class="alert alert-danger">Please fill out all the fields</p>{/if}
 			{if $error_email_taken}     <p class="alert alert-danger">Email address already registered.</p>{/if}
@@ -26,7 +26,7 @@
 				</div>
 					
 				<div class="form-group{if $error_missing && !$email} error{/if}">
-					<label class="control-label" for="email">E-mail address</label>
+					<label class="control-label" for="email">Email address</label>
 					<input type="email" name="email" size="40" value="{if $email}{$email|escape}{elseif $invite}{$invite.email|escape}{else}{/if}" class="form-control">
 				</div>
 
@@ -36,18 +36,18 @@
 				</div>
 
 				<div class="form-group">
-					By signing up you are agreeing to the <a href="{$cfg.abs_root_url}terms/" target="_tos"><span class="hey-look">{$cfg.site_name|escape}</span> terms of service</a>.
+					By clicking Sign Up, you confirm that you accept our <a href="{$cfg.abs_root_url}terms/" target="_tos">Terms of Service</a>.
 				</div>
 
 				<div class="form-group">
-					<input type="submit" class="btn btn-primary" value="Create your account"/>
+					<input type="submit" class="btn btn-primary" value="Sign Up">
 				</div>
 
 			</form>
 
-			<p><small>
-				Do you already have an account? <a href="{$cfg.abs_root_url}signin">Sign in here</a>. 
-			</small></p>
+			<p>
+				Already have an account? <a href="{$cfg.abs_root_url}signin">Log in</a> 
+			</p>
 		</div>
 	</div>
 </div>

@@ -1,4 +1,4 @@
-{assign var='page_title' value='Sign in'}
+{assign var='page_title' value='Login'}
 {include file='inc_head.txt' nav_tab='signin'}
 
 <div class="container">
@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 
 			{if $error_missing}  <p class="alert alert-danger">Please enter your email address and password.</p>{/if}
 			{if $error_nouser}   <p class="alert alert-danger">Sorry, we can't find an account with that email address.</p>{/if}
@@ -29,18 +29,18 @@
 					<label class="control-label" for="password">Password</label>
 					<input type="password" name="password" size="40" class="form-control">
 				</div>
-
-				<div class="form-group">
-					<input type="submit" class="btn btn-primary" value="Sign in">
+				
+				<div class="form-group" id="login-btn">
+					<input type="submit" class="btn btn-primary" value="Login">
 				</div>
+				
+				<p>
+					{if $cfg.enable_feature_password_retrieval}
+					<a href="{$cfg.abs_root_url}forgot">Forgot password?</a>
+					{/if}
+					<a href="{$cfg.abs_root_url}signup" class="pull-right">Create an account</a>
+				</p>
 			</form>
-
-			<p><small>
-				{if $cfg.enable_feature_password_retrieval}
-				<a href="{$cfg.abs_root_url}forgot">Forgotten your password?</a>
-				{/if}
-				Don't have an account? <a href="{$cfg.abs_root_url}signup">Sign up here</a>. 
-			</small></p>
 
 		</div>
 	</div>
