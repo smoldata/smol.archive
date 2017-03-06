@@ -43,11 +43,11 @@ body.about p {
 	line-height: 1.75em;
 }
 
-#login-btn {
-	margin-top: 1.5em;
+#feature-list p {
+	margin-left: 47px;
 }
 
-#signup-cta {
+#login-btn {
 	margin-top: 1.5em;
 }
 
