@@ -362,7 +362,7 @@
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
 			# TODO: find a better alt attribute
-			return "<a href=\"{$entity['expanded_url']}\" class=\"entity media entity-media\"><img src=\"$media_url\" alt=\"\"></a>";
+			return "<a href=\"{$entity['expanded_url']}\" class=\"entity media entity-media\"><img src=\"{$GLOBALS['cfg']['abs_root_url']}$media_url\" alt=\"\"></a>";
 		}else{
 			return $media_url;
 		}
@@ -373,8 +373,10 @@
 	function twitter_status_entity_animated_gif($status, $entity, $options){
 
 		$id = "gif-{$status['id_str']}";
-		$poster_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
-		$video_url = twitter_status_media($status['id_str'], $entity['video_info']['variants'][0]['url']);
+		$poster_path = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$video_path = twitter_status_media($status['id_str'], $entity['video_info']['variants'][0]['url']);
+		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
+		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -394,7 +396,8 @@
 
 	function twitter_status_entity_video($status, $entity, $options){
 
-		$poster_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$poster_path = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
 
 		$video_urls = array();
 		foreach ($entity['video_info']['variants'] as $variant) {
@@ -405,8 +408,9 @@
 		}
 
 		ksort($video_urls);
-		$video_url = array_pop($video_urls);
-		$video_url = twitter_status_media($status['id_str'], $video_url);
+		$video_path = array_pop($video_urls);
+		$video_path = twitter_status_media($status['id_str'], $video_path);
+		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template

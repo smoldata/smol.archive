@@ -20,7 +20,7 @@
 						{/if}
 						<div class="user">
 							<a href="https://twitter.com/{$tweet.screen_name}">
-								<img src="{$tweet.profile_image}" alt="{$tweet.display_name}" class="profile_image">
+								<img src="{$cfg.abs_root_url}{$tweet.profile_image}" alt="{$tweet.display_name}" class="profile_image">
 								<span class="name">{$tweet.display_name}</span>
 								<span class="screen_name">@{$tweet.screen_name}</span>
 							</a>
