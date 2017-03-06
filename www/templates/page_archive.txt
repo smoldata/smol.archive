@@ -1,0 +1,12 @@
+{assign var='page_title' value='Archive'}
+{include file='inc_head.txt' nav_tab='archive'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<h1>Archive</h1>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}

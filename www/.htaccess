@@ -61,12 +61,6 @@ RewriteRule ^terms/?$                   terms.php             [L]
 RewriteRule ^forgot/?$                  forgot.php            [L]
 RewriteRule ^reset/([a-zA-Z0-9]+)/?$    reset.php?reset=$1    [L,QSA]
 
-# Account stuff
-
-# RewriteRule ^account/?$                 account.php           [L]
-# RewriteRule ^account/password/?$        account_password.php  [L]
-# RewriteRule ^account/delete/?$          account_delete.php    [L]
-
 # Invites
 
 # RewriteRule ^invite/?$                  invite.php?%{QUERY_STRING}         [L]
@@ -81,6 +75,15 @@ RewriteRule ^twitter/auth/?$              twitter_oauth_callback.php         [L]
 
 RewriteRule ^about/?$                     about.php             [L]
 
+# Account stuff
+
+RewriteRule ^([a-z0-9_]+)/settings/?$         settings.php          [L]
+RewriteRule ^([a-z0-9_]+)/archive/(\d+)/?$    source.php            [L]
+RewriteRule ^([a-z0-9_]+)/archive/?$          archive.php           [L]
+RewriteRule ^([a-z0-9_]+)/([a-f0-9]+)/([a-z0-9]+)/?$  share.php                [L]
+RewriteRule ^([a-z0-9_]+)/([a-f0-9]+)/?$              id.php             [L]
+RewriteRule ^([a-z0-9_]+)/?$                  profile.php           [L]
+
 # Home
 
-RewriteRule ^page([0-9]+)/?$              index.php?page=$1              [L,QSA]
+RewriteRule ^page([0-9]+)/?$              flow.php?page=$1              [L,QSA]

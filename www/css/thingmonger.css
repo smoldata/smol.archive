@@ -124,6 +124,14 @@ footer h1 {
 	margin: 0;
 }
 
+.tweet a {
+	text-decoration: none;
+}
+
+.tweet a:hover {
+	text-decoration: underline;
+}
+
 .tweet {
 	position: relative;
 	border-bottom: 1px solid #dedede;

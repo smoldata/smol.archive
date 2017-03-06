@@ -1,5 +1,5 @@
-{assign var='page_title' value='Home'}
-{include file='inc_head.txt' nav_tab='home'}
+{assign var='page_title' value=$cfg.user.username|escape}
+{include file='inc_head.txt' nav_tab='user'}
 
 <div class="container">
 	<div class="row">

@@ -1,0 +1,12 @@
+{assign var='page_title' value='Settings'}
+{include file='inc_head.txt' nav_tab='user'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<h1>Settings</h1>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}

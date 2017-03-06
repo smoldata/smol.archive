@@ -3,23 +3,28 @@
 		<div class="container">
 			<div class="row">
 				<div class="collapse navbar-collapse navbar-head-collapse">
-					{if "signin"|@features_is_enabled}
+					{if $cfg.user}
 						<ul class="nav navbar-nav">
-							{if $cfg.user}
-								<li class="dropdown">
-									<a href="#" id="navi-account" class="dropdown-toggle navi-label" data-toggle="dropdown" role="button">Hi, {$cfg.user.username|escape} <b class="caret caret-ch"></b></a>
-									<ul class="dropdown-menu" aria-labelledby="navi-account" role="menu">
-										<li><a href="{$cfg.abs_root_url}settings/">Settings</a></li>
-										<li><a href="{$cfg.abs_root_url}signout/">Sign out</a></li>
-									</ul>
-								</li>
-							{else}
-								<li class="{if $nav_tab == 'about'}active{/if}"><a href="/about">About</a></li>
-								<li class="{if $nav_tab == 'login'}active{/if}"><a href="{$login_url}">Login</a></li>
-								<li class="{if $nav_tab == 'signup'}active{/if}"><a href="{$signup_url}">Sign up</a></li>
-							{/if}
-						{/if}
-					</ul>
+							<li class="{if $nav_tab == 'flow'}active{/if}"><a href="/">Flow</a></li>
+							<li class="{if $nav_tab == 'archive'}active{/if}"><a href="/{$cfg.user.username|escape}/archive/">Archive</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown{if $nav_tab == 'user'} active{/if}">
+								<a href="#" id="navi-account" class="dropdown-toggle navi-label" data-toggle="dropdown" role="button">{$cfg.user.username|escape} <b class="caret caret-ch"></b></a>
+								<ul class="dropdown-menu" aria-labelledby="navi-account" role="menu">
+									<li><a href="{$cfg.abs_root_url}{$cfg.user.username|escape}/">Profile</a></li>
+									<li><a href="{$cfg.abs_root_url}{$cfg.user.username|escape}/settings/">Settings</a></li>
+									<li><a href="{$cfg.abs_root_url}signout/">Logout</a></li>
+								</ul>
+							</li>
+						</ul>
+					{else}
+						<ul class="nav navbar-nav">
+							<li class="{if $nav_tab == 'about'}active{/if}"><a href="/about">About</a></li>
+							<li class="{if $nav_tab == 'login'}active{/if}"><a href="{$login_url}">Login</a></li>
+							<li class="{if $nav_tab == 'signup'}active{/if}"><a href="{$signup_url}">Sign up</a></li>
+						</ul>
+					{/if}	
 				</div>
 			</div>
 		</div>

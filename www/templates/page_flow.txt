@@ -1,0 +1,12 @@
+{assign var='page_title' value='Flow'}
+{include file='inc_head.txt' nav_tab='flow'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<h1>Flow</h1>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}
