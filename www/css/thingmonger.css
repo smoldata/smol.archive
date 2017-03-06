@@ -14,9 +14,19 @@ h1 {
 	margin-bottom: 0.5em;
 }
 
+h2 {
+	font-family: "Realtime-Regular", monospace;
+	text-transform: uppercase;
+	color: #444;
+}
+
 a {
 	color: #df146a;
 	text-decoration: underline;
+}
+
+a.btn {
+	text-decoration: none;
 }
 
 a:hover {
@@ -29,7 +39,15 @@ a:hover {
 	min-height: calc(100vh - 50px);
 }
 
+body.about p {
+	line-height: 1.75em;
+}
+
 #login-btn {
+	margin-top: 1.5em;
+}
+
+#signup-cta {
 	margin-top: 1.5em;
 }
 

@@ -611,7 +611,7 @@
 		$GLOBALS['login_url'] = "{$GLOBALS['cfg']['abs_root_url']}login";
 		$GLOBALS['signup_url'] = "{$GLOBALS['cfg']['abs_root_url']}signup";
 		if ($redirect != '/' &&
-		    ! preg_match('/sign(in|up)\/?/', $redirect)) {
+		    ! preg_match('/(login|signup)\/?/', $redirect)) {
 			$redirect = preg_replace('/(\?|&)redir=[^&]*/', '', $redirect);
 			$redirect = urlencode($redirect);
 			$GLOBALS['login_url'] .= "?redir=$redirect";

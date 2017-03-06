@@ -17,8 +17,8 @@
 
 			<form action="{$cfg.abs_root_url}signup/" method="POST" accept-encoding="UTF-8" class="form" role="form" id="signup">
 				{$crumb_key|crumb_input}
-				<input type="hidden" name="signup" value="1" />
-				<input type="hidden" name="redir" value="{$redir|escape}" />
+				<input type="hidden" name="signup" value="1">
+				<input type="hidden" name="redir" value="{$redir|escape}">
 
 				<div class="form-group{if $error_missing && !$username} error{/if}">
 					<label class="control-label" for="username">Username</label>
