@@ -18,7 +18,7 @@
 	# try and sign in?
 	#
 
-	if (post_str('signin')){
+	if (post_str('login')){
 
 		$email		= post_str('email');
 		$password	= post_str('password');

@@ -15,9 +15,9 @@
 			{if $error_deleted}  <p class="alert alert-danger">Account has been deleted.</p>{/if}
 			{if $error_password} <p class="alert alert-danger">Incorrect password.</p>{/if}
 
-			<form action="{$cfg.abs_root_url}signin/" method="post" accept-encoding="UTF-8" class="form" role="form">
+			<form action="{$cfg.abs_root_url}login/" method="post" accept-encoding="UTF-8" class="form" role="form">
 				{$crumb_key|crumb_input}
-				<input type="hidden" name="signin" value="1">
+				<input type="hidden" name="login" value="1">
 				<input type="hidden" name="redir" value="{$redir|escape}">
 
 				<div class="form-group{if $error_missing && !$email} error{/if}">
