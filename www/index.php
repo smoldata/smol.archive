@@ -59,5 +59,5 @@
 		$GLOBALS['smarty']->assign_by_ref('tweets', $tweets);
 		$GLOBALS['smarty']->display('page_home.txt');
 	} else {
-		$GLOBALS['smarty']->display('page_signup.txt');
+		$GLOBALS['smarty']->display('page_about.txt');
 	}

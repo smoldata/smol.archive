@@ -84,6 +84,16 @@ a:hover {
 	color: #fff;
 }
 
+.alert {
+	border-radius: 3px;
+}
+
+.alert-danger {
+	color: #df146a;
+	border-color: #f1c1d5;
+	background-color: #f1e1e8;
+}
+
 footer {
 	background: #efefef;
 	padding: 1em 0;

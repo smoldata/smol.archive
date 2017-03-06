@@ -1,0 +1,12 @@
+{assign var='page_title' value='About'}
+{include file='inc_head.txt' nav_tab='about'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Smol Data Cooperative</h1>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}

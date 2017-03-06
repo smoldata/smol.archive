@@ -608,16 +608,16 @@
 			$redirect = '/';
 		}
 
-		$GLOBALS['signin_url'] = "{$GLOBALS['cfg']['abs_root_url']}signin";
+		$GLOBALS['login_url'] = "{$GLOBALS['cfg']['abs_root_url']}login";
 		$GLOBALS['signup_url'] = "{$GLOBALS['cfg']['abs_root_url']}signup";
 		if ($redirect != '/' &&
 		    ! preg_match('/sign(in|up)\/?/', $redirect)) {
 			$redirect = preg_replace('/(\?|&)redir=[^&]*/', '', $redirect);
 			$redirect = urlencode($redirect);
-			$GLOBALS['signin_url'] .= "?redir=$redirect";
+			$GLOBALS['login_url'] .= "?redir=$redirect";
 			$GLOBALS['signup_url'] .= "?redir=$redirect";
 		}
-		$GLOBALS['smarty']->assign("signin_url", $GLOBALS['signin_url']);
+		$GLOBALS['smarty']->assign("login_url", $GLOBALS['login_url']);
 		$GLOBALS['smarty']->assign("signup_url", $GLOBALS['signup_url']);
 
 		if ($GLOBALS['cfg']['user']) {

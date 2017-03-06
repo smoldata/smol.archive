@@ -54,10 +54,10 @@ RewriteEngine on
 # Login stuff
 
 RewriteRule ^signup/?$                  signup.php            [L]
-RewriteRule ^signin/?$                  signin.php            [L]
-RewriteRule ^signout/?$                 signout.php           [L]
+RewriteRule ^login/?$                   login.php             [L]
+RewriteRule ^logout/?$                  logout.php            [L]
 RewriteRule ^checkcookie/?$             checkcookie.php       [L]
-# RewriteRule ^terms/?$                   terms.php             [L]
+RewriteRule ^terms/?$                   terms.php             [L]
 
 # Password retrieval stuff
 
@@ -79,6 +79,10 @@ RewriteRule ^reset/([a-zA-Z0-9]+)/?$    reset.php?reset=$1    [L,QSA]
 
 RewriteRule ^twitter/add/?$               twitter_add_account.php            [L]
 RewriteRule ^twitter/auth/?$              twitter_oauth_callback.php         [L]
+
+# Static pages
+
+RewriteRule ^about/?$                     about.php             [L]
 
 # Home
 

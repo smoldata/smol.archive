@@ -1,5 +1,12 @@
 {"HTTP/1.1 404 Not Found"|header}{include file='inc_head.txt' page_title="404"}
 
-<p class="lead text-center">What?</p>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Error 404</h1>
+			<p>Sorry, we cannot find the thing you are looking for.</p>
+		</div>
+	</div>
+</div>
 
 {include file='inc_foot.txt'}

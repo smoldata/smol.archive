@@ -95,4 +95,4 @@
 	# output
 	#
 
-	$smarty->display('page_signin.txt');
+	$smarty->display('page_login.txt');

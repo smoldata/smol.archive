@@ -14,7 +14,8 @@
 									</ul>
 								</li>
 							{else}
-								<li class="{if $nav_tab == 'signin'}active{/if}"><a href="{$signin_url}">Login</a></li>
+								<li class="{if $nav_tab == 'about'}active{/if}"><a href="/about">About</a></li>
+								<li class="{if $nav_tab == 'login'}active{/if}"><a href="{$login_url}">Login</a></li>
 								<li class="{if $nav_tab == 'signup'}active{/if}"><a href="{$signup_url}">Sign up</a></li>
 							{/if}
 						{/if}

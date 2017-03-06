@@ -1,5 +1,5 @@
 {assign var='page_title' value='Login'}
-{include file='inc_head.txt' nav_tab='signin'}
+{include file='inc_head.txt' nav_tab='login'}
 
 <div class="container">
 	<div class="row">
