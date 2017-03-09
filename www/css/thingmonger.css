@@ -124,6 +124,34 @@ footer h1 {
 	margin: 0;
 }
 
+footer a {
+	color: #333;
+	text-decoration: none;
+}
+
+footer a:hover {
+	color: #000;
+	text-decoration: underline;
+}
+
+footer ul {
+	padding: 0;
+}
+
+footer li {
+	list-style: none;
+}
+
+.nav-pills a {
+	text-decoration: none;
+}
+
+.nav-pills > li.active > a{
+	color: #fff;
+	font-weight: bold;
+	background-color: #df146a;
+}
+
 .tweet a {
 	text-decoration: none;
 }
@@ -245,52 +273,52 @@ footer h1 {
 	display: none;
 }
 
-.user a {
+.tweet .user a {
 	color: #000;
 }
 
-.user a .name {
+.tweet .user a .name {
 	font-weight: bold;
 }
 
-.user a .screen_name {
+.tweet .user a .screen_name {
 	color: #999;
 	font-size: 12px;
 }
 
-.user a:hover {
+.tweet .user a:hover {
 	text-decoration: none;
 }
 
-.user a:hover .name {
+.tweet .user a:hover .name {
 	text-decoration: underline;
 }
 
-.entity {
+.tweet .entity {
 	color: #36C;
 }
 
-.entity .text {
+.tweet .entity .text {
 	color: #039;
 }
 
-.entity:hover {
+.tweet .entity:hover {
 	text-decoration: none;
 }
 
-.entity:hover .text {
+.tweet .entity:hover .text {
 	text-decoration: underline;
 }
 
-.meta {
+.tweet .meta {
 	font-size: 11px;
 }
 
-.meta a {
+.tweet .meta a {
 	color: #999;
 }
 
-.meta a:hover {
+.tweet .meta a:hover {
 	color: #039;
 	text-decoration: underline;
 }

@@ -1,7 +1,18 @@
 			</div>
 			<footer>
 				<div class="container">
-					<h1>SMOL<br>&nbsp;DATA<br>COOP</h1>
+					<div class="row">
+						<div class="col-md-1">
+							<h1>SMOL<br>&nbsp;DATA<br>COOP</h1>
+						</div>
+						<div class="col-md-11">
+							<ul>
+								<li><a href="/about/">About</a></li>
+								<li><a href="/conduct/">Code of Conduct</a></li>
+								<li><a href="/terms/">Terms of Service</a></li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</footer>
 

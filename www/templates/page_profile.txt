@@ -4,12 +4,14 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
+			<h1>{$cfg.user.username|escape}</h1>
 			<ul class="nav nav-pills nav-stacked">
+				<li class="active"><a href="#">Everything</a></li>
 				{foreach from=$twitter_accounts item=account}
-					<li><a href="#"><strong>Twitter</strong> @{$account.screen_name | @esc}</a></li>
+					<li><a href="#">Tweets</a></li>
+					<li><a href="#">Favorites</a></li>
 				{/foreach}
 			</ul>
-			<a href="{$cfg.abs_root_url}twitter/add" class="btn btn-default">Add Twitter account</a>
 		</div>
 		<div class="col-md-6">
 			{foreach from=$tweets item=tweet}
