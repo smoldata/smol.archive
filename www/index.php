@@ -2,7 +2,6 @@
 
 	include('include/init.php');
 	loadlib('twitter_api');
-	loadlib('twitter_users');
 	loadlib('twitter_status');
 	
 	if ($GLOBALS['cfg']['user']){

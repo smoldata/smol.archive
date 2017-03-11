@@ -19,17 +19,19 @@
 	$user = $rsp['rows'][0];
 	$smarty->assign_by_ref('user', $user);
 
-	$accounts = smol_accounts_get_accounts($user);
-	$smarty->assign_by_ref('accounts', $accounts);
+	$services = smol_accounts_get_services($user);
+	$smarty->assign_by_ref('services', $services);
 
-	if (empty($accounts) && $user['id'] == $GLOBALS['cfg']['user']['id']){
-		# setup current user's accounts
-		$smarty->assign('crumb_auth_twitter', 'auth_twitter');
-		$GLOBALS['smarty']->display('page_archive.txt');
+	if (empty($services) && $user['id'] == $GLOBALS['cfg']['user']['id']){
+
+		# No accounts? Let's add at least one.
+
+		$url = $GLOBALS['cfg']['abs_root_url'] . "$username/archive/";
+		header("Location: {$url}");
 		exit;
 	}
 	
-	if (empty($accounts)){
+	if (empty($services)){
 		$smarty->assign('no_accounts', 1);
 	}
 

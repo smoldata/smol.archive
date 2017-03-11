@@ -4,19 +4,18 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			<h1>{$user.username | @esc}</h1>
-			{if $accounts | count}
+			<h1>{$user.username|escape}</h1>
+			{if $services}
 				<ul class="nav nav-pills nav-stacked">
-					<li class="active"><a href="#">Everything</a></li>
-					{foreach from=$twitter_accounts item=account}
-						<li><a href="#">Tweets</a></li>
-						<li><a href="#">Favorites</a></li>
+					<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
+					{foreach from=$services item=service}
+						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
 					{/foreach}
 				</ul>
 			{/if}
 		</div>
 		<div class="col-md-6">
-			{if not $accounts | count}
+			{if not $services}
 				<div class="alert alert-info"><strong>Nothing here yet</strong><br>This user has not authorized any accounts yet.</div>
 			{/if}
 			{foreach from=$tweets item=tweet}

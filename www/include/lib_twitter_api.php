@@ -3,7 +3,7 @@
 	loadlib("http");
 	loadlib("random");
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_get($account, $path, $params){
 		$method = 'GET';
@@ -32,7 +32,7 @@
 		);
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_post($account, $path, $params){
 		$method = 'POST';
@@ -60,12 +60,29 @@
 			'result' => $result
 		);
 	}
+	
+	########################################################################
 
-	#################################################################
+	function twitter_api_get_profile($account, $ext_id){
+
+		$rsp = twitter_api_get($accounts, 'users/lookup', array(
+			'user_id' => $ext_id
+		));
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+
+		return array(
+			'ok' => 1,
+			'profile' => $rsp['result'][0]
+		);
+	}
+
+	########################################################################
 
 	function twitter_api_oauth_request_token($redir=''){
 
-		$callback = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['twitter_api_oauth_callback'];
+		$callback = $GLOBALS['cfg']['abs_root_url'] . 'auth/twitter/';
 
 		if ($redir){
 			$enc_redir = urlencode($redir);
@@ -87,7 +104,7 @@
 		return $rsp;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_oauth_auth_url($request_token){
 		$url = $GLOBALS['cfg']['twitter_api_oauth_endpoint'] . 'authenticate';
@@ -95,7 +112,7 @@
 		return $url;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_oauth_access_token($key, $secret){
 		$method = 'POST';
@@ -121,7 +138,7 @@
 
 	$url = $GLOBALS['cfg']['twitter_api_oauth_endpoint'] . 'authenticate';
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_oauth_authorization_header($method, $url, $params, $token=null, $callback=null){
 
@@ -153,7 +170,7 @@
 		return $header;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_oauth_signature($method, $url, $params, $token=null){
 		$base_string = twitter_api_oauth_base_string($method, $url, $params);
@@ -170,7 +187,7 @@
 		return $signature;
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_oauth_base_string($method, $url, $params){
 		$parts = array();
@@ -190,7 +207,7 @@
 		return implode('&', $enc_parts);
 	}
 
-	#################################################################
+	########################################################################
 
 	function twitter_api_urlencode($input){
 		$encoded = rawurlencode($input);
@@ -199,7 +216,7 @@
 		return $encoded;
 	}
 	
-	#################################################################
+	########################################################################
 	
 	function twitter_api_http_more(){
 		return array(

@@ -9,7 +9,8 @@
 		<div class="col-md-4">
 			<h2>Add Twitter account</h2>
 			<form action="{$cfg.abs_root_url}auth/twitter/" method="post">
-				{$crumb_auth_twitter|crumb_input}
+				{$crumb_auth_twitter|crumb_input:"/auth_twitter.php"}
+				<input type="hidden" name="add_account" value="1">
 				<input type="submit" class="btn btn-primary" value="Add account">
 			</form>
 		</div>

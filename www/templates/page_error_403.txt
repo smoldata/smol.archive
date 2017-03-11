@@ -1,5 +1,12 @@
 {"HTTP/1.1 403 Forbidden"|header}{include file='inc_head.txt' page_title="403"}
 
-<p class="lead text-center">Nope.</p>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Error 403</h1>
+			<p>Sorry, you cannot do the thing you tried to do.</p>
+		</div>
+	</div>
+</div>
 
 {include file='inc_foot.txt'}

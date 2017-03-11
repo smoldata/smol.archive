@@ -73,14 +73,14 @@ RewriteRule ^checkcookie/?$                checkcookie.php                   [L]
 # RewriteRule ^invite/?$                     invite.php                    [L,QSA]
 # RewriteRule ^invite(?:/([^/]+))?/?$        invite.php?code=$1            [L,QSA]
 
-# Auth a service
+# Auth a service account
 
-RewriteRule ^auth/(\w+)/?$                 auth_service.php?service=$1   [L,QSA]
+RewriteRule ^auth/twitter/?$               auth_twitter.php                  [L]
 
 # Account stuff
 
 # RewriteRule ^(\w+)/archive/(\w+)/?$        source.php                        [L]
-# RewriteRule ^(\w+)/archive/?$              archive.php                       [L]
+RewriteRule ^(\w+)/archive/?$              archive.php                       [L]
 # RewriteRule ^(\w+)/page(\d+)/?$            profile.php?page=$1               [L]
 # RewriteRule ^(\w+)/([a-z0-9]+)/([a-z0-9]{32})/?$ share.php?id=$1&share_code=$2 [L,QSA]
 # RewriteRule ^(\w+)/([a-z0-9]+)/?$          id.php                            [L]

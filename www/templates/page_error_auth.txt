@@ -2,20 +2,24 @@
 
 <div class="container">
 
-	<h1>Unable to login to Twitter</h1>
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Unable to add {$service}</h1>
 
-	{if $error_request_token}
-	<p>😿 Something went wrong during the "request token" phase of the Twitter login. Weirdly enough this can be triggered by leaving out the "optional" callback URL in your Twitter OAuth settings.</p>
-	{elseif $error_verifier}
-	<p>😨 Something went wrong during the "token verifier" phase of the Twitter login.</p>
-	{elseif $error_access_token}
-	<p>😢 Something went wrong during the "access token" phase of the Twitter login.</p>
-	{elseif $error_db_insert}
-	<p>😵 Something went wrong saving your Twitter login to the database.</p>
-	{else}
-	<p>😩 Something unexpected happened and that makes me sad.</p>
-	{/if}
-
+			{if $error_request_token}
+				<p>😿 Something went wrong during the "request token" {$service|escape} OAuth phase.
+				{if $service == 'twitter'}Weirdly enough this can be triggered by leaving out the "optional" callback URL in the OAuth settings.{/if}</p>
+			{elseif $error_verifier}
+				<p>😨 Something went wrong during the "token verifier" {$service|escape} OAuth phase.</p>
+			{elseif $error_access_token}
+				<p>😢 Something went wrong during the "access token" {$service|escape} OAuth phase.</p>
+			{elseif $error_db_insert}
+				<p>😵 Something went wrong saving your {$service|escape} account to the database.</p>
+			{else}
+				<p>😩 Something unexpected happened and that makes me sad.</p>
+			{/if}
+		</div>
+	</div>
 </div>
 
 {include file="inc_foot.txt"}

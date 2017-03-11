@@ -24,10 +24,10 @@
 		#
 
 		$rsp = twitter_api_oauth_request_token();
-		$token = array();
-		parse_str($rsp['body'], $token);
+		$args = array();
+		parse_str($rsp['body'], $args);
 
-		if ($token['oauth_callback_confirmed'] != 'true'){
+		if ($args['oauth_callback_confirmed'] != 'true'){
 			$GLOBALS['smarty']->assign('error_request_token', 1);
 			$GLOBALS['smarty']->display('page_error_auth.txt');
 			exit;
@@ -37,7 +37,7 @@
 		# step two: go ask the user for permission
 		#
 
-		$url = twitter_api_oauth_auth_url($token['oauth_token']);
+		$url = twitter_api_oauth_auth_url($args['oauth_token']);
 		header("Location: {$url}");
 		exit;
 	}
@@ -63,16 +63,24 @@
 		#
 
 		$rsp = twitter_api_oauth_access_token($token_key, $token_secret);
-		$token = array();
-		parse_str($rsp['body'], $token);
-		if (! $token['oauth_token'] ||
-		    ! $token['oauth_token_secret']){
+		$args = array();
+		parse_str($rsp['body'], $args);
+		if (! $args['oauth_token'] ||
+		    ! $args['oauth_token_secret']){
 				$GLOBALS['smarty']->assign('error_access_token', 1);
 				$GLOBALS['smarty']->display('page_error_auth.txt');
 				exit;
 		}
 
-		$rsp = smol_accounts_add_account($GLOBALS['cfg']['user'], $token);
+		$account = array(
+			'service' => 'twitter',
+			'ext_id' => $args['user_id'],
+			'screen_name' => $args['screen_name'],
+			'token' => $args['oauth_token'],
+			'secret' => $args['oauth_token_secret']
+		);
+
+		$rsp = smol_accounts_add_account($GLOBALS['cfg']['user'], $account);
 		if (! $rsp['ok']){
 			$GLOBALS['smarty']->assign('error_db_insert', 1);
 			$GLOBALS['smarty']->display('page_error_auth.txt');
@@ -90,7 +98,7 @@
 			$url .= $redir;
 		}
 
-		header("location: {$url}");
+		header("Location: {$url}");
 		exit;
 
 	}
