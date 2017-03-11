@@ -1,31 +1,58 @@
 <?php
 
 	include('include/init.php');
-	loadlib('twitter_api');
-	loadlib('twitter_users');
-	loadlib('twitter_status');
+	loadlib('users');
+	loadlib('smol_accounts');
 
-	$twitter_accounts = twitter_users_get_accounts($GLOBALS['cfg']['user']);
-	$GLOBALS['smarty']->assign_by_ref('twitter_accounts', $twitter_accounts);
+	$username = get_str('username');
+	$esc_username = addslashes($username);
+	$rsp = db_fetch_accounts("
+		SELECT *
+		FROM users
+		WHERE username = '$esc_username'
+	");
 
+	if (! $rsp['rows']){
+		error_404();
+	}
+
+	$user = $rsp['rows'][0];
+	$smarty->assign_by_ref('user', $user);
+
+	$accounts = smol_accounts_get_accounts($user);
+	$smarty->assign_by_ref('accounts', $accounts);
+
+	if (empty($accounts) && $user['id'] == $GLOBALS['cfg']['user']['id']){
+		# setup current user's accounts
+		$smarty->assign('crumb_auth_twitter', 'auth_twitter');
+		$GLOBALS['smarty']->display('page_archive.txt');
+		exit;
+	}
+	
+	if (empty($accounts)){
+		$smarty->assign('no_accounts', 1);
+	}
+
+	$GLOBALS['smarty']->display('page_profile.txt');
+
+	/*
+	
 	$args = array(
 		'count_fields' => '*'
 	);
 
 	$page = get_int32('page');
-
 	if ($page){
 		$args['page'] = $page;
 	}
 
 	$per_page = get_int32('per_page');
-
 	if ($per_page && $per_page > 0 && $per_page <= 1000){
 		$args['per_page'] = $per_page;
 	} else {
 		$per_page = $GLOBALS['cfg']['pagination_per_page'];
 	}
-
+	
 	$rsp = db_fetch_paginated("
 		SELECT s.* FROM twitter_status AS s, twitter_archive AS a
 		WHERE a.type = 'statuses_user_timeline'
@@ -54,5 +81,5 @@
 		$tweets[$index]['permalink'] = twitter_status_permalink($status);
 	}
 
-	$GLOBALS['smarty']->assign_by_ref('tweets', $tweets);
-	$GLOBALS['smarty']->display('page_profile.txt');
+	$GLOBALS['smarty']->assign_by_ref('tweets', $tweets); */
+	

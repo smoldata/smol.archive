@@ -1,19 +1,24 @@
 {assign var='page_title' value=$cfg.user.username|escape}
-{include file='inc_head.txt' nav_tab='user'}
+{include file='inc_head.txt' nav_tab='archive'}
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			<h1>{$cfg.user.username|escape}</h1>
-			<ul class="nav nav-pills nav-stacked">
-				<li class="active"><a href="#">Everything</a></li>
-				{foreach from=$twitter_accounts item=account}
-					<li><a href="#">Tweets</a></li>
-					<li><a href="#">Favorites</a></li>
-				{/foreach}
-			</ul>
+			<h1>{$user.username | @esc}</h1>
+			{if $accounts | count}
+				<ul class="nav nav-pills nav-stacked">
+					<li class="active"><a href="#">Everything</a></li>
+					{foreach from=$twitter_accounts item=account}
+						<li><a href="#">Tweets</a></li>
+						<li><a href="#">Favorites</a></li>
+					{/foreach}
+				</ul>
+			{/if}
 		</div>
 		<div class="col-md-6">
+			{if not $accounts | count}
+				<div class="alert alert-info"><strong>Nothing here yet</strong><br>This user has not authorized any accounts yet.</div>
+			{/if}
 			{foreach from=$tweets item=tweet}
 				<article id="tweet-{$tweet.id}" class="tweet{if $tweet.retweeted} tweet-retweeted{/if}">
 					<div class="content">

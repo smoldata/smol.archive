@@ -26,7 +26,8 @@
 	function crumb_input($key, $target=''){
 
 		$crumb = crumb_generate($key, $target);
-		return '<input type="hidden" name="crumb" value="'.$crumb.'" />';
+		$esc_crumb = htmlentities($crumb);
+		return '<input type="hidden" name="crumb" value="' . $esc_crumb . '">';
 	}
 
 	#################################################################

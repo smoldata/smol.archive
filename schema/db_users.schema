@@ -1,0 +1,66 @@
+DROP TABLE IF EXISTS `smol_account`;
+CREATE TABLE `smol_account` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `ext_id` bigint(20) unsigned NOT NULL,
+  `screen_name` varchar(255) NOT NULL DEFAULT '',
+  `access_token` varchar(255) NOT NULL DEFAULT '',
+  `access_secret` varchar(255) NOT NULL DEFAULT '',
+  `added_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_logins` (`user_id`,`ext_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `smol_archive`;
+CREATE TABLE `smol_archive` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) unsigned NOT NULL,
+  `item_id` bigint(20) unsigned NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `smol_item_twitter`;
+CREATE TABLE `smol_item_twitter` (
+  `id` bigint(20) unsigned NOT NULL,
+  `href` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `screen_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `content` text,
+  `json` text,
+  `protected` tinyint(4) DEFAULT '0',
+  `thread_origin_id` bigint(20) DEFAULT NULL,
+  `favorite_count` int(11) DEFAULT NULL,
+  `retweet_count` int(11) DEFAULT NULL,
+  `is_retweet` tinyint(4) DEFAULT NULL,
+  `is_reply` tinyint(4) DEFAULT NULL,
+  `has_link` tinyint(4) DEFAULT NULL,
+  `has_photo` tinyint(4) DEFAULT NULL,
+  `has_gif` tinyint(4) DEFAULT NULL,
+  `has_video` tinyint(4) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `saved_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `smol_media`;
+CREATE TABLE `smol_media` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(20) unsigned NOT NULL,
+  `href` varchar(255) DEFAULT NULL,
+  `redirect` varchar(255) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `saved_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `smol_meta`;
+CREATE TABLE `smol_meta` (
+  `account_id` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `value` text,
+  `format` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

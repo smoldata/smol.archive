@@ -146,9 +146,13 @@ footer li {
 	text-decoration: none;
 }
 
-.nav-pills > li.active > a{
+.nav-pills > li.active > a {
 	color: #fff;
 	font-weight: bold;
+	background-color: #df146a;
+}
+
+.nav-pills > li.active > a:hover {
 	background-color: #df146a;
 }
 

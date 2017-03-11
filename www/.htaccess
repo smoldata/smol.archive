@@ -35,8 +35,8 @@ php_value short_open_tag on
 # on production deployments (by setting the value to 'off')
 php_flag display_errors on
 
-# this sets all current and future error flags on, except for E_NOTICE
-# which can go fuck itself. we have some separate code for checking the
+# This sets all current and future error flags on, except for E_NOTICE
+# which can go fuck itself. We have some separate code for checking the
 # one notice we do care about.
 php_value error_reporting 2147483639
 
@@ -48,42 +48,44 @@ ErrorDocument 403 /403.php
 # Get mod_rewrite fired up
 RewriteEngine on
 
-# Login stuff
+# Static pages
 
-RewriteRule ^signup/?$                  signup.php            [L]
-RewriteRule ^login/?$                   login.php             [L]
-RewriteRule ^logout/?$                  logout.php            [L]
-RewriteRule ^checkcookie/?$             checkcookie.php       [L]
-RewriteRule ^terms/?$                   terms.php             [L]
+RewriteRule ^about/?$                      about.php                         [L]
+# RewriteRule ^privacy/?$                    privacy.php                       [L]
+# RewriteRule ^conduct/?$                    conduct.php                       [L]
+# RewriteRule ^terms/?$                      terms.php                         [L]
+
+# User stuff
+
+RewriteRule ^signup/?$                     signup.php                        [L]
+RewriteRule ^login/?$                      login.php                         [L]
+RewriteRule ^logout/?$                     logout.php                        [L]
+RewriteRule ^checkcookie/?$                checkcookie.php                   [L]
+# RewriteRule ^settings/?$                   settings.php                      [L]
 
 # Password retrieval stuff
 
-RewriteRule ^forgot/?$                  forgot.php            [L]
-RewriteRule ^reset/([a-zA-Z0-9]+)/?$    reset.php?reset=$1    [L,QSA]
+# RewriteRule ^forgot/?$                     forgot.php                        [L]
+# RewriteRule ^reset/([a-zA-Z0-9]+)/?$       reset.php?reset=$1            [L,QSA]
 
 # Invites
 
-# RewriteRule ^invite/?$                  invite.php?%{QUERY_STRING}         [L]
-# RewriteRule ^invite(?:/([^/]+))?/?$     invite.php?code=$1&%{QUERY_STRING} [L]
+# RewriteRule ^invite/?$                     invite.php                    [L,QSA]
+# RewriteRule ^invite(?:/([^/]+))?/?$        invite.php?code=$1            [L,QSA]
 
-# Twitter stuff
+# Auth a service
 
-RewriteRule ^twitter/add/?$               twitter_add_account.php            [L]
-RewriteRule ^twitter/auth/?$              twitter_oauth_callback.php         [L]
-
-# Static pages
-
-RewriteRule ^about/?$                     about.php             [L]
+RewriteRule ^auth/(\w+)/?$                 auth_service.php?service=$1   [L,QSA]
 
 # Account stuff
 
-RewriteRule ^([a-z0-9_]+)/settings/?$         settings.php          [L]
-RewriteRule ^([a-z0-9_]+)/archive/(\d+)/?$    source.php            [L]
-RewriteRule ^([a-z0-9_]+)/archive/?$          archive.php           [L]
-RewriteRule ^([a-z0-9_]+)/([a-f0-9]+)/([a-z0-9]+)/?$  share.php                [L]
-RewriteRule ^([a-z0-9_]+)/([a-f0-9]+)/?$              id.php             [L]
-RewriteRule ^([a-z0-9_]+)/?$                  profile.php           [L]
+# RewriteRule ^(\w+)/archive/(\w+)/?$        source.php                        [L]
+# RewriteRule ^(\w+)/archive/?$              archive.php                       [L]
+# RewriteRule ^(\w+)/page(\d+)/?$            profile.php?page=$1               [L]
+# RewriteRule ^(\w+)/([a-z0-9]+)/([a-z0-9]{32})/?$ share.php?id=$1&share_code=$2 [L,QSA]
+# RewriteRule ^(\w+)/([a-z0-9]+)/?$          id.php                            [L]
+RewriteRule ^(\w+)/?$                      profile.php?username=$1           [L]
 
 # Home
 
-RewriteRule ^page([0-9]+)/?$              flow.php?page=$1              [L,QSA]
+# RewriteRule ^page(\d+)/?$                  flow.php?page=$1               [L,QSA]
