@@ -31,7 +31,7 @@
 				{if not $twitter_accounts}
 					<h2>Add a twitter account</h2>
 				{else}
-					<p>Make sure you are logged into <a href="https://twitter.com/">twitter.com</a> as the account you wish to add.</p>
+					<p>👇 Before you press this button, make sure you are logged into <a href="https://twitter.com/">twitter.com</a> as the user you want to add.</p>
 				{/if}
 				{$crumb_auth_account|crumb_input:"/auth_twitter.php"}
 				<input type="hidden" name="add_account" value="1">
