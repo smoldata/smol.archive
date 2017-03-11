@@ -6,12 +6,15 @@
 		<div class="col-md-3">
 			<h1>{$user.username|escape}</h1>
 			{if $services}
-				<ul class="nav nav-pills nav-stacked">
+				<ul id="profile-services" class="nav nav-pills nav-stacked">
 					<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
 					{foreach from=$services item=service}
-						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
+						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/archive/{$service|escape}/">{$service|ucfirst}</a></li>
 					{/foreach}
 				</ul>
+			{/if}
+			{if $user.id == $cfg.user.id}
+				<p><a href="{$cfg.abs_root_url}{$user.username|escape}/archive/" class="text-muted">Manage accounts</a></p>
 			{/if}
 		</div>
 		<div class="col-md-6">

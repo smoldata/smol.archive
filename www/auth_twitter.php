@@ -7,14 +7,16 @@
 	login_ensure_loggedin();
 	$GLOBALS['smarty']->assign('service', 'Twitter');
 
+	# Are we kicking off the process or handling an OAuth callback?
 	$add_account = post_bool('add_account');
+
 	if ($add_account){
 
 		#
 		# step zero: check the crumb
 		#
 
-		$crumb_key = 'auth_twitter';
+		$crumb_key = 'auth_account';
 		if (! crumb_check($crumb_key)){
 			error_403();
 		}

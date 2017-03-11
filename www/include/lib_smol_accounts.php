@@ -80,4 +80,40 @@
 		return $rsp;
 	}
 
+	########################################################################
+
+	function smol_accounts_remove_account($account_id){
+		$esc_account_id = addslashes($account_id);
+		$rsp = db_write("
+			DELETE FROM
+			smol_account
+			WHERE id = $esc_account_id
+		");
+		return $rsp;
+	}
+
+	########################################################################
+
+	function smol_accounts_disable_account($account_id){
+		$esc_account_id = addslashes($account_id);
+		$now = date('Y-m-d H:i:s');
+		$rsp = db_update('smol_account', array(
+			'enabled' => 0,
+			'updated_at' => $now
+		), "id = $esc_account_id");
+		return $rsp;
+	}
+
+	########################################################################
+
+	function smol_accounts_enable_account($account_id){
+		$esc_account_id = addslashes($account_id);
+		$now = date('Y-m-d H:i:s');
+		$rsp = db_update('smol_account', array(
+			'enabled' => 1,
+			'updated_at' => $now
+		), "id = $esc_account_id");
+		return $rsp;
+	}
+
 	# the end

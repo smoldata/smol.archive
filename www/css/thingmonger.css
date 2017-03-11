@@ -51,6 +51,24 @@ body.about p {
 	margin-top: 1.5em;
 }
 
+#profile-services {
+	margin-bottom: 0.5em;
+}
+
+.archive-account {
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #dedede;
+}
+
+.archive-account h2 {
+	margin-bottom: 0;
+}
+
+.archive-account .btn {
+	margin-top: 0.5em;
+}
+
 .form-control {
 	border-radius: 2px;
 	border: 1px solid #ccc;
