@@ -139,6 +139,14 @@
 		return $func;
 	}
 
+	function dbug() {
+		$args = func_get_args();
+		foreach ($args as $arg) {
+			$arg = var_export($arg, true);
+			error_log($arg);
+		}
+	}
+
 	function intval_range($in, $lo, $hi){
 		return min(max(intval($in), $lo), $hi);
 	}
