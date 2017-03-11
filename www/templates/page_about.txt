@@ -12,14 +12,14 @@
 		{if ! $cfg.user}
 			<div id="signup-cta" class="col-md-3">
 				<h2>Join us</h2>
-				<p>Try Smol Data free for 30 days. Become a member for $12/year, or host your own archive server, gratis.</p>
+				<p>Try Smol Data free for 30 days. <mark>Become a member for $12/year</mark>, or host a shared archive server, gratis.</p>
 				<p><a href="/signup/" class="btn btn-primary">Sign up</a></p>
 				<p>Already a member? <a href="/login/">Log in</a></p>
 			</div>
 		{/if}
 		<div id="feature-list" class="col-md-6{if ! $cfg.user} col-md-offset-1{/if}">
 			<h2>💾 Archive your stuff</h2>
-			<p>Automatically save all of your social media data—your photos, tweets, links, comments—as much as we can access via the APIs. Search a single personalized index of your archived ephemera.</p>
+			<p>Automatically save all of your social media things—your photos, tweets, links, comments—as much as we can access via the APIs. Search a single personalized index of your archived data.</p>
 
 			<h2>✌️ Share with friends</h2>
 			<p>Create channels for different social contexts; make spaces that you feel comfortable in. Selectively share on your own terms. Discover what other people on the network are up to. Don’t worry about algorithmic timelines, we keep things chronological.</p>
