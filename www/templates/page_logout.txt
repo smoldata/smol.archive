@@ -1,0 +1,18 @@
+{assign var='page_title' value='Logout'}
+{include file='inc_head.txt' nav_tab='user'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<h1>Goodbye</h1>
+			<p>So long, until next time! Have a nice day.</p>
+			<form action="{$cfg.abs_root_url}logout/" method="post">
+				{$crumb_key|crumb_input}
+				<input type="hidden" name="done" value="1">
+				<input type="submit" class="btn btn-primary" value="Yes, really logout">
+			</form>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}

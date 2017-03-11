@@ -20,7 +20,7 @@
 
 		login_do_logout();
 
-		$smarty->display('page_signout_done.txt');
+		header("Location: {$GLOBALS['cfg']['abs_root_url']}");
 		exit;
 	}
 
@@ -29,4 +29,4 @@
 	# output
 	#
 
-	$smarty->display("page_signout.txt");
+	$smarty->display("page_logout.txt");

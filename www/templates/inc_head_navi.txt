@@ -13,7 +13,7 @@
 								<a href="#" id="navi-account" class="dropdown-toggle navi-label" data-toggle="dropdown" role="button">{$cfg.user.username|escape} <b class="caret caret-ch"></b></a>
 								<ul class="dropdown-menu" aria-labelledby="navi-account" role="menu">
 									<li><a href="{$cfg.abs_root_url}{$cfg.user.username|escape}/settings/">Settings</a></li>
-									<li><a href="{$cfg.abs_root_url}signout/">Logout</a></li>
+									<li><a href="{$cfg.abs_root_url}logout/">Logout</a></li>
 								</ul>
 							</li>
 						</ul>
