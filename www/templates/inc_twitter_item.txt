@@ -2,7 +2,7 @@
 <article id="tweet-{$tweet.id}" class="tweet{if $tweet.retweeted} tweet-retweeted{/if}">
 	<div class="content">
 		{if $tweet.retweeted}
-			<div class="retweeted"><i class="glyphicon glyphicon-retweet"></i> {if $cfg.user.id == $user.id}You{else}{$tweet.retweeted_name}{/if} Retweeted</div>
+			<div class="retweeted text-muted"><i class="glyphicon glyphicon-retweet"></i> <a href="https://twitter.com/{$tweet.retweeted_screen_name|escape}" class="text-muted">{if $cfg.user.id == $user.id}You{else}{$tweet.retweeted_name}{/if}</a> Retweeted</div>
 		{/if}
 		<div class="user">
 			<a href="https://twitter.com/{$tweet.screen_name}">

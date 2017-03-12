@@ -11,6 +11,7 @@
 		if ($status['retweeted_status']){
 			$data['retweeted'] = true;
 			$data['retweeted_name'] = $status['user']['name'];
+			$data['retweeted_screen_name'] = $status['user']['screen_name'];
 			$status = $status['retweeted_status'];
 			$data['screen_name'] = $status['user']['screen_name'];
 		}
