@@ -16,9 +16,8 @@
 
 		$esc_account_id = addslashes($account['id']);
 		$esc_filter = addslashes($filter);
-		$esc_endpoint_id = addslashes($endpoint_id);
-
-		$meta_name = "max_id_" . $endpoint_id;
+		$meta_name = "max_id_" . $esc_filter;
+		
 		$max_id = smol_meta_get($account, $meta_name);
 		if ($max_id){
 			$args['max_id'] = $max_id;
@@ -30,10 +29,19 @@
 		}
 
 		$saved_ids = array();
+		$saved_when = array();
 		foreach ($rsp['result'] as $item){
 			$rsp = data_twitter_save($item);
 			if ($rsp['ok']){
-				$saved_ids[] = addslashes($rsp['saved_id']);
+				$esc_id = addslashes($rsp['saved_id']);
+				$saved_ids[] = $esc_id;
+				if ($filter == 'faves'){
+					# We care more about when the fave happened (or was saved)
+					$saved_when[$esc_id] = date('Y-m-d H:i:s');
+				} else {
+					$timestamp = strtotime($item['created_at']);
+					$saved_when[$esc_id] = date('Y-m-d H:i:s', $timestamp);
+				}
 			}
 		}
 
@@ -50,7 +58,7 @@
 			SELECT data_id
 			FROM smol_archive
 			WHERE account_id = $esc_account_id
-			  AND filter = '$esc_endpoint_id'
+			  AND filter = '$esc_filter'
 			  AND data_id IN ($saved_id_list)
 		");
 		if (! $rsp['ok']){
@@ -64,11 +72,13 @@
 
 		foreach ($saved_ids as $id){
 			if (! in_array($id, $existing_ids)){
+				$when = $saved_when[$id];
 				$rsp = db_insert('smol_archive', array(
 					'data_id' => addslashes($id),
 					'account_id' => $esc_account_id,
 					'service' => 'twitter',
-					'filter' => $endpoint_id
+					'filter' => $esc_filter,
+					'archived_at' => $when
 				));
 			}
 		}

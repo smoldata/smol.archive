@@ -21,28 +21,8 @@
 			{if not $services}
 				<div class="alert alert-info"><strong>Nothing here yet</strong><br>This user has not authorized any accounts yet.</div>
 			{/if}
-			{foreach from=$tweets item=tweet}
-				<article id="tweet-{$tweet.id}" class="tweet{if $tweet.retweeted} tweet-retweeted{/if}">
-					<div class="content">
-						{if $tweet.retweeted}
-							<div class="retweeted"><i class="glyphicon glyphicon-retweet"></i> You Retweeted</div>
-						{/if}
-						<div class="user">
-							<a href="https://twitter.com/{$tweet.screen_name}">
-								<img src="{$cfg.abs_root_url}{$tweet.profile_image}" alt="{$tweet.display_name}" class="profile_image">
-								<span class="name">{$tweet.display_name}</span>
-								<span class="screen_name">@{$tweet.screen_name}</span>
-							</a>
-							<span class="meta">
-								&middot;
-								{$tweet.permalink}
-							</span>
-						</div>
-						<div class="text">
-							{$tweet.html}
-						</div>
-					</div>
-				</article>
+			{foreach from=$items item=item}
+				{include file=$item.template item=$item}
 			{/foreach}
 		</div>
 	</div>

@@ -18,11 +18,12 @@ DROP TABLE IF EXISTS `smol_archive`;
 CREATE TABLE `smol_archive` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) unsigned NOT NULL,
-  `data_id` bigint(20) unsigned NOT NULL,
   `service` varchar(255) DEFAULT NULL,
   `filter` varchar(255) DEFAULT NULL,
+  `data_id` bigint(20) unsigned NOT NULL,
+  `archived_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=399 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `smol_item_twitter`;
 CREATE TABLE `smol_item_twitter` (

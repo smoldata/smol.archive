@@ -238,6 +238,10 @@ footer li {
 	font-size: 10px;
 }
 
+.tweet .content {
+	overflow-wrap: break-word;
+}
+
 .tweet .content .media {
 	display: block;
 	margin: 7px 0 0 0;

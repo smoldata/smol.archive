@@ -3,6 +3,7 @@
 	include('include/init.php');
 	loadlib('users');
 	loadlib('smol_accounts');
+	loadlib('data_twitter');
 
 	$username = get_str('username');
 	$esc_username = addslashes($username);
@@ -35,10 +36,6 @@
 		$smarty->assign('no_accounts', 1);
 	}
 
-	$GLOBALS['smarty']->display('page_profile.txt');
-
-	/*
-	
 	$args = array(
 		'count_fields' => '*'
 	);
@@ -56,10 +53,9 @@
 	}
 	
 	$rsp = db_fetch_paginated("
-		SELECT s.* FROM twitter_status AS s, twitter_archive AS a
-		WHERE a.type = 'statuses_user_timeline'
-		  AND a.status_id = s.id
-		ORDER BY s.created_at DESC
+		SELECT DISTINCT data_id, service
+		FROM smol_archive
+		ORDER BY archived_at DESC
 	", $args);
 
 	$pagination = $rsp['pagination'];
@@ -69,19 +65,40 @@
 	$GLOBALS['smarty']->assign("pagination_url", $pagination_url);
 	$GLOBALS['smarty']->assign("per_page", $per_page);
 
-	$tweets = $rsp['rows'];
-	foreach ($tweets as $index => $tweet){
-		$status = json_decode($tweet['json'], 'as hash');
-		if ($status['retweeted_status']){
-			$status = $status['retweeted_status'];
-			$tweets[$index]['screen_name'] = $status['user']['screen_name'];
-			$tweets[$index]['retweeted'] = true;
+	$items = $rsp['rows'];
+	$data = array();
+
+	$service_ids = array();
+	foreach ($items as $item){
+		$service = $item['service'];
+		if (! $service_ids[$service]){
+			$service_ids[$service] = array();
 		}
-		$tweets[$index]['html'] = twitter_status_content($status);
-		$tweets[$index]['profile_image'] = twitter_status_profile_image($status);
-		$tweets[$index]['display_name'] = $status['user']['name'];
-		$tweets[$index]['permalink'] = twitter_status_permalink($status);
+		$esc_data_id = addslashes($item['data_id']);
+		array_push($service_ids[$service], $esc_data_id);
 	}
 
-	$GLOBALS['smarty']->assign_by_ref('tweets', $tweets); */
-	
+	foreach ($service_ids as $service => $data_ids){
+		$data_table = "data_$service";
+		$data_ids = implode(',', $data_ids);
+		$rsp = db_fetch("
+			SELECT *
+			FROM $data_table
+			WHERE id IN ($data_ids)
+		");
+		foreach ($rsp['rows'] as $row){
+			$id = $row['id'];
+			$data[$id] = $row;
+		}
+	}
+
+	foreach ($items as $index => $item){
+		$id = $item['data_id'];
+		$service = $item['service'];
+		$values_function = "data_{$service}_template_values";
+		$items[$index]['data'] = $values_function($data[$id]);
+		$items[$index]['template'] = "inc_{$service}_item.txt";
+	}
+
+	$GLOBALS['smarty']->assign_by_ref('items', $items);
+	$GLOBALS['smarty']->display('page_profile.txt');

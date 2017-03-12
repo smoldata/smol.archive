@@ -5,6 +5,23 @@
 
 	########################################################################
 
+	function data_twitter_template_values($data){
+		$status = json_decode($data['json'], 'as hash');
+		if ($status['retweeted_status']){
+			$status = $status['retweeted_status'];
+			$data['screen_name'] = $status['user']['screen_name'];
+			$data['retweeted'] = true;
+		}
+		$data['html'] = data_twitter_content($status);
+		$data['profile_image'] = data_twitter_profile_image($status);
+		$data['display_name'] = $status['user']['name'];
+		$data['permalink'] = data_twitter_permalink($status);
+
+		return $data;
+	}
+
+	########################################################################
+
 	function data_twitter_get_by_id($req_as_account, $id){
 
 		$esc_id = addslashes($id);
