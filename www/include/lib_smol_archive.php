@@ -96,4 +96,21 @@
 		);
 	}
 
+	########################################################################
+
+	function smol_archive_filter_count($account, $filter){
+		$esc_id = addslashes($account['id']);
+		$esc_filter = addslashes($filter);
+		$rsp = db_fetch("
+			SELECT COUNT(*) AS count
+			FROM smol_archive
+			WHERE account_id = $esc_id
+			  AND filter = '$esc_filter'
+		");
+		if (! $rsp['ok']){
+			return '(error)';
+		}
+		return number_format($rsp['rows'][0]['count']);
+	}
+
 	# the end

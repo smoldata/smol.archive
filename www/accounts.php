@@ -2,6 +2,7 @@
 
 	include('include/init.php');
 	loadlib('smol_accounts');
+	loadlib('smol_archive');
 
 	$username = get_str('username');
 	login_ensure_loggedin("$username/accounts/");
@@ -10,13 +11,15 @@
 		error_403();
 	}
 
-	$accounts = smol_accounts_get_accounts($GLOBALS['cfg']['user']);
+	$accounts = smol_accounts_get_accounts($GLOBALS['cfg']['user'], 'include disabled');
 
 	$twitter_accounts = array();
 	$account_ids = array();
 
 	foreach ($accounts as $account){
 		if ($account['service'] == 'twitter'){
+			$account['tweet_count'] = smol_archive_filter_count($account, 'tweets');
+			$account['fave_count'] = smol_archive_filter_count($account, 'faves');
 			$twitter_accounts[] = $account;
 			$account_ids[] = $account['id'];
 		}

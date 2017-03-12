@@ -15,13 +15,19 @@
 
 	########################################################################
 
-	function smol_accounts_get_accounts($user){
+	function smol_accounts_get_accounts($user, $include_disabled=false){
+
 		$esc_id = addslashes($user['id']);
+		$where_clause = "user_id = $esc_id";
+
+		if (! $include_disabled){
+			$where_clause .= " AND enabled = 1";
+		}
+
 		$rsp = db_fetch("
 			SELECT *
 			FROM smol_account
-			WHERE user_id = $esc_id
-			  AND enabled = 1
+			WHERE $where_clause
 			ORDER BY added_at DESC
 		");
 		if ($rsp['ok']){

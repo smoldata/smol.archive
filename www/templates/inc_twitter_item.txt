@@ -21,8 +21,8 @@
 				<span class="name">{$tweet.display_name}</span>
 				<span class="screen_name">@{$tweet.screen_name}</span>
 			</a>
-			<span class="meta">
-				&middot;
+			<span class="meta text-muted">
+				/
 				{$tweet.permalink}
 			</span>
 		</div>

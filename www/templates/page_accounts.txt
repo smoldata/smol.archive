@@ -9,26 +9,27 @@
 		<div class="col-md-4">
 			{foreach from=$twitter_accounts item=account}
 				<div class="account">
-					<h2>{$account.screen_name|escape}</h2>
-					{assign var="timestamp" value=$account.updated_at|strtotime}
-					<p>Last updated {"F j, Y g:ia"|date:$timestamp}</p>
-					{if not $account.enabled}
-						<p class="text-muted">Account disabled</p>
+					<h2{if not $account.enabled} class="text-muted"{/if}>{$account.screen_name|escape}</h2>
+					{if $account.enabled}
+						<div>Tweets: {$account.tweet_count|escape}</div>
+						<div>Faves: {$account.fave_count|escape}</div>
+					{else}
+						<div class="text-muted">Account disabled</div>
 					{/if}
-					<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post">
+					{assign var="timestamp" value=$account.updated_at|strtotime}
+					<div class="text-muted">Updated {"F j, Y g:ia"|date:$timestamp} / <a href="#edit-account" class="text-muted edit-account">Edit account</a></div>
+					<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post" class="row hidden">
 						{$crumb_modify_account|crumb_input}
 						<input type="hidden" name="account_id" value="{$account.id|escape}">
-						<div class="row">
-							<div class="col-md-6">
-								{if $account.enabled}
-									<input type="submit" class="btn btn-default" name="action" value="Disable">
-								{else}
-									<input type="submit" class="btn btn-default" name="action" value="Enable">
-								{/if}
-							</div>
-							<div class="col-md-6">
-								<input type="submit" class="btn btn-default" name="action" value="Remove">
-							</div>
+						<div class="col-md-6">
+							{if $account.enabled}
+								<input type="submit" class="btn btn-default" name="action" value="Disable">
+							{else}
+								<input type="submit" class="btn btn-default" name="action" value="Enable">
+							{/if}
+						</div>
+						<div class="col-md-6">
+							<input type="submit" class="btn btn-default" name="action" value="Remove">
 						</div>
 					</form>
 				</div>
@@ -46,5 +47,7 @@
 		</div>
 	</div>
 </div>
+
+<script src="{$cfg.abs_root_url}js/thingmonger.accounts.js"></script>
 
 {include file='inc_foot.txt'}
