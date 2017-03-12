@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-4">
-			<h1>Goodbye</h1>
+			<h1>Really logout?</h1>
 			<p>So long, until next time! Have a nice day.</p>
 			<form action="{$cfg.abs_root_url}logout/" method="post">
 				{$crumb_key|crumb_input}
