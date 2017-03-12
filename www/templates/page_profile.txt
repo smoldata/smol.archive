@@ -1,4 +1,4 @@
-{assign var='page_title' value=$cfg.user.username|escape}
+{assign var='page_title' value=$user.username|escape}
 {include file='inc_head.txt' nav_tab='data'}
 
 <div class="container">
@@ -23,7 +23,9 @@
 		</div>
 		<div class="col-md-6">
 			{if not $services}
-				<div class="alert alert-info"><strong>Nothing here yet</strong><br>This user has not authorized any accounts yet.</div>
+				<div class="alert alert-info"><strong>Nothing here</strong><br>{if $user.id == $cfg.user.id}You have{else}{$user.username} has{/if} not authorized any accounts yet.</div>
+			{elseif not $items}
+				<div class="alert alert-info"><strong>Nothing here</strong><br>There is nothing in the archive (yet).</div>
 			{/if}
 			{foreach from=$items item=item}
 				{include file=$item.template item=$item}
@@ -31,7 +33,7 @@
 		</div>
 		<div class="col-md-3">
 			<form action="{$cfg.abs_root_url}{$user.username|escape}/">
-				<input type="text" name="q" class="form-control" placeholder="Search">
+				<input type="text" name="q" value="{$query|escape}" class="form-control" placeholder="Search">
 			</form>
 		</div>
 	</div>

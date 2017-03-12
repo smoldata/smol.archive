@@ -84,7 +84,7 @@ RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1          [L]
 # RewriteRule ^(\w+)/page(\d+)/?$            profile.php?page=$1               [L]
 # RewriteRule ^(\w+)/([a-z0-9]+)/([a-z0-9]{32})/?$ share.php?id=$1&share_code=$2 [L,QSA]
 # RewriteRule ^(\w+)/([a-z0-9]+)/?$          id.php                            [L]
-RewriteRule ^(\w+)/?$                      profile.php?username=$1           [L]
+RewriteRule ^(\w+)/?$                      profile.php?username=$1       [L,QSA]
 
 # Home
 

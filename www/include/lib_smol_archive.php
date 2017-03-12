@@ -28,25 +28,29 @@
 			return $rsp;
 		}
 
-		$saved_ids = array();
-		$saved_when = array();
+		$saved_items = array();
 		foreach ($rsp['result'] as $item){
 			$rsp = data_twitter_save($item);
 			if ($rsp['ok']){
 				$esc_id = addslashes($rsp['saved_id']);
-				$saved_ids[] = $esc_id;
-				if ($filter == 'faves' &&
-				    ! $max_id){
-					# We care more about when the fave happened (or was saved)
-					$saved_when[$esc_id] = date('Y-m-d H:i:s');
-				} else {
-					$timestamp = strtotime($item['created_at']);
-					$saved_when[$esc_id] = date('Y-m-d H:i:s', $timestamp);
-				}
+				$esc_content = addslashes($rsp['content']);
+				$timestamp = strtotime($item['created_at']);
+				$created_at = date('Y-m-d H:i:s', $timestamp);
+				$archived_at = date('Y-m-d H:i:s');
+				$esc_item = array(
+					'data_id' => $esc_id,
+					'account_id' => $esc_account_id,
+					'service' => 'twitter',
+					'filter' => $esc_filter,
+					'content' => $esc_content,
+					'created_at' => $created_at,
+					'archived_at' => $archived_at
+				);
+				$saved_items[$esc_id] = $esc_item;
 			}
 		}
 
-		if (empty($saved_ids)){
+		if (empty($saved_items)){
 			smol_meta_set($account, $meta_name, 0);
 			return array(
 				'ok' => 1,
@@ -54,6 +58,7 @@
 			);
 		}
 
+		$saved_ids = array_keys($saved_items);
 		$saved_id_list = implode(', ', $saved_ids);
 		$rsp = db_fetch("
 			SELECT data_id
@@ -71,20 +76,16 @@
 			$existing_ids[] = $row['data_id'];
 		}
 
-		foreach ($saved_ids as $id){
+		foreach ($saved_items as $id => $item){
 			if (! in_array($id, $existing_ids)){
-				$when = $saved_when[$id];
-				$rsp = db_insert('smol_archive', array(
-					'data_id' => addslashes($id),
-					'account_id' => $esc_account_id,
-					'service' => 'twitter',
-					'filter' => $esc_filter,
-					'archived_at' => $when
-				));
+				$rsp = db_insert('smol_archive', $item);
+				if (! $rsp['ok']){
+					return $rsp;
+				}
 			}
 		}
 
-		if ($saved_ids){
+		if ($saved_items){
 			$last_id = array_pop($saved_ids);
 			smol_meta_set($account, $meta_name, $last_id);
 		}

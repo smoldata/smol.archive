@@ -21,6 +21,7 @@
 			SELECT *
 			FROM smol_account
 			WHERE user_id = $esc_id
+			  AND enabled = 1
 			ORDER BY added_at DESC
 		");
 		if ($rsp['ok']){

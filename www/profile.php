@@ -38,8 +38,11 @@
 	} else {
 
 		$account_ids = array();
+		$account_lookup = array();
 		foreach ($accounts as $account){
-			$account_ids[] = addslashes($account['id']);
+			$esc_id = addslashes($account['id']);
+			$account_ids[] = $esc_id;
+			$account_lookup[$esc_id] = $account;
 		}
 		$account_ids = implode(', ', $account_ids);
 
@@ -59,11 +62,20 @@
 			$per_page = $GLOBALS['cfg']['pagination_per_page'];
 		}
 
+		$where_clause = "account_id IN ($account_ids)";
+
+		$query = get_str('q');
+		if ($query){
+			$esc_query = addslashes($query);
+			$where_clause .= " AND MATCH (content) AGAINST ('$esc_query')";
+			$GLOBALS['smarty']->assign("query", $query);
+		}
+
 		$rsp = db_fetch_paginated("
-			SELECT DISTINCT data_id, service
+			SELECT DISTINCT data_id, service, account_id
 			FROM smol_archive
-			WHERE account_id IN ($account_ids)
-			ORDER BY archived_at DESC, id DESC
+			WHERE $where_clause
+			ORDER BY created_at DESC, id DESC
 		", $args);
 
 		$pagination = $rsp['pagination'];
@@ -103,8 +115,10 @@
 		foreach ($items as $index => $item){
 			$id = $item['data_id'];
 			$service = $item['service'];
+			$account_id = $item['account_id'];
+			$account = $account_lookup[$account_id];
 			$values_function = "data_{$service}_template_values";
-			$items[$index]['data'] = $values_function($data[$id]);
+			$items[$index]['data'] = $values_function($account, $data[$id]);
 			$items[$index]['template'] = "inc_{$service}_item.txt";
 		}
 

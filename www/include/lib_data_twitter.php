@@ -5,15 +5,17 @@
 
 	########################################################################
 
-	function data_twitter_template_values($data){
+	function data_twitter_template_values($account, $data){
+
 		$status = json_decode($data['json'], 'as hash');
 		if ($status['retweeted_status']){
+			$data['retweeted'] = true;
+			$data['retweeted_name'] = $status['user']['name'];
 			$status = $status['retweeted_status'];
 			$data['screen_name'] = $status['user']['screen_name'];
-			$data['retweeted'] = true;
 		}
 		$data['html'] = data_twitter_content($status);
-		$data['profile_image'] = data_twitter_profile_image($status);
+		$data['profile_image'] = data_twitter_profile_image($account, $status);
 		$data['display_name'] = $status['user']['name'];
 		$data['permalink'] = data_twitter_permalink($status);
 
@@ -141,7 +143,8 @@
 		
 		return array(
 			'ok' => 1,
-			'saved_id' => $esc_id
+			'saved_id' => $esc_id,
+			'content' => $content
 		);
 	}
 
@@ -479,13 +482,13 @@
 
 	########################################################################
 
-	function data_twitter_profile_image($status) {
+	function data_twitter_profile_image($account, $status) {
 
 		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
 		$path = smol_media_path('twitter', $status['id_str'], $url);
 
 		if (! $path) {
-			$rsp = twitter_users_profile($status['user']['id_str']);
+			$rsp = twitter_api_get_profile($account, $status['user']['id_str']);
 			$profile = $rsp['profile'];
 
 			$url = str_replace('_normal', '_bigger', $profile['profile_image_url']);

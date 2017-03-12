@@ -249,16 +249,10 @@ footer li {
 .tweet .content .media img,
 .tweet .content .media video,
 .tweet .content .quoted-status {
-	display: inline-block;
-	max-width: 504px;
+	width: 100%;
 	height: auto;
 	border-radius: 5px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.tweet .content .quoted-status .media img,
-.tweet .content .quoted-status .media video {
-	max-width: 472px;
 }
 
 .tweet .content .quoted-status {
