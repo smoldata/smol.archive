@@ -69,8 +69,8 @@ body.about p {
 	margin-bottom: 0;
 }
 
-.account .btn {
-	margin-top: 0.5em;
+.account form {
+	margin-top: 1em;
 }
 
 .form-control {

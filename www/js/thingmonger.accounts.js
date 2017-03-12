@@ -9,6 +9,11 @@ thingmonger.accounts = (function() {
 				e.preventDefault();
 				$(account).find('form').toggleClass('hidden');
 			});
+			$(account).find('.remove-account').click(function(e) {
+				if (! confirm('Are you sure you want to remove that?')) {
+					e.preventDefault();
+				}
+			});
 		});
 	}
 
