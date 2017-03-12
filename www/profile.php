@@ -57,8 +57,8 @@
 		$arg_search = get_str('search');
 		if ($arg_search){
 			$esc_search = addslashes($arg_search);
-			$where_clause .= " AND MATCH (content) AGAINST ('$esc_search' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)";
-			$GLOBALS['smarty']->assign("search", $search);
+			$where_clause .= " AND MATCH (content) AGAINST ('$esc_search')";
+			$GLOBALS['smarty']->assign("search", $arg_search);
 			$page_title = $arg_search;
 		}
 
