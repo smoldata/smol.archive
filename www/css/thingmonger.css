@@ -277,15 +277,11 @@ footer li {
 	color: #039;
 }
 
-.tweet .content .animated-gif {
+.tweet .content .media-gif {
 	position: relative;
 }
 
-.tweet .content .animated-gif {
-	position: relative;
-}
-
-.tweet .content .animated-gif a {
+.tweet .content .media-gif a {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -293,20 +289,20 @@ footer li {
 	left: 0;
 }
 
-.tweet .content .animated-gif a .label {
+.tweet .content .media-gif a .text {
 	position: absolute;
 	bottom: 15px;
 	left: 10px;
 	color: #ccc;
-	background: rgba(0, 0, 0, 0.75);
+	background: rgba(0, 0, 0, 0.66);
 	border-radius: 5px;
-	padding: 5px 10px;
+	padding: 4px 7px;
 	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: bold;
 }
 
-.tweet .content .animated-gif a.playing .label {
+.tweet .content .media-gif a.playing .text {
 	display: none;
 }
 
@@ -331,20 +327,16 @@ footer li {
 	text-decoration: underline;
 }
 
-.tweet .entity {
-	color: #36C;
-}
-
-.tweet .entity .text {
-	color: #039;
-}
-
 .tweet .entity:hover {
 	text-decoration: none;
 }
 
 .tweet .entity:hover .text {
 	text-decoration: underline;
+}
+
+.tweet .entity-media-gif:hover .text {
+	text-decoration: none;
 }
 
 .tweet .meta {
