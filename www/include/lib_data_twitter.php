@@ -1,15 +1,16 @@
 <?php
 
 	loadlib('twitter_api');
+	loadlib('smol_media');
 
 	########################################################################
 
-	function twitter_status_get_by_id($req_as_account, $id){
+	function data_twitter_get_by_id($req_as_account, $id){
 
 		$esc_id = addslashes($id);
 		$rsp = db_fetch("
 			SELECT *
-			FROM twitter_status
+			FROM data_twitter
 			WHERE id = $esc_id
 		");
 		if (! $rsp['ok']){
@@ -34,7 +35,7 @@
 		}
 		$status = $rsp['result'];
 
-		$rsp = twitter_status_save_status($status);
+		$rsp = data_twitter_save($status);
 		if (! $rsp['ok']){
 			return $rsp;
 		}
@@ -48,10 +49,10 @@
 
 	########################################################################
 
-	function twitter_status_save_status($status){
+	function data_twitter_save($status){
 
 		$json = json_encode($status);
-		$href = twitter_status_url($status);
+		$href = data_twitter_url($status);
 		$options = array(
 			'plaintext' => true
 		);
@@ -60,8 +61,8 @@
 		$created_at = date('Y-m-d H:i:s', strtotime($status['created_at']));
 		$now = date('Y-m-d H:i:s');
 
-		$content = twitter_status_content($status, $options);
-		$full_content = twitter_status_content($status); // download media
+		$content = data_twitter_content($status, $options);
+		$full_content = data_twitter_content($status); // download media
 
 		$protected = ($status['user']['protected']) ? 1 : 0;
 		$is_retweet = ($status['retweeted_status']) ? 1 : 0;
@@ -75,18 +76,18 @@
 		$retweet_count = $status['retweet_count'];
 		$is_reply = ($status['in_reply_to_status_id']) ? 1 : 0;
 		$has_link = ($status['entities']['urls']) ? 1 : 0;
-		$has_photo = twitter_status_has_media_type($status, 'photo');
-		$has_gif = twitter_status_has_media_type($status, 'animated_gif');
-		$has_video = twitter_status_has_media_type($status, 'video');
+		$has_photo = data_twitter_has_media_type($status, 'photo');
+		$has_gif = data_twitter_has_media_type($status, 'animated_gif');
+		$has_video = data_twitter_has_media_type($status, 'video');
 
 		$rsp = db_fetch("
 			SELECT id
-			FROM twitter_status
+			FROM data_twitter
 			WHERE id = $esc_id
 		");
 
 		if (empty($rsp['rows'])){
-			$rsp = db_insert('twitter_status', array(
+			$rsp = db_insert('data_twitter', array(
 				'id' => $esc_id,
 				'href' => addslashes($href),
 				'screen_name' => $esc_screen_name,
@@ -111,7 +112,7 @@
 		}
 
 		else {
-			$rsp = db_update('twitter_status', array(
+			$rsp = db_update('data_twitter', array(
 				'favorite_count' => $favorite_count,
 				'retweet_count' => $retweet_count,
 				'updated_at' => date('Y-m-d H:i:s')
@@ -129,7 +130,7 @@
 
 	########################################################################
 
-	function twitter_status_has_media_type($status, $type){
+	function data_twitter_has_media_type($status, $type){
 		if ($status['entities']['media']){
 			foreach ($status['entities']['media'] as $entity){
 				if ($entity['type'] == $type){
@@ -142,7 +143,7 @@
 
 	########################################################################
 
-	function twitter_status_content($status, $options=array()){
+	function data_twitter_content($status, $options=array()){
 
 		if (! is_array($options)){
 			$options = array();
@@ -161,16 +162,16 @@
 			$text = $status['full_text'];
 		}
 
-		$extended_content = twitter_status_extended_content($status, $options);
+		$extended_content = data_twitter_extended_content($status, $options);
 		$options['extended_content'] = ! empty($extended_content);
 
 		// A quoted tweet should not display its own quoted tweets
 		if (! $options['is_quoted']){
-			$quoted_content = twitter_status_quoted_content($status, $options);
+			$quoted_content = data_twitter_quoted_content($status, $options);
 		}
 
-		$entities = twitter_status_get_entities($status);
-		$content = twitter_status_insert_entities($status, $text, $entities, $options);
+		$entities = data_twitter_get_entities($status);
+		$content = data_twitter_insert_entities($status, $text, $entities, $options);
 
 		if ($extended_content){
 			$content .= " $extended_content";
@@ -193,7 +194,7 @@
 
 	########################################################################
 
-	function twitter_status_url($status){
+	function data_twitter_url($status){
 		$screen_name = $status['user']['screen_name'];
 		$id = $status['id_str'];
 		return strtolower("https://twitter.com/$screen_name/status/$id");
@@ -201,7 +202,7 @@
 
 	########################################################################
 
-	function twitter_status_extended_content($status, $options){
+	function data_twitter_extended_content($status, $options){
 
 		if (empty($status['extended_entities']) ||
 		    empty($status['extended_entities']['media'])){
@@ -210,20 +211,20 @@
 
 		$extended_content = '';
 		foreach ($status['extended_entities']['media'] as $entity){
-			$extended_content .= twitter_status_entity($status, $entity, $options);
+			$extended_content .= data_twitter_entity($status, $entity, $options);
 		}
 		return $extended_content;
 	}
 
 	########################################################################
 
-	function twitter_status_quoted_content($status, $options) {
+	function data_twitter_quoted_content($status, $options) {
 		$quoted_content = '';
 
 		if ($status['quoted_status']) {
 			$name = $status['quoted_status']['user']['name'];
 			$screen_name = $status['quoted_status']['user']['screen_name'];
-			$permalink = twitter_status_permalink($status['quoted_status'], $options);
+			$permalink = data_twitter_permalink($status['quoted_status'], $options);
 			$quote_user = "<div class=\"user\">" .
 				"<a href=\"https://twitter.com/$screen_name\">" .
 					"<span class=\"name\">{$name}</span> " .
@@ -232,7 +233,7 @@
 				" <span class=\"meta\"> &middot; $permalink</span>" .
 			"</div>";
 			$options['is_quoted'] = true;
-			$quoted_content = twitter_status_content($status['quoted_status'], $options);
+			$quoted_content = data_twitter_content($status['quoted_status'], $options);
 			$quoted_content = "$quote_user $quoted_content";
 			$quoted_content = "<div class=\"quoted-status\">$quoted_content</div>";
 		}
@@ -242,7 +243,7 @@
 
 	########################################################################
 
-	function twitter_status_get_entities($status){
+	function data_twitter_get_entities($status){
 
 		$entities = array();
 
@@ -272,12 +273,12 @@
 
 	########################################################################
 
-	function twitter_status_insert_entities($status, $text, $entities, $options=array()){
+	function data_twitter_insert_entities($status, $text, $entities, $options=array()){
 		$pos = 0;
 		$content = '';
 		foreach ($entities as $index => $entity){
 			$content .= mb_substr($text, $pos, $entity['indices'][0] - $pos, 'utf8');
-			$content .= twitter_status_entity($status, $entity, $options);
+			$content .= data_twitter_entity($status, $entity, $options);
 			$pos = $entity['indices'][1];
 		}
 		$content .= mb_substr($text, $pos, strlen($text) - $pos, 'utf8');
@@ -286,28 +287,28 @@
 
 	########################################################################
 
-	function twitter_status_entity($status, $entity, $options){
+	function data_twitter_entity($status, $entity, $options){
 		switch ($entity['type']){
 			case 'hashtags':
-				return twitter_status_entity_hashtag($status, $entity, $options);
+				return data_twitter_entity_hashtag($status, $entity, $options);
 			case 'urls':
-				return twitter_status_entity_url($status, $entity, $options);
+				return data_twitter_entity_url($status, $entity, $options);
 		 	case 'user_mentions':
-				return twitter_status_entity_user_mention($status, $entity, $options);
+				return data_twitter_entity_user_mention($status, $entity, $options);
 			case 'media':
 			case 'photo':
-				return twitter_status_entity_image($status, $entity, $options);
+				return data_twitter_entity_image($status, $entity, $options);
 			case 'animated_gif':
-				return twitter_status_entity_animated_gif($status, $entity, $options);
+				return data_twitter_entity_animated_gif($status, $entity, $options);
 		 	case 'video':
-				return twitter_status_entity_video($status, $entity, $options);
+				return data_twitter_entity_video($status, $entity, $options);
 		}
 		return '';
 	}
 
 	########################################################################
 
-	function twitter_status_entity_hashtag($status, $entity, $options){
+	function data_twitter_entity_hashtag($status, $entity, $options){
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
 			return "<a href=\"https://twitter.com/search?q=%23{$entity['text']}&amp;src=hash\" class=\"entity entity-hashtag\">#<span class=\"text\">{$entity['text']}</span></a>";
@@ -318,12 +319,12 @@
 
 	########################################################################
 
-	function twitter_status_entity_url($status, $entity, $options){
+	function data_twitter_entity_url($status, $entity, $options){
 
 		# Check whether the entity is the same as a quoted tweet (if one exists)
 		# which would be redundant
 		if ($status['quoted_status']){
-			$quoted_url = twitter_status_url($status['quoted_status']);
+			$quoted_url = data_twitter_url($status['quoted_status']);
 			if ($quoted_url == strtolower($entity['expanded_url'])){
 				return '';
 			}
@@ -339,7 +340,7 @@
 
 	########################################################################
 
-	function twitter_status_entity_user_mention($status, $entity, $options){
+	function data_twitter_entity_user_mention($status, $entity, $options){
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
 			return "<a href=\"https://twitter.com/{$entity['screen_name']}\" class=\"entity entity-user_mention\" title=\"{$entity['name']}\">@<span class=\"text\">{$entity['screen_name']}</span></a>";
@@ -350,19 +351,20 @@
 
 	########################################################################
 
-	function twitter_status_entity_image($status, $entity, $options){
+	function data_twitter_entity_image($status, $entity, $options){
 
 		# Don't show media if there is extended content (i.e., attached media)
 		if ($options['extended_content']){
 			return '';
 		}
 
-		$media_url = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$media_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
+		$media_url = $GLOBALS['cfg']['abs_root_url'] . $media_path;
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
 			# TODO: find a better alt attribute
-			return "<a href=\"{$entity['expanded_url']}\" class=\"entity media entity-media\"><img src=\"{$GLOBALS['cfg']['abs_root_url']}$media_url\" alt=\"\"></a>";
+			return "<a href=\"{$entity['expanded_url']}\" class=\"entity media entity-media\"><img src=\"$media_url\" alt=\"\"></a>";
 		}else{
 			return $media_url;
 		}
@@ -370,11 +372,11 @@
 
 	########################################################################
 
-	function twitter_status_entity_animated_gif($status, $entity, $options){
+	function data_twitter_entity_animated_gif($status, $entity, $options){
 
 		$id = "gif-{$status['id_str']}";
-		$poster_path = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
-		$video_path = twitter_status_media($status['id_str'], $entity['video_info']['variants'][0]['url']);
+		$poster_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
+		$video_path = smol_media_path('twitter', $status['id_str'], $entity['video_info']['variants'][0]['url']);
 		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
 		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
 
@@ -394,9 +396,9 @@
 
 	########################################################################
 
-	function twitter_status_entity_video($status, $entity, $options){
+	function data_twitter_entity_video($status, $entity, $options){
 
-		$poster_path = twitter_status_media($status['id_str'], "{$entity['media_url']}:large");
+		$poster_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
 		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
 
 		$video_urls = array();
@@ -409,7 +411,7 @@
 
 		ksort($video_urls);
 		$video_path = array_pop($video_urls);
-		$video_path = twitter_status_media($status['id_str'], $video_path);
+		$video_path = smol_media_path('twitter', $status['id_str'], $video_path);
 		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
 
 		if (! $options['plaintext']){
@@ -426,8 +428,8 @@
 
 	########################################################################
 
-	function twitter_status_permalink($status, $options=array()){
-		$url = twitter_status_url($status);
+	function data_twitter_permalink($status, $options=array()){
+		$url = data_twitter_url($status);
 		$timestamp = strtotime($status['created_at']);
 		$date_time = date('M j, Y, g:i a', $timestamp);
 		$time_diff = time() - $timestamp;
@@ -445,11 +447,11 @@
 
 	########################################################################
 
-	function twitter_status_can_display_tweet($status){
+	function data_twitter_can_display_tweet($status){
 		if ($status['user']['protected']){
 			if (! $status['protected']){
 				$esc_id = addslashes($status['id_str']);
-				db_update('twitter_status', array(
+				db_update('data_twitter', array(
 					'protected' => 1
 				), "id = $esc_id");
 			}
@@ -460,116 +462,23 @@
 
 	########################################################################
 
-	function twitter_status_media($status_id, $remote_url){
-
-		$path = twitter_status_media_get_cached($status_id, $remote_url);
-		if ($path) {
-			return $path;
-		}
-		if (! preg_match('#//(.+)$#', $remote_url, $matches)){
-			return $remote_url;
-		}
-
-		$path = 'media/' . $matches[1];
-		if (substr($path, -6, 6) == ':large'){
-			// If the path is '.jpg:large' drop the ':large' part
-			$path = substr($path, 0, -6);
-		}
-
-		$abs_path = $GLOBALS['cfg']['smol_data_dir'] . $path;
-
-		if (file_exists($abs_path)){
-			twitter_status_media_set_cached($status_id, $remote_url, $path);
-			return $path;
-		}
-		$rsp = http_get($remote_url);
-		if (! $rsp['ok']){
-			return null;
-		}
-
-		$dir = dirname($abs_path);
-		if (! file_exists($dir)){
-			mkdir($dir, 0755, true);
-		}
-		if (! file_exists($dir)){
-			return $remote_url;
-		}
-		file_put_contents($abs_path, $rsp['body']);
-
-		twitter_status_media_set_cached($status_id, $remote_url, $path);
-
-		return $path;
-	}
-
-	########################################################################
-
-	function twitter_status_media_get_cached($status_id, $remote_url) {
-
-		$esc_status_id = addslashes($status_id);
-		$esc_remote_url = addslashes($remote_url);
-
-		$rsp = db_fetch("
-			SELECT *
-			FROM twitter_media
-			WHERE status_id = $esc_status_id
-			  AND href = '$esc_remote_url'
-		");
-
-		if (! empty($rsp['rows'])) {
-
-			$media = $rsp['rows'];
-
-			if (! empty($media['redirect']) &&
-			    $media_redirect != $remote_url) {
-				return twitter_status_media($status_id, $media['redirect']);
-			}
-
-			if (file_exists($media['path'])) {
-				return $media['path'];
-			} else {
-				$rsp = db_write("
-					DELETE FROM twitter_media
-					WHERE status_id = $esc_status_id
-					  AND href = '$esc_remote_url'
-				");
-			}
-		}
-
-		return null;
-	}
-
-	########################################################################
-
-	function twitter_status_media_set_cached($status_id, $remote_url, $path) {
-		$now = date('Y-m-d H:i:s');
-		$rsp = db_insert('twitter_media', array(
-			'status_id' => addslashes($status_id),
-			'href' => addslashes($remote_url),
-			'path' => addslashes($path),
-			'saved_at' => $now
-		));
-		return $rsp;
-	}
-
-	########################################################################
-
-	function twitter_status_profile_image($status) {
+	function data_twitter_profile_image($status) {
 
 		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
-		$path = twitter_status_media($status['id_str'], $url);
+		$path = smol_media_path('twitter', $status['id_str'], $url);
 
 		if (! $path) {
 			$rsp = twitter_users_profile($status['user']['id_str']);
 			$profile = $rsp['profile'];
 
 			$url = str_replace('_normal', '_bigger', $profile['profile_image_url']);
-			$path = twitter_status_media($status['id_str'], $url);
+			$path = smol_media_path('twitter', $status['id_str'], $url);
 			$orig_url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
 
 			if ($orig_url != $url) {
 				// Save a redirect for the original URL
 				$now = date('Y-m-d H:i:s');
-				$rsp = db_insert('twitter_media', array(
+				$rsp = db_insert('smol_media', array(
 					'status_id' => addslashes($status['id_str']),
 					'path' => null,
 					'href' => $orig_url,

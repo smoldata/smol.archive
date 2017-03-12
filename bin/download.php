@@ -29,16 +29,23 @@
 		exit;
 	}
 
-	$endpoints = array(
-		'Tweets' => 'statuses/user_timeline',
-		'Faves' => 'favorites/list'
+	$twitter_endpoints = array(
+		'tweets' => 'statuses/user_timeline',
+		'faves' => 'favorites/list'
 	);
 
 	foreach ($rsp['rows'] as $account){
-		foreach ($endpoints as $endpoint){
-			$rsp = twitter_archive_endpoint($account, $endpoint);
+		if ($account['service'] == 'twitter'){
+			$endpoints = $twitter_endpoints;
+			$archive_function = 'smol_archive_twitter';
+		}
+		else {
+			continue;
+		}
+		foreach ($endpoints as $filter => $endpoint){
+			$rsp = $archive_function($account, $filter, $endpoint);
 			if (! $rsp['ok'] && $verbose){
-				echo "Error archiving $endpoint for account {$account['id']}:\n";
+				echo "Error archiving $filter for account {$account['id']}:\n";
 				var_export($rsp);
 			}
 		}

@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			<h1>Twitter</h1>
+			<h2>Twitter</h2>
 		</div>
 		<div class="col-md-4">
 			{foreach from=$twitter_accounts item=account}

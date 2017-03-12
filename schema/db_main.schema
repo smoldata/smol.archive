@@ -18,8 +18,9 @@ DROP TABLE IF EXISTS `smol_archive`;
 CREATE TABLE `smol_archive` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) unsigned NOT NULL,
-  `item_id` bigint(20) unsigned NOT NULL,
-  `type` varchar(255) DEFAULT NULL,
+  `data_id` bigint(20) unsigned NOT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `filter` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

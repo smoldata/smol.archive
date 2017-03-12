@@ -1,6 +1,6 @@
 <?php
 
-	function twitter_meta_set($account, $name, $value){
+	function smol_meta_set($account, $name, $value){
 
 		$format = 'text';
 		if (! is_scalar($value)){
@@ -13,7 +13,7 @@
 		$esc_value = addslashes($value);
 
 		$rsp = db_write("
-			DELETE FROM twitter_meta
+			DELETE FROM smol_meta
 			WHERE name = '$esc_name'
 			  AND account_id = $esc_account_id
 		");
@@ -21,7 +21,7 @@
 			return $rsp;
 		}
 
-		$rsp = db_insert('twitter_meta', array(
+		$rsp = db_insert('smol_meta', array(
 			'account_id' => $esc_account_id,
 			'name' => $esc_name,
 			'value' => $esc_value,
@@ -32,12 +32,12 @@
 
 	########################################################################
 
-	function twitter_meta_get($account, $name, $default_value = null){
+	function smol_meta_get($account, $name, $default_value = null){
 		$esc_name = addslashes($name);
 		$esc_account_id = addslashes($account['id']);
 		$rsp = db_fetch("
 			SELECT value
-			FROM twitter_meta
+			FROM smol_meta
 			WHERE account_id = $esc_account_id
 			  AND name = '$esc_name'
 		");
