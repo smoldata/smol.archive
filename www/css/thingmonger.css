@@ -194,8 +194,10 @@ footer li {
 
 .tweet {
 	position: relative;
-	border-top: 1px solid #dedede;
-	padding: 10px 0;
+	border-bottom: 1px solid #dedede;
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+	margin-top: -4px;
 }
 
 .tweet .text {
@@ -205,7 +207,7 @@ footer li {
 .profile_image {
 	position: absolute;
 	left: 0;
-	top: 14px;
+	top: 26px;
 	width: 48px;
 	height: 48px;
 	border-radius: 5px;
@@ -215,28 +217,18 @@ footer li {
 	margin-left: 58px;
 }
 
-.tweet-retweeted {
-	padding-top: 29px;
-}
-
-.tweet .retweeted {
-	position: absolute;
-	top: 7px;
-	left: 32px;
+.tweet .event {
 	font-size: 13px;
+	margin-left: -58px;
+	margin-bottom: 5px;
 }
 
-.tweet .retweeted .glyphicon {
-	margin-right: 6px;
-	background: #19cf86;
-	color: #fff;
-	padding: 2px 3px;
-	border-radius: 2px;
-	font-size: 10px;
+.tweet .event-retweet .glyphicon {
+	margin-right: 4px;
 }
 
-.tweet-retweeted .profile_image {
-	top: 34px;
+.tweet .event-tweet .glyphicon {
+	margin-right: 2px;
 }
 
 .tweet .content {

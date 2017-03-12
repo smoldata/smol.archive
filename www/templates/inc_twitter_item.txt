@@ -2,8 +2,19 @@
 <article id="tweet-{$tweet.id}" class="tweet{if $tweet.retweeted} tweet-retweeted{/if}">
 	<div class="content">
 		{if $tweet.retweeted}
-			<div class="retweeted text-muted"><i class="glyphicon glyphicon-retweet"></i> <a href="https://twitter.com/{$tweet.retweeted_screen_name|escape}" class="text-muted">{if $cfg.user.id == $user.id}You{else}{$tweet.retweeted_name}{/if}</a> Retweeted</div>
+			{assign var="event_type" value="retweet"}
+			{assign var="event_icon" value="retweet"}
+			{assign var="event_label" value="retweeted"}
+		{elseif $tweet.faved}
+			{assign var="event_type" value="fave"}
+			{assign var="event_icon" value="star"}
+			{assign var="event_label" value="faved"}
+		{else}
+			{assign var="event_type" value="tweet"}
+			{assign var="event_icon" value="user"}
+			{assign var="event_label" value="tweeted"}
 		{/if}
+		<div class="event event-{$event_type} text-muted"><i class="glyphicon glyphicon-{$event_icon}"></i> <a href="{$cfg.abs_root_url|escape}{$item.user.username|escape}/" class="text-muted">{if $cfg.user.id == $item.user.id}you{else}{$item.user.username|escape}{/if}</a> {$event_label}</div>
 		<div class="user">
 			<a href="https://twitter.com/{$tweet.screen_name}">
 				<img src="{$cfg.abs_root_url}{$tweet.profile_image}" alt="{$tweet.display_name}" class="profile_image">

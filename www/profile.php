@@ -90,7 +90,7 @@
 		}
 
 		$rsp = db_fetch_paginated("
-			SELECT DISTINCT data_id, service, account_id
+			SELECT DISTINCT data_id, account_id, service, filter
 			FROM smol_archive
 			WHERE $where_clause
 			ORDER BY created_at DESC, id DESC
@@ -135,9 +135,14 @@
 			$service = $item['service'];
 			$account_id = $item['account_id'];
 			$account = $account_lookup[$account_id];
+
+			# this is inefficient (better to bundle into a SELECT ... IN () query)
+			$items[$index]['user'] = users_get_by_id($account['user_id']);
+
 			$values_function = "data_{$service}_template_values";
-			$items[$index]['data'] = $values_function($account, $data[$id]);
+			$items[$index]['data'] = $values_function($account, $item, $data[$id]);
 			$items[$index]['template'] = "inc_{$service}_item.txt";
+
 		}
 
 		$GLOBALS['smarty']->assign_by_ref('items', $items);

@@ -1,20 +1,22 @@
 <?php
 
+	loadlib('users');
 	loadlib('twitter_api');
 	loadlib('smol_media');
 
 	########################################################################
 
-	function data_twitter_template_values($account, $data){
+	function data_twitter_template_values($account, $item, $data){
 
 		$status = json_decode($data['json'], 'as hash');
 		if ($status['retweeted_status']){
 			$data['retweeted'] = true;
-			$data['retweeted_name'] = $status['user']['name'];
-			$data['retweeted_screen_name'] = $status['user']['screen_name'];
 			$status = $status['retweeted_status'];
 			$data['screen_name'] = $status['user']['screen_name'];
+		} else if ($item['filter'] == 'faves'){
+			$data['faved'] = true;
 		}
+
 		$data['html'] = data_twitter_content($status);
 		$data['profile_image'] = data_twitter_profile_image($account, $status);
 		$data['display_name'] = $status['user']['name'];
