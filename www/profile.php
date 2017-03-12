@@ -17,6 +17,8 @@
 		error_404();
 	}
 
+	$page_title = htmlentities($username);
+
 	$user = $rsp['rows'][0];
 	$smarty->assign_by_ref('user', $user);
 
@@ -50,9 +52,34 @@
 			'count_fields' => '*'
 		);
 
+		$where_clause = "account_id IN ($account_ids)";
+
+		$arg_search = get_str('search');
+		if ($arg_search){
+			$esc_search = addslashes($arg_search);
+			$where_clause .= " AND MATCH (content) AGAINST ('$esc_search' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)";
+			$GLOBALS['smarty']->assign("search", $search);
+			$page_title = $arg_search;
+		}
+
+		$arg_service = get_str('service');
+		if ($arg_service){
+			$esc_service = addslashes($arg_service);
+			$where_clause .= " AND service = '$esc_service'";
+		}
+
+		$arg_filter = get_str('filter');
+		if ($arg_filter){
+			$esc_filter = addslashes($arg_filter);
+			$where_clause .= " AND filter = '$esc_filter'";
+		}
+
 		$page = get_int32('page');
 		if ($page){
 			$args['page'] = $page;
+			if ($page > 1){
+				$page_title .= " / page $page";
+			}
 		}
 
 		$per_page = get_int32('per_page');
@@ -60,15 +87,6 @@
 			$args['per_page'] = $per_page;
 		} else {
 			$per_page = $GLOBALS['cfg']['pagination_per_page'];
-		}
-
-		$where_clause = "account_id IN ($account_ids)";
-
-		$query = get_str('q');
-		if ($query){
-			$esc_query = addslashes($query);
-			$where_clause .= " AND MATCH (content) AGAINST ('$esc_query')";
-			$GLOBALS['smarty']->assign("query", $query);
 		}
 
 		$rsp = db_fetch_paginated("
@@ -81,7 +99,7 @@
 		$pagination = $rsp['pagination'];
 		$GLOBALS['smarty']->assign_by_ref("pagination", $pagination);
 
-		$pagination_url = $GLOBALS['cfg']['abs_root_url'];
+		$pagination_url = $GLOBALS['cfg']['abs_root_url'] . "$username/";
 		$GLOBALS['smarty']->assign("pagination_url", $pagination_url);
 		$GLOBALS['smarty']->assign("per_page", $per_page);
 
@@ -125,4 +143,17 @@
 		$GLOBALS['smarty']->assign_by_ref('items', $items);
 	}
 
+	$view = 'everything';
+	if ($arg_service == 'twitter' && $arg_filter == 'tweets'){
+		$view = 'tweets';
+	} else if ($arg_service == 'twitter' && $arg_filter == 'faves'){
+		$view = 'faves';
+	} else if ($arg_search){
+		$view = 'search';
+	} else if ($arg_service){
+		$view = $service;
+	}
+
+	$GLOBALS['smarty']->assign('page_title', $page_title);
+	$GLOBALS['smarty']->assign('view', $view);
 	$GLOBALS['smarty']->display('page_profile.txt');

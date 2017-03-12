@@ -1,4 +1,7 @@
-{assign var='page_title' value=$user.username|escape}
+{if not $page_title}
+	{assign var='page_title' value=$user.username|escape}
+{/if}
+
 {include file='inc_head.txt' nav_tab='data'}
 
 <div class="container">
@@ -11,9 +14,17 @@
 		<div class="col-md-3">
 			{if $services}
 				<ul id="profile-services" class="nav nav-pills nav-stacked">
-					<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
+					{if $view == 'search'}
+						<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/?search={$search|escape}">Search results</a></li>
+					{/if}
+					<li{if $view == 'everything'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
 					{foreach from=$services item=service}
-						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
+						{if $service == 'twitter'}
+							<li{if $view == 'tweets'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=tweets">Tweets</a></li>
+							<li{if $view == 'faves'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=faves">Faves</a></li>
+						{else}
+							<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
+						{/if}
 					{/foreach}
 				</ul>
 			{/if}
@@ -33,7 +44,7 @@
 		</div>
 		<div class="col-md-3">
 			<form action="{$cfg.abs_root_url}{$user.username|escape}/">
-				<input type="text" name="q" value="{$query|escape}" class="form-control" placeholder="Search">
+				<input type="text" name="search" value="{$search|escape}" class="form-control" placeholder="Search">
 			</form>
 		</div>
 	</div>

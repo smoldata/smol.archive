@@ -29,7 +29,7 @@ a.btn {
 	text-decoration: none;
 }
 
-a:hover {
+a:hover, a:focus {
 	color: #FC56A7;
 }
 
@@ -345,4 +345,27 @@ footer li {
 .tweet .meta a:hover {
 	color: #df146a;
 	text-decoration: underline;
+}
+
+.pagination > li > a, .pagination > li > span {
+	color: #df146a;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+	color: #fff;
+	background-color: #333;
+	border-color: #333;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+	background-color: #df146a;
+	border-color: #df146a;
+}
+
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+	cursor: default;
+}
+
+.pagination-buttons {
+	margin-right: 15px;
 }
