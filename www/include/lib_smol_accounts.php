@@ -98,8 +98,7 @@
 		$esc_account_id = addslashes($account_id);
 		$now = date('Y-m-d H:i:s');
 		$rsp = db_update('smol_account', array(
-			'enabled' => 0,
-			'updated_at' => $now
+			'enabled' => 0
 		), "id = $esc_account_id");
 		return $rsp;
 	}
@@ -110,8 +109,7 @@
 		$esc_account_id = addslashes($account_id);
 		$now = date('Y-m-d H:i:s');
 		$rsp = db_update('smol_account', array(
-			'enabled' => 1,
-			'updated_at' => $now
+			'enabled' => 1
 		), "id = $esc_account_id");
 		return $rsp;
 	}

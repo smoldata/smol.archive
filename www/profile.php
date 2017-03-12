@@ -63,7 +63,7 @@
 			SELECT DISTINCT data_id, service
 			FROM smol_archive
 			WHERE account_id IN ($account_ids)
-			ORDER BY archived_at DESC
+			ORDER BY archived_at DESC, id DESC
 		", $args);
 
 		$pagination = $rsp['pagination'];

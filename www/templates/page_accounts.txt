@@ -9,7 +9,7 @@
 		<div class="col-md-4">
 			{foreach from=$twitter_accounts item=account}
 				<div class="account">
-					<h2>@{$account.screen_name|escape}</h2>
+					<h2>{$account.screen_name|escape}</h2>
 					{assign var="timestamp" value=$account.updated_at|strtotime}
 					<p>Last updated {"F j, Y g:ia"|date:$timestamp}</p>
 					{if not $account.enabled}

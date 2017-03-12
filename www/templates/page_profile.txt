@@ -3,13 +3,17 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-12">
 			<h2>{$user.username|escape}</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
 			{if $services}
 				<ul id="profile-services" class="nav nav-pills nav-stacked">
 					<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
 					{foreach from=$services item=service}
-						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/archive/{$service|escape}/">{$service|ucfirst}</a></li>
+						<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
 					{/foreach}
 				</ul>
 			{/if}
@@ -24,6 +28,11 @@
 			{foreach from=$items item=item}
 				{include file=$item.template item=$item}
 			{/foreach}
+		</div>
+		<div class="col-md-3">
+			<form action="{$cfg.abs_root_url}{$user.username|escape}/">
+				<input type="text" name="q" class="form-control" placeholder="Search">
+			</form>
 		</div>
 	</div>
 	<div class="row">

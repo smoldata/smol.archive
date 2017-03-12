@@ -35,7 +35,8 @@
 			if ($rsp['ok']){
 				$esc_id = addslashes($rsp['saved_id']);
 				$saved_ids[] = $esc_id;
-				if ($filter == 'faves'){
+				if ($filter == 'faves' &&
+				    ! $max_id){
 					# We care more about when the fave happened (or was saved)
 					$saved_when[$esc_id] = date('Y-m-d H:i:s');
 				} else {
