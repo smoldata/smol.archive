@@ -3,6 +3,13 @@
 	include('include/init.php');
 	loadlib('smol_accounts');
 
+	$username = get_str('username');
+	login_ensure_loggedin("$username/accounts/");
+	
+	if ($username != $GLOBALS['cfg']['user']['username']){
+		error_403();
+	}
+
 	$accounts = smol_accounts_get_accounts($GLOBALS['cfg']['user']);
 
 	$twitter_accounts = array();
@@ -15,7 +22,6 @@
 		}
 	}
 
-	$username = get_str('username');
 	$account_id = post_int32('account_id');
 	$action = post_str('action');
 
@@ -37,7 +43,7 @@
 			$rsp = smol_accounts_enable_account($account_id);
 		}
 
-		$url = $GLOBALS['cfg']['abs_root_url'] . $username . "/archive/";
+		$url = $GLOBALS['cfg']['abs_root_url'] . $username . "/accounts/";
 		if (! $rsp['ok']){
 			$url .= '?error=1';
 		}
@@ -50,4 +56,4 @@
 
 	$smarty->assign('crumb_modify_account', 'modify_account');
 
-	$GLOBALS['smarty']->display('page_archive.txt');
+	$GLOBALS['smarty']->display('page_accounts.txt');

@@ -1,5 +1,5 @@
-{assign var='page_title' value='Archive'}
-{include file='inc_head.txt' nav_tab='archive'}
+{assign var='page_title' value='Accounts'}
+{include file='inc_head.txt' nav_tab='accounts'}
 
 <div class="container">
 	<div class="row">
@@ -8,22 +8,28 @@
 		</div>
 		<div class="col-md-4">
 			{foreach from=$twitter_accounts item=account}
-				<div class="archive-account">
+				<div class="account">
 					<h2>@{$account.screen_name|escape}</h2>
 					{assign var="timestamp" value=$account.updated_at|strtotime}
 					<p>Last updated {"F j, Y g:ia"|date:$timestamp}</p>
 					{if not $account.enabled}
 						<p class="text-muted">Account disabled</p>
 					{/if}
-					<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/archive/" method="post">
+					<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post">
 						{$crumb_modify_account|crumb_input}
 						<input type="hidden" name="account_id" value="{$account.id|escape}">
-						{if $account.enabled}
-							<input type="submit" class="btn btn-default" name="action" value="Disable">
-						{else}
-							<input type="submit" class="btn btn-default" name="action" value="Enable">
-						{/if}
-						<input type="submit" class="btn btn-default" name="action" value="Remove">
+						<div class="row">
+							<div class="col-md-6">
+								{if $account.enabled}
+									<input type="submit" class="btn btn-default" name="action" value="Disable">
+								{else}
+									<input type="submit" class="btn btn-default" name="action" value="Enable">
+								{/if}
+							</div>
+							<div class="col-md-6">
+								<input type="submit" class="btn btn-default" name="action" value="Remove">
+							</div>
+						</div>
 					</form>
 				</div>
 			{/foreach}

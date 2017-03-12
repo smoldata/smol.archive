@@ -1,7 +1,7 @@
 <?php
 	include('init_local.php');
-	loadlib('twitter_users');
-	loadlib('twitter_archive');
+	loadlib('smol_accounts');
+	loadlib('smol_archive');
 
 	$verbose = false;
 	if ($argv){
@@ -14,15 +14,15 @@
 	}
 
 	set_time_limit(0);
-	$lockfile_path = $GLOBALS['cfg']['smol_data_dir'] . 'archiving.lock';
+	$lockfile_path = $GLOBALS['cfg']['smol_data_dir'] . 'download.lock';
 	if (file_exists($lockfile_path)){
-		die("Aborting archive.php because lockfile exists: $lockfile_path\n");
+		die("Aborting because lockfile exists: $lockfile_path\n");
 	}
 	touch($lockfile_path);
 
 	$rsp = db_fetch("
 		SELECT *
-		FROM twitter_account
+		FROM smol_account
 	");
 	if (! $rsp['ok']){
 		var_export($rsp);
@@ -30,8 +30,8 @@
 	}
 
 	$endpoints = array(
-		'statuses/user_timeline',
-		'favorites/list'
+		'Tweets' => 'statuses/user_timeline',
+		'Faves' => 'favorites/list'
 	);
 
 	foreach ($rsp['rows'] as $account){

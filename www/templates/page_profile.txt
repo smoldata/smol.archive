@@ -1,5 +1,5 @@
 {assign var='page_title' value=$cfg.user.username|escape}
-{include file='inc_head.txt' nav_tab='archive'}
+{include file='inc_head.txt' nav_tab='data'}
 
 <div class="container">
 	<div class="row">
@@ -14,7 +14,7 @@
 				</ul>
 			{/if}
 			{if $user.id == $cfg.user.id}
-				<p><a href="{$cfg.abs_root_url}{$user.username|escape}/archive/" class="text-muted">Manage accounts</a></p>
+				<p><a href="{$cfg.abs_root_url}{$user.username|escape}/accounts/" class="text-muted">Manage accounts</a></p>
 			{/if}
 		</div>
 		<div class="col-md-6">

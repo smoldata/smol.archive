@@ -33,6 +33,10 @@ a:hover {
 	color: #FC56A7;
 }
 
+a.text-muted:hover {
+	color: #df146a;
+}
+
 #main {
 	background: #fff;
 	padding: 1em 0 2em 0;
@@ -52,20 +56,20 @@ body.about p {
 }
 
 #profile-services {
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 }
 
-.archive-account {
+.account {
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 	border-bottom: 1px solid #dedede;
 }
 
-.archive-account h2 {
+.account h2 {
 	margin-bottom: 0;
 }
 
-.archive-account .btn {
+.account .btn {
 	margin-top: 0.5em;
 }
 
@@ -162,6 +166,13 @@ footer li {
 
 .nav-pills a {
 	text-decoration: none;
+	background: #f2f2f2;
+}
+
+.nav-pills > li > a:hover {
+	text-decoration: none;
+	color: #fff;
+	background: #333;
 }
 
 .nav-pills > li.active > a {

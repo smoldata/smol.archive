@@ -5,8 +5,8 @@
 				<div class="collapse navbar-collapse navbar-head-collapse">
 					{if $cfg.user}
 						<ul class="nav navbar-nav">
-							<li class="{if $nav_tab == 'flow'}active{/if}"><a href="{$cfg.abs_root_url}">Flow</a></li>
-							<li class="{if $nav_tab == 'archive'}active{/if}"><a href="/{$cfg.user.username|escape}/">Archive</a></li>
+							<li class="{if $nav_tab == 'data'}active{/if}"><a href="/{$cfg.user.username|escape}/">Data</a></li>
+							<li class="{if $nav_tab == 'accounts'}active{/if}"><a href="/{$cfg.user.username|escape}/accounts/">Accounts</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="dropdown{if $nav_tab == 'user'} active{/if}">
