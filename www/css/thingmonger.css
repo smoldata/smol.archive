@@ -207,7 +207,7 @@ footer li {
 .profile_image {
 	position: absolute;
 	left: 0;
-	top: 26px;
+	top: 29px;
 	width: 48px;
 	height: 48px;
 	border-radius: 5px;
@@ -220,7 +220,7 @@ footer li {
 .tweet .event {
 	font-size: 13px;
 	margin-left: -58px;
-	margin-bottom: 5px;
+	margin-bottom: 3px;
 }
 
 .tweet .event-retweet .glyphicon {
