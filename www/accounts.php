@@ -17,11 +17,15 @@
 	$account_ids = array();
 
 	foreach ($accounts as $account){
+		$account_ids[] = $account['id'];
 		if ($account['service'] == 'twitter'){
 			$account['tweet_count'] = smol_archive_filter_count($account, 'tweets');
 			$account['fave_count'] = smol_archive_filter_count($account, 'faves');
 			$twitter_accounts[] = $account;
-			$account_ids[] = $account['id'];
+		} else if ($account['service'] == 'mlkshk'){
+			# $account['tweet_count'] = smol_archive_filter_count($account, 'tweets');
+			# $account['fave_count'] = smol_archive_filter_count($account, 'faves');
+			$mlkshk_accounts[] = $account;
 		}
 	}
 
@@ -29,6 +33,7 @@
 	$action = post_str('action');
 
 	if ($account_id && $action){
+
 		$crumb_key = 'modify_account';
 		if (! crumb_check($crumb_key) ||
 		    ! in_array($account_id, $account_ids)){
@@ -55,8 +60,9 @@
 	}
 
 	$smarty->assign_by_ref('twitter_accounts', $twitter_accounts);
-	$smarty->assign('crumb_auth_account', 'auth_account');
+	$smarty->assign_by_ref('mlkshk_accounts', $mlkshk_accounts);
 
+	$smarty->assign('crumb_auth_account', 'auth_account');
 	$smarty->assign('crumb_modify_account', 'modify_account');
 
 	$GLOBALS['smarty']->display('page_accounts.txt');

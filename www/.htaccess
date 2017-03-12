@@ -76,6 +76,7 @@ RewriteRule ^checkcookie/?$                checkcookie.php                   [L]
 # Auth a service account
 
 RewriteRule ^auth/twitter/?$               auth_twitter.php                  [L]
+RewriteRule ^auth/mlkshk/?$                auth_mlkshk.php                   [L]
 
 # Account stuff
 

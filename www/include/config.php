@@ -66,12 +66,17 @@
 
 		*/
 	);
-	
+
 	# Twitter API
 	$GLOBALS['cfg']['twitter_api_endpoint'] = 'https://api.twitter.com/1.1/';
 	$GLOBALS['cfg']['twitter_api_oauth_endpoint'] = 'https://api.twitter.com/oauth/';
 	$GLOBALS['cfg']['twitter_api_consumer_key'] = 'READ-FROM-SECRETS';
 	$GLOBALS['cfg']['twitter_api_consumer_secret'] = 'READ-FROM-SECRETS';
+
+	#mlkshk API
+	$GLOBALS['cfg']['mlkshk_api_endpoint'] = 'https://mlkshk.com/api/';
+	$GLOBALS['cfg']['mlkshk_api_key'] = 'READ-FROM-SECRETS';
+	$GLOBALS['cfg']['mlkshk_api_secret'] = 'READ-FROM-SECRETS';
 
 	# hard coding this URL will ensure it works in cron mode too
 

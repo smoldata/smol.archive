@@ -90,17 +90,11 @@
 		}
 
 		#
-		# step five: where shall we bounce to?
+		# step five: redirect
 		#
 
-		$url = $GLOBALS['cfg']['abs_root_url'];
-
-		if ($redir){
-			if (substr($redir, 0, 1) == '/') $redir = substr($redir, 1);
-			$url .= $redir;
-		}
-
-		header("Location: {$url}");
+		$url = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['user']['username'] . '/accounts/';
+		header("Location: $url");
 		exit;
 
 	}

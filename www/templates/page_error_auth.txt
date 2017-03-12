@@ -9,10 +9,14 @@
 			{if $error_request_token}
 				<p>😿 Something went wrong during the "request token" {$service|escape} OAuth phase.
 				{if $service == 'twitter'}Weirdly enough this can be triggered by leaving out the "optional" callback URL in the OAuth settings.{/if}</p>
+			{elseif $error_no_code}
+				<p>😿 Something went wrong during the "code" {$service|escape} OAuth phase.</p>
 			{elseif $error_verifier}
 				<p>😨 Something went wrong during the "token verifier" {$service|escape} OAuth phase.</p>
 			{elseif $error_access_token}
 				<p>😢 Something went wrong during the "access token" {$service|escape} OAuth phase.</p>
+			{elseif $error_user_info}
+				<p>😨 Something went wrong during the "user info" {$service|escape} OAuth phase.</p>
 			{elseif $error_db_insert}
 				<p>😵 Something went wrong saving your {$service|escape} account to the database.</p>
 			{else}
