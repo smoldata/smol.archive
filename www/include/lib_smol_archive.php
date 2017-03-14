@@ -1,65 +1,40 @@
 <?php
-	loadlib('twitter_api');
-	loadlib('data_twitter');
-	loadlib('smol_meta');
+	loadlib('smol_archive_twitter');
 
 	########################################################################
 
-	function smol_archive_twitter($account, $filter, $endpoint, $args=array()){
+	function smol_archive_account($account, $verbose=false){
+		if ($account['service'] == 'twitter'){
+			smol_archive_twitter_save_data($account, $verbose);
+		}
+	}
 
-		$defaults = array(
-			'user_id' => $account['ext_id'],
-			'count' => 200,
-			'tweet_mode' => 'extended'
+	########################################################################
+
+	function smol_archive_escaped_item($account, $filter, $saved){
+		$timestamp = strtotime($saved['created_at']);
+		$created_at = date('Y-m-d H:i:s', $timestamp);
+		$archived_at = date('Y-m-d H:i:s');
+		$esc_item = array(
+			'data_id' => addslashes($saved['data_id']),
+			'account_id' => addslashes($account['id']),
+			'service' => addslashes($account['service']),
+			'filter' => addslashes($filter),
+			'content' => addslashes($saved['content']),
+			'created_at' => $created_at,
+			'archived_at' => $archived_at
 		);
-		$args = array_merge($defaults, $args);
+		return $esc_item;
+	}
 
+	########################################################################
+
+	function smol_archive_save_items($account, $filter, $items, $verbose=false){
+
+		$saved_ids = array_keys($items);
+		$saved_id_list = implode(', ', $saved_ids);
 		$esc_account_id = addslashes($account['id']);
 		$esc_filter = addslashes($filter);
-		$meta_name = "max_id_" . $esc_filter;
-		
-		$max_id = smol_meta_get($account, $meta_name);
-		if ($max_id){
-			$args['max_id'] = $max_id;
-		}
-
-		$rsp = twitter_api_get($account, $endpoint, $args);
-		if (! $rsp['ok']){
-			return $rsp;
-		}
-
-		$saved_items = array();
-		foreach ($rsp['result'] as $item){
-			$rsp = data_twitter_save($item);
-			if ($rsp['ok']){
-				$esc_id = addslashes($rsp['saved_id']);
-				$esc_content = addslashes($rsp['content']);
-				$timestamp = strtotime($item['created_at']);
-				$created_at = date('Y-m-d H:i:s', $timestamp);
-				$archived_at = date('Y-m-d H:i:s');
-				$esc_item = array(
-					'data_id' => $esc_id,
-					'account_id' => $esc_account_id,
-					'service' => 'twitter',
-					'filter' => $esc_filter,
-					'content' => $esc_content,
-					'created_at' => $created_at,
-					'archived_at' => $archived_at
-				);
-				$saved_items[$esc_id] = $esc_item;
-			}
-		}
-
-		if (empty($saved_items)){
-			smol_meta_set($account, $meta_name, 0);
-			return array(
-				'ok' => 1,
-				'saved_ids' => array()
-			);
-		}
-
-		$saved_ids = array_keys($saved_items);
-		$saved_id_list = implode(', ', $saved_ids);
 		$rsp = db_fetch("
 			SELECT data_id
 			FROM smol_archive
@@ -68,6 +43,10 @@
 			  AND data_id IN ($saved_id_list)
 		");
 		if (! $rsp['ok']){
+			if ($verbose){
+				echo "error inspecting archive ";
+				var_export($rsp);
+			}
 			return $rsp;
 		}
 
@@ -76,24 +55,24 @@
 			$existing_ids[] = $row['data_id'];
 		}
 
-		foreach ($saved_items as $id => $item){
+		$count = 0;
+		foreach ($items as $id => $item){
 			if (! in_array($id, $existing_ids)){
 				$rsp = db_insert('smol_archive', $item);
 				if (! $rsp['ok']){
-					return $rsp;
+					if ($verbose){
+						echo "error archiving item ";
+						var_export($rsp);
+					}
+				} else {
+					$count++;
 				}
 			}
 		}
 
-		if ($saved_items){
-			$last_id = array_pop($saved_ids);
-			smol_meta_set($account, $meta_name, $last_id);
+		if ($verbose){
+			echo "archived $count $filter\n";
 		}
-
-		return array(
-			'ok' => 1,
-			'saved_ids' => $saved_ids
-		);
 	}
 
 	########################################################################

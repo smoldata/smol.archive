@@ -146,8 +146,9 @@
 		
 		return array(
 			'ok' => 1,
-			'saved_id' => $esc_id,
-			'content' => $content
+			'data_id' => $esc_id,
+			'content' => $content,
+			'created_at' => $created_at
 		);
 	}
 
