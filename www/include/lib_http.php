@@ -271,11 +271,36 @@
 
 	function _http_parse_response($raw, $info){
 
-		list($head, $body) = explode("\r\n\r\n", $raw, 2);
+		# This loop exists because cURL handles redirects in a slightly
+		# odd way. Basically we get a $raw value like:
+		#
+		#     HTTP/1.1 302 Found
+		#     Location: http://foo.bar/baz.txt
+		#
+		#     HTTP/1.1 200 OK
+		#     Content-Type: text/plain
+		#     Content-Length: 11
+		#
+		#     foo bar baz
+		#
+		# Which is to say, you get *multiple* header blocks, one for
+		# each hop along the redirect chain. So when parsingm we just
+		# keep on going until we run out of 'Location' headers.
+		# (20170314/dphiffer)
+
+		$redirects = array();
+		do {
+			if ($headers_in){
+				$redirects[] = $headers_in;
+				$raw = $body;
+			}
+			list($head, $body) = explode("\r\n\r\n", $raw, 2);
+			$headers_in = http_parse_headers($head, '_status');
+		} while ($headers_in['location']);
+
 		list($head_out, $body_out) = explode("\r\n\r\n", $info['request_header'], 2);
 		unset($info['request_header']);
 
-		$headers_in = http_parse_headers($head, '_status');
 		$headers_out = http_parse_headers($head_out, '_request');
 
 		preg_match("/^([A-Z]+)\s/", $headers_out['_request'], $m);
@@ -316,6 +341,7 @@
 			'method'	=> $method,
 			'req_headers'	=> $headers_out,
 			'headers'	=> $headers_in,
+			'redirects'     => $redirects,
 			'body'		=> $body,
 		);
 	}
