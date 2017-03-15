@@ -515,7 +515,9 @@
 		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
 		$rsp = smol_media_path('twitter', $status['id_str'], $url);
 
-		if (! $rsp['ok']) {
+		if ($rsp['ok']){
+			$path = $rsp['path'];
+		} else {
 			$rsp = twitter_api_get_profile($account, $status['user']['id_str']);
 			$profile = $rsp['profile'];
 
