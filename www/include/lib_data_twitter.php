@@ -382,8 +382,13 @@
 			return '';
 		}
 
-		$media_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
-		$media_url = $GLOBALS['cfg']['abs_root_url'] . $media_path;
+		$rsp = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
+		if ($rsp['ok']){
+			$media_path = $rsp['path'];
+			$media_url = $GLOBALS['cfg']['abs_root_url'] . $media_path;
+		} else {
+			$media_url = "{$entity['media_url']}:large";
+		}
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -399,10 +404,21 @@
 	function data_twitter_entity_animated_gif($status, $entity, $options){
 
 		$id = "gif-{$status['id_str']}";
-		$poster_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
-		$video_path = smol_media_path('twitter', $status['id_str'], $entity['video_info']['variants'][0]['url']);
-		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
-		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
+		$rsp = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
+		if ($rsp['ok']){
+			$poster_path = $rsp['path'];
+			$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
+		} else {
+			$poster_url = "{$entity['media_url']}:large";
+		}
+
+		$rsp = smol_media_path('twitter', $status['id_str'], $entity['video_info']['variants'][0]['url']);
+		if ($rsp['ok']){
+			$video_path = $rsp['path'];
+			$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
+		} else {
+			$video_url = $entity['video_info']['variants'][0]['url'];
+		}
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -422,8 +438,13 @@
 
 	function data_twitter_entity_video($status, $entity, $options){
 
-		$poster_path = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
-		$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
+		$rsp = smol_media_path('twitter', $status['id_str'], "{$entity['media_url']}:large");
+		if ($rsp['ok']){
+			$poster_path = $rsp['path'];
+			$poster_url = $GLOBALS['cfg']['abs_root_url'] . $poster_path;
+		} else {
+			$poster_url = "{$entity['media_url']}:large";
+		}
 
 		$video_urls = array();
 		foreach ($entity['video_info']['variants'] as $variant) {
@@ -434,9 +455,12 @@
 		}
 
 		ksort($video_urls);
-		$video_path = array_pop($video_urls);
-		$video_path = smol_media_path('twitter', $status['id_str'], $video_path);
-		$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
+		$video_url = array_pop($video_urls);
+		$rsp = smol_media_path('twitter', $status['id_str'], $video_path);
+		if ($rsp['ok']){
+			$video_path = $rsp['path'];
+			$video_url = $GLOBALS['cfg']['abs_root_url'] . $video_path;
+		}
 
 		if (! $options['plaintext']){
 			# TODO: convert this to a Smarty template
@@ -489,14 +513,19 @@
 	function data_twitter_profile_image($account, $status) {
 
 		$url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
-		$path = smol_media_path('twitter', $status['id_str'], $url);
+		$rsp = smol_media_path('twitter', $status['id_str'], $url);
 
-		if (! $path) {
+		if (! $rsp['ok']) {
 			$rsp = twitter_api_get_profile($account, $status['user']['id_str']);
 			$profile = $rsp['profile'];
 
 			$url = str_replace('_normal', '_bigger', $profile['profile_image_url']);
-			$path = smol_media_path('twitter', $status['id_str'], $url);
+			$rsp = smol_media_path('twitter', $status['id_str'], $url);
+			if ($rsp['ok']){
+				$path = $rsp['path'];
+			} else {
+				return $profile['profile_image_url'];
+			}
 			$orig_url = str_replace('_normal', '_bigger', $status['user']['profile_image_url']);
 
 			if ($orig_url != $url) {

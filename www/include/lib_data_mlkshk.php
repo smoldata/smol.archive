@@ -5,7 +5,7 @@
 
 	########################################################################
 
-	function data_mlkshk_save($item){
+	function data_mlkshk_save($item, $verbose=false){
 
 		$item['id'] = $item['sharekey'];
 		$json = json_encode($item);
@@ -31,6 +31,13 @@
 			return $rsp;
 		}
 
+		$source_url = null;
+		if ($item['source_url']){
+			$source_url = $item['source_url'];
+		} else if ($item['url']){
+			$source_url = $item['url'];
+		}
+
 		if (empty($rsp['rows'])){
 			$rsp = db_insert('data_mlkshk', array(
 				'id' => $esc_id,
@@ -39,7 +46,7 @@
 				'description' => addslashes($item['description']),
 				'content' => addslashes($content),
 				'name' => addslashes($item['name']),
-				'source_url' => addslashes($item['source_url']),
+				'source_url' => addslashes($source_url),
 				'json' => addslashes($json),
 				'like_count' => addslashes($item['likes']),
 				'save_count' => addslashes($item['saves']),
@@ -79,9 +86,12 @@
 		if (! $rsp['ok']){
 			return $rsp;
 		}
-		$data = $rsp['data'];
-		$ignored_item = array();
-		data_mlkshk_template_values($account, $ignored_item, $data);
+
+		# The docs say 'source_url', but the API returns plain 'url'
+		if (! $item['url'] &&
+		    ! $item['source_url']){
+			data_mlkshk_download_media($rsp['data'], $verbose);
+		}
 
 		return array(
 			'ok' => 1,
@@ -136,6 +146,30 @@
 
 	########################################################################
 
+	function data_mlkshk_download_media($data, $verbose=false){
+		$details = json_decode($data['json'], 'as hash');
+		$remote_url = $details['original_image_url'];
+		$append_file_ext = null;
+		if (preg_match('/\.\w+$/', $data['name'], $matches)){
+			$append_file_ext = $matches[0];
+		}
+		if ($verbose){
+			echo "downloading $remote_url ...";
+		}
+		$rsp = smol_media_path('mlkshk', $data['id'], $remote_url, array(
+			'http_timeout' => 120,
+			'append_file_ext' => $append_file_ext
+		));
+		if ($verbose && $rsp['ok']){
+			echo " success\n";
+		} else if ($verbose){
+			echo " error\n";
+		}
+		return $rsp;
+	}
+
+	########################################################################
+
 	function data_mlkshk_template_values($account, $item, $data){
 
 		$details = json_decode($data['json'], 'as hash');
@@ -145,15 +179,17 @@
 		if ($data['source_url']){
 			$data['video_embed'] = url_video_embedify($data['source_url']);
 		} else {
-			$href = $details['original_image_url'];
-			$append_file_ext = null;
-			if (preg_match('/\.\w+$/', $data['name'], $matches)){
-				$append_file_ext = $matches[0];
+			$rsp = data_mlkshk_download_media($data);
+			if ($rsp['ok']){
+				$media_path = $rsp['path'];
+				$media_url = $GLOBALS['cfg']['abs_root_url'] . $media_path;
+			} else {
+				$media_url = $details['original_image_url'];
 			}
-			$media_path = smol_media_path('mlkshk', $data['id'], $href, $append_file_ext);
-			$media_url = $GLOBALS['cfg']['abs_root_url'] . $media_path;
+
 			$data['image_src'] = $media_url;
 			$data['image_href'] = $details['permalink_page'];
+
 			if ($data['has_gif']){
 				$data['poster_src'] = preg_replace('/\.gif$/', '.jpg', $media_url);
 				$data['javascript'] = "

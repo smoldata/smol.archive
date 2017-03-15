@@ -63,7 +63,7 @@
 			}
 			$saved_items = array();
 			foreach ($items[$filter] as $item){
-				$rsp = data_mlkshk_save($item);
+				$rsp = data_mlkshk_save($item, $verbose);
 				if ($rsp['ok']){
 					$saved_item = smol_archive_escaped_item($account, $filter, $rsp);
 					$data_id = $saved_item['data_id'];
@@ -145,8 +145,7 @@
 			}
 			$user_shake = $shakes['shakes'][0]['id'];
 			$endpoints = array(
-				'user' => "shakes/$user_shake",
-				'likes' => 'favorites'
+				'user' => "shakes/$user_shake"
 			);
 			smol_meta_set($account, 'endpoints', $endpoints);
 		} else if ($verbose){
