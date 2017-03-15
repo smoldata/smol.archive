@@ -1,11 +1,15 @@
 <?php
+
 	loadlib('smol_archive_twitter');
+	loadlib('smol_archive_mlkshk');
 
 	########################################################################
 
 	function smol_archive_account($account, $verbose=false){
 		if ($account['service'] == 'twitter'){
 			smol_archive_twitter_save_data($account, $verbose);
+		} else if ($account['service'] == 'mlkshk'){
+			smol_archive_mlkshk_save_data($account, $verbose);
 		}
 	}
 
@@ -32,7 +36,7 @@
 	function smol_archive_save_items($account, $filter, $items, $verbose=false){
 
 		$saved_ids = array_keys($items);
-		$saved_id_list = implode(', ', $saved_ids);
+		$saved_id_list = "'" . implode("', '", $saved_ids) . "'";
 		$esc_account_id = addslashes($account['id']);
 		$esc_filter = addslashes($filter);
 		$rsp = db_fetch("

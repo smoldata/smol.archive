@@ -4,6 +4,7 @@
 	loadlib('users');
 	loadlib('smol_accounts');
 	loadlib('data_twitter');
+	loadlib('data_mlkshk');
 
 	$username = get_str('username');
 	$esc_username = addslashes($username);
@@ -118,7 +119,7 @@
 
 		foreach ($service_ids as $service => $data_ids){
 			$data_table = "data_$service";
-			$data_ids = implode(',', $data_ids);
+			$data_ids = "'" . implode("', '", $data_ids) . "'";
 			$rsp = db_fetch("
 				SELECT *
 				FROM $data_table

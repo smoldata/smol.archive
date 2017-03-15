@@ -12,8 +12,8 @@
 			'tweets' => 'statuses/user_timeline',
 			'faves' => 'favorites/list'
 		);
-		$items = array();
 
+		$items = array();
 		foreach ($endpoints as $filter => $endpoint){
 
 			$items[$filter] = array();

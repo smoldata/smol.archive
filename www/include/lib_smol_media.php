@@ -1,6 +1,6 @@
 <?php
 
-	function smol_media_path($service, $data_id, $remote_url){
+	function smol_media_path($service, $data_id, $remote_url, $append_file_ext=''){
 
 		# Make sure we haven't already downloaded this
 		$path = smol_media_get_cached($service, $data_id, $remote_url);
@@ -15,6 +15,11 @@
 
 		$path = 'media/' . $matches[1];
 
+		// Mlkshk does a thing where URLs don't include file extensions
+		if ($append_file_ext){
+			$path .= $append_file_ext;
+		}
+
 		// This is something that Twitter does for image URLs
 		// If the path ends with '.jpg:large', drop the ':large' part
 		if (substr($path, -6, 6) == ':large'){
@@ -28,9 +33,19 @@
 			return $path;
 		}
 
-		$rsp = http_get($remote_url);
+		$args = array();
+		$more = array(
+			'http_timeout' => 30,
+			'follow_redirects' => 3
+		);
+		$rsp = http_get($remote_url, $args, $more);
 		if (! $rsp['ok']){
+			var_export($rsp);
 			return null;
+		}
+
+		if ($append_file_ext){
+			echo $rsp['headers']['content-type'] . "\n";
 		}
 
 		$dir = dirname($abs_path);
@@ -56,7 +71,7 @@
 			FROM smol_media
 			WHERE href = '$esc_remote_url'
 			  AND service = '$esc_service'
-			  AND data_id = $esc_data_id
+			  AND data_id = '$esc_data_id'
 		");
 
 		if ($rsp['rows']){
@@ -75,7 +90,7 @@
 				$rsp = db_write("
 					DELETE FROM smol_media
 					WHERE service = '$esc_service'
-					  AND data_id = $esc_data_id
+					  AND data_id = '$esc_data_id'
 					  AND href = '$esc_remote_url'
 				");
 			}

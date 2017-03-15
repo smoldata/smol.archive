@@ -21,18 +21,20 @@
 			return $rsp;
 		}
 
+		$updated_at = date('Y-m-d H:i:s');
 		$rsp = db_insert('smol_meta', array(
 			'account_id' => $esc_account_id,
 			'name' => $esc_name,
 			'value' => $esc_value,
-			'format' => $format
+			'format' => $format,
+			'updated_at' => $updated_at
 		));
 		return $rsp;
 	}
 
 	########################################################################
 
-	function smol_meta_get($account, $name, $default_value = null){
+	function smol_meta_get($account, $name){
 		$esc_name = addslashes($name);
 		$esc_account_id = addslashes($account['id']);
 		$rsp = db_fetch("
@@ -42,7 +44,7 @@
 			  AND name = '$esc_name'
 		");
 		if (! $rsp['rows']){
-			return $default_value;
+			return null;
 		} else {
 			$result = $rsp['rows'][0];
 			$value = $result['value'];

@@ -1,4 +1,4 @@
-<article id="mlkshk-{$item.data.sharekey}" class="mlkshk">
+<article id="mlkshk-{$item.data_id}" class="mlkshk">
 	<div class="content">
 		{$item.data.html}
 	</div>
