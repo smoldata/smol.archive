@@ -196,7 +196,7 @@ footer li {
 	text-decoration: underline;
 }
 
-.tweet {
+.item {
 	position: relative;
 	border-bottom: 1px solid #dedede;
 	padding: 0 0 15px 0;
@@ -217,25 +217,36 @@ footer li {
 	border-radius: 5px;
 }
 
+.event {
+	font-size: 13px;
+	margin-bottom: 3px;
+}
+
+.event a {
+	text-decoration: none;
+}
+
+.event a:hover {
+	text-decoration: underline;
+}
+
+.tweet .event {
+	margin-left: -58px;
+}
+
 .tweet .content {
 	margin-left: 58px;
 }
 
-.tweet .event {
-	font-size: 13px;
-	margin-left: -58px;
-	margin-bottom: 3px;
-}
-
-.tweet .event-retweet .glyphicon {
+.event-retweet .glyphicon {
 	margin-right: 4px;
 }
 
-.tweet .event-tweet .glyphicon {
+.event-tweet .glyphicon {
 	margin-right: 2px;
 }
 
-.tweet .content {
+.item .content {
 	overflow-wrap: break-word;
 }
 
@@ -343,6 +354,46 @@ footer li {
 .tweet .meta a:hover {
 	color: #df146a;
 	text-decoration: underline;
+}
+
+.mlkshk h3 {
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 0;
+}
+
+.mlkshk img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 2px;
+}
+
+.mlkshk .description {
+	margin-top: 0.5em;
+}
+
+.mlkshk .media-gif {
+	position: relative;
+	display: block;
+}
+
+.mlkshk .media-gif .label {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	color: #ccc;
+	background: rgba(0, 0, 0, 0.25);
+	border-radius: 4px;
+	padding: 7px;
+	font-size: 12px;
+	text-transform: uppercase;
+	font-weight: bold;
+	min-height: 0;
+}
+
+.mlkshk .gif-playing .label {
+	display: none;
 }
 
 .pagination > li > a, .pagination > li > span {

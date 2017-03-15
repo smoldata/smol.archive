@@ -3,7 +3,8 @@
 	function smol_meta_set($account, $name, $value){
 
 		$format = 'text';
-		if (! is_scalar($value)){
+		if (! is_scalar($value) &&
+		    ! is_null($value)){
 			$value = json_encode($value);
 			$format = 'json';
 		}
@@ -38,7 +39,7 @@
 		$esc_name = addslashes($name);
 		$esc_account_id = addslashes($account['id']);
 		$rsp = db_fetch("
-			SELECT value
+			SELECT value, format
 			FROM smol_meta
 			WHERE account_id = $esc_account_id
 			  AND name = '$esc_name'

@@ -1,5 +1,5 @@
 {assign var="tweet" value=$item.data}
-<article id="tweet-{$tweet.id}" class="tweet{if $tweet.retweeted} tweet-retweeted{/if}">
+<article id="tweet-{$tweet.id}" class="item tweet">
 	<div class="content">
 		{if $tweet.retweeted}
 			{assign var="event_type" value="retweet"}

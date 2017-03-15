@@ -15,13 +15,14 @@
 
 		$path = 'media/' . $matches[1];
 
-		// Mlkshk does a thing where URLs don't include file extensions
+		# mlkshk does a thing where URLs don't include file extensions,
+		# so we add our own.
 		if ($append_file_ext){
 			$path .= $append_file_ext;
 		}
 
-		// This is something that Twitter does for image URLs
-		// If the path ends with '.jpg:large', drop the ':large' part
+		# This is something that Twitter does for image URLs
+		# If the path ends with '.jpg:large', drop the ':large' part
 		if (substr($path, -6, 6) == ':large'){
 			$path = substr($path, 0, -6);
 		}
@@ -44,15 +45,19 @@
 			return null;
 		}
 
-		if ($append_file_ext){
-			echo $rsp['headers']['content-type'] . "\n";
-		}
-
 		$dir = dirname($abs_path);
 		if (! file_exists($dir)){
 			mkdir($dir, 0755, true);
 		}
 		file_put_contents($abs_path, $rsp['body']);
+
+		# Create a poster image for animated gifs. This assumes that
+		# *all* gifs are animated, which ... I guessss is ok?
+		# (20170315/dphiffer)
+		if (preg_match('/^(.+)\.gif$/', $abs_path, $matches)){
+			$poster_path = "{$matches[0]}.jpg";
+			exec("/usr/bin/convert {$abs_path}[0] $poster_path");
+		}
 
 		smol_media_set_cached($service, $data_id, $remote_url, $path);
 

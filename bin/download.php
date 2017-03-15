@@ -27,6 +27,7 @@
 		SELECT smol_account.*, users.username
 		FROM smol_account, users
 		WHERE smol_account.user_id = users.id
+		  AND smol_account.enabled = 1
 	");
 	if (! $rsp['ok']){
 		var_export($rsp);
@@ -35,7 +36,7 @@
 
 	foreach ($rsp['rows'] as $account){
 		if ($verbose){
-			echo "smol_archive_account {$account['username']} {$account['service']} {$account['screen_name']} (account id {$account['id']})\n";
+			echo "smol_archive_account {$account['username']} {$account['service']}:{$account['screen_name']} (account id {$account['id']})\n";
 		}
 		smol_archive_account($account, $verbose);
 	}

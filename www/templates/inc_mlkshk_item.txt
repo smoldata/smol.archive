@@ -1,5 +1,21 @@
-<article id="mlkshk-{$item.data_id}" class="mlkshk">
+{assign var="data" value=$item.data}
+<article id="mlkshk-{$data.id}" class="item mlkshk">
+	{assign var="event_type" value="saved"}
+	{assign var="event_icon" value="user"}
+	{assign var="event_label" value="saved on mlkshk"}
+	<div class="event event-{$event_type} text-muted"><i class="glyphicon glyphicon-{$event_icon}"></i> <a href="{$cfg.abs_root_url|escape}{$item.user.username|escape}/" class="text-muted">{if $cfg.user.id == $item.user.id}you{else}{$item.user.username|escape}{/if}</a> {$event_label}</div>
 	<div class="content">
-		{$item.data.html}
+		<h3>{$data.title|escape}</h3>
+		{if $data.video_embed}
+			{$data.video_embed}
+		{elseif $data.has_gif}
+			<a href="{$data.image_href|escape}" id="gif-{$data.id}" class="media-gif"><img src="{$data.poster_src|escape}" alt="{$data.title|escape}"><span class="label">gif</span></a>
+			<script>
+			{$data.javascript}
+			</script>
+		{else}
+			<a href="{$data.image_href|escape}"><img src="{$data.image_src|escape}" alt="{$data.title|escape}"></a>
+		{/if}
+		<div class="description">{$item.data.description}</div>
 	</div>
 </article>

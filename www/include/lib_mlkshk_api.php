@@ -100,7 +100,7 @@
 
 	function mlkshk_api_http_more(){
 		$more = array(
-			'http_timeout' => 30 # mlkshk.com is a bit slow
+			'http_timeout' => 60 # mlkshk.com is a bit slow
 		);
 		return $more;
 	}

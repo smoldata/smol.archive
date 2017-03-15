@@ -13,14 +13,22 @@
 		$items = array();
 		foreach ($endpoints as $filter => $endpoint){
 
+			if ($verbose){
+				echo "querying mlkshk $filter $endpoint\n";
+			}
+
 			$items[$filter] = array();
 
 			// First get the new stuff
 			$args = array();
 			$rsp = smol_archive_mlkshk_query($account, $endpoint, $args, $verbose);
-			if ($rsp['ok']){
-				$items[$filter] = $rsp['result'];
+			if (! $rsp['ok']){
+				if ($verbose){
+					echo "error querying $endpoint, skipping\n";
+				}
+				continue;
 			}
+			$items[$filter] = $rsp['result'];
 
 			// Next get the older stuff (with each run, pivot_id
 			//   advances down the timeline)
@@ -97,6 +105,7 @@
 				var_export($rsp);
 			}
 		} else {
+			$rsp['result'] = $rsp['result']['sharedfiles'];
 			if ($verbose){
 				echo " found " . count($rsp['result']) . " items\n";
 			}
@@ -106,10 +115,21 @@
 	}
 	
 	function smol_archive_mlkshk_get_endpoints($account, $verbose=false){
+
 		$endpoints = smol_meta_get($account, 'endpoints');
 		if (! $endpoints){
+
+			if ($verbose){
+				echo "calculating mlkshk endpoints\n";
+			}
+
 			$shakes = smol_meta_get($account, 'shakes');
 			if (! $shakes){
+
+				if ($verbose){
+					echo "loading mlkshk shakes\n";
+				}
+
 				$rsp = mlkshk_api_get($account, 'shakes');
 				if (! $rsp['ok']){
 					if ($verbose){
@@ -120,13 +140,17 @@
 				$shakes = $rsp['result'];
 				$shakes['updated_at'] = date('Y-m-d H:i:s');
 				smol_meta_set($account, 'shakes', $shakes);
+			} else if ($verbose){
+				echo "found cached shakes\n";
 			}
 			$user_shake = $shakes['shakes'][0]['id'];
 			$endpoints = array(
 				'user' => "shakes/$user_shake",
 				'likes' => 'favorites'
 			);
-			smol_meta_set($endpoints, 'endpoints', $endpoints);
+			smol_meta_set($account, 'endpoints', $endpoints);
+		} else if ($verbose){
+			echo "found cached endpoints\n";
 		}
 		return $endpoints;
 	}
