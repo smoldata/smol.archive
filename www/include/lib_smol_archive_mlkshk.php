@@ -48,13 +48,13 @@
 				} else {
 					// Continue where we left off next time
 					$last_item = array_pop($rsp['result']);
-					$last_id = $last_item['pivot_id'];
+					$last_id = $last_item['sharekey'];
 					smol_meta_set($account, "pivot_id_$filter", $last_id);
 				}
 			} else {
 				// Continue where we left off next time
 				$last_item = array_pop($rsp['result']);
-				$last_id = $last_item['pivot_id'];
+				$last_id = $last_item['sharekey'];
 				smol_meta_set($account, "pivot_id_$filter", $last_id);
 			}
 

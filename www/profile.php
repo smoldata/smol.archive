@@ -65,6 +65,9 @@
 
 		$arg_service = get_str('service');
 		if ($arg_service){
+			if (! in_array($arg_service, $services)){
+				error_404();
+			}
 			$esc_service = addslashes($arg_service);
 			$where_clause .= " AND service = '$esc_service'";
 		}
@@ -150,14 +153,12 @@
 	}
 
 	$view = 'everything';
-	if ($arg_service == 'twitter' && $arg_filter == 'tweets'){
-		$view = 'tweets';
-	} else if ($arg_service == 'twitter' && $arg_filter == 'faves'){
-		$view = 'faves';
-	} else if ($arg_search){
+	if ($arg_search){
 		$view = 'search';
+	} else if ($arg_filter == 'faves'){
+		$view = 'faves';
 	} else if ($arg_service){
-		$view = $service;
+		$view = $arg_service;
 	}
 
 	$GLOBALS['smarty']->assign('page_title', $page_title);

@@ -13,7 +13,8 @@
 		if ($path) {
 			return array(
 				'ok' => 1,
-				'path' => $path
+				'path' => $path,
+				'cached' => true
 			);
 		}
 
@@ -46,7 +47,8 @@
 			smol_media_set_cached($service, $data_id, $remote_url, $path);
 			return array(
 				'ok' => 1,
-				'path' => $path
+				'path' => $path,
+				'cached' => true
 			);
 		}
 
@@ -85,7 +87,8 @@
 
 		return array(
 			'ok' => 1,
-			'path' => $path
+			'path' => $path,
+			'cached' => false
 		);
 	}
 

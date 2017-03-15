@@ -57,35 +57,34 @@ RewriteRule ^about/?$                      about.php                         [L]
 
 # User stuff
 
-RewriteRule ^signup/?$                     signup.php                        [L]
-RewriteRule ^login/?$                      login.php                         [L]
-RewriteRule ^logout/?$                     logout.php                        [L]
-RewriteRule ^checkcookie/?$                checkcookie.php                   [L]
-# RewriteRule ^settings/?$                   settings.php                      [L]
+RewriteRule ^signup/?$                     signup.php [L]
+RewriteRule ^login/?$                      login.php [L]
+RewriteRule ^logout/?$                     logout.php [L]
+RewriteRule ^checkcookie/?$                checkcookie.php [L]
+# RewriteRule ^settings/?$                   settings.php [L]
 
 # Password retrieval stuff
 
-# RewriteRule ^forgot/?$                     forgot.php                        [L]
-# RewriteRule ^reset/([a-zA-Z0-9]+)/?$       reset.php?reset=$1            [L,QSA]
+# RewriteRule ^forgot/?$                     forgot.php [L]
+# RewriteRule ^reset/([a-zA-Z0-9]+)/?$       reset.php?reset=$1 [L,QSA]
 
 # Invites
 
-# RewriteRule ^invite/?$                     invite.php                    [L,QSA]
-# RewriteRule ^invite(?:/([^/]+))?/?$        invite.php?code=$1            [L,QSA]
+# RewriteRule ^invite/?$                     invite.php [L,QSA]
+# RewriteRule ^invite(?:/([^/]+))?/?$        invite.php?code=$1 [L,QSA]
 
 # Auth a service account
 
-RewriteRule ^auth/twitter/?$               auth_twitter.php                  [L]
-RewriteRule ^auth/mlkshk/?$                auth_mlkshk.php                   [L]
+RewriteRule ^auth/twitter/?$               auth_twitter.php [L]
+RewriteRule ^auth/mlkshk/?$                auth_mlkshk.php [L]
 
 # Account stuff
 
-RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1          [L]
-# RewriteRule ^(\w+)/twitter/?$              twitter.php?username=$1           [L]
+RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1 [L]
 RewriteRule ^(\w+)/page(\d+)/?$            profile.php?username=$1&page=$2 [L,QSA]
-# RewriteRule ^(\w+)/([a-z0-9]+)/([a-z0-9]{32})/?$ share.php?id=$1&share_code=$2 [L,QSA]
-# RewriteRule ^(\w+)/([a-z0-9]+)/?$          id.php                            [L]
-RewriteRule ^(\w+)/?$                      profile.php?username=$1       [L,QSA]
+RewriteRule ^(\w+)/(\w+)/page(\d+)/?$      profile.php?username=$1&service=$2&page=$3 [L,QSA]
+RewriteRule ^(\w+)/(\w+)/?$                profile.php?username=$1&service=$2 [L,QSA]
+RewriteRule ^(\w+)/?$                      profile.php?username=$1 [L,QSA]
 
 # Home
 

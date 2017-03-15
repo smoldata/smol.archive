@@ -23,7 +23,7 @@
 							<li{if $view == 'tweets'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=tweets">Tweets</a></li>
 							<li{if $view == 'faves'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=faves">Faves</a></li>
 						{else}
-							<li><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|ucfirst}</a></li>
+							<li{if $view == $service} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|escape}</a></li>
 						{/if}
 					{/foreach}
 				</ul>

@@ -161,7 +161,11 @@
 			'append_file_ext' => $append_file_ext
 		));
 		if ($verbose && $rsp['ok']){
-			echo " success\n";
+			if ($rsp['cached']){
+				echo " cached\n";
+			} else {
+				echo " success\n";
+			}
 		} else if ($verbose){
 			echo " error\n";
 		}
