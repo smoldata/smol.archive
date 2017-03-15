@@ -1,0 +1,5 @@
+<article id="mlkshk-{$item.data.sharekey}" class="mlkshk">
+	<div class="content">
+		{$item.data.html}
+	</div>
+</article>
