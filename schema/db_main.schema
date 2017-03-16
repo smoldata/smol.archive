@@ -1,32 +1,61 @@
-DROP TABLE IF EXISTS `smol_account`;
-CREATE TABLE `smol_account` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `service` varchar(255) DEFAULT NULL,
-  `ext_id` bigint(20) unsigned NOT NULL,
-  `screen_name` varchar(255) NOT NULL DEFAULT '',
-  `token` varchar(255) NOT NULL DEFAULT '',
-  `secret` varchar(255) NOT NULL DEFAULT '',
-  `enabled` tinyint(4) NOT NULL DEFAULT '1',
-  `added_at` datetime DEFAULT NULL,
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: 127.0.0.1 (MySQL 5.6.33-0ubuntu0.14.04.1)
+# Database: smoldata
+# Generation Time: 2017-03-16 14:05:26 +0000
+# ************************************************************
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table data_mlkshk
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `data_mlkshk`;
+
+CREATE TABLE `data_mlkshk` (
+  `id` varchar(32) NOT NULL DEFAULT '',
+  `href` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `content` text,
+  `name` varchar(255) DEFAULT NULL,
+  `source_url` varchar(255) DEFAULT NULL,
+  `json` text,
+  `like_count` int(11) DEFAULT NULL,
+  `save_count` int(11) DEFAULT NULL,
+  `comment_count` int(11) DEFAULT NULL,
+  `is_nsfw` tinyint(4) DEFAULT NULL,
+  `has_link` tinyint(4) DEFAULT NULL,
+  `has_photo` tinyint(4) DEFAULT NULL,
+  `has_gif` tinyint(4) DEFAULT NULL,
+  `has_video` tinyint(4) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `saved_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_logins` (`user_id`,`ext_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `smol_archive`;
-CREATE TABLE `smol_archive` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) unsigned NOT NULL,
-  `service` varchar(255) DEFAULT NULL,
-  `filter` varchar(255) DEFAULT NULL,
-  `data_id` bigint(20) unsigned NOT NULL,
-  `archived_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=399 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `smol_item_twitter`;
-CREATE TABLE `smol_item_twitter` (
+
+# Dump of table data_twitter
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `data_twitter`;
+
+CREATE TABLE `data_twitter` (
   `id` bigint(20) unsigned NOT NULL,
   `href` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `screen_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
@@ -48,22 +77,157 @@ CREATE TABLE `smol_item_twitter` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
+# Dump of table smol_account
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `smol_account`;
+
+CREATE TABLE `smol_account` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `service` varchar(32) DEFAULT NULL,
+  `ext_id` bigint(20) unsigned NOT NULL,
+  `screen_name` varchar(255) NOT NULL DEFAULT '',
+  `token` varchar(255) NOT NULL DEFAULT '',
+  `secret` varchar(255) NOT NULL DEFAULT '',
+  `enabled` tinyint(4) NOT NULL DEFAULT '1',
+  `added_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_logins` (`user_id`,`ext_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table smol_archive
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `smol_archive`;
+
+CREATE TABLE `smol_archive` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) unsigned NOT NULL,
+  `service` varchar(32) DEFAULT NULL,
+  `filter` varchar(32) NOT NULL DEFAULT '',
+  `data_id` varchar(32) NOT NULL DEFAULT '',
+  `content` text CHARACTER SET utf8mb4,
+  `created_at` datetime DEFAULT NULL,
+  `archived_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `content` (`content`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table smol_media
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `smol_media`;
+
 CREATE TABLE `smol_media` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `item_id` bigint(20) unsigned NOT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `data_id` varchar(32) NOT NULL DEFAULT '',
   `href` varchar(255) DEFAULT NULL,
   `redirect` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
+  `bytes` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `saved_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
+# Dump of table smol_meta
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `smol_meta`;
+
 CREATE TABLE `smol_meta` (
   `account_id` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `value` text,
   `format` varchar(255) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table users
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `deleted` int(10) unsigned NOT NULL,
+  `created` int(10) unsigned NOT NULL,
+  `password` char(64) DEFAULT NULL,
+  `conf_code` char(24) DEFAULT NULL,
+  `confirmed` int(10) unsigned NOT NULL,
+  `cluster_id` tinyint(3) unsigned NOT NULL,
+  `terms_accepted` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `by_email` (`email`),
+  UNIQUE KEY `by_username` (`username`,`deleted`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table users_password_reset
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users_password_reset`;
+
+CREATE TABLE `users_password_reset` (
+  `user_id` int(10) unsigned NOT NULL,
+  `reset_code` char(32) DEFAULT NULL,
+  `created` int(10) unsigned NOT NULL,
+  UNIQUE KEY `by_code` (`reset_code`),
+  KEY `by_user` (`user_id`),
+  KEY `by_timestamp` (`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table users_roles
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users_roles`;
+
+CREATE TABLE `users_roles` (
+  `user_id` int(11) unsigned NOT NULL,
+  `user_role` varchar(255) DEFAULT NULL,
+  UNIQUE KEY `unique_user_roles` (`user_id`,`user_role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table users_settings
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users_settings`;
+
+CREATE TABLE `users_settings` (
+  `user_id` int(11) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` text,
+  UNIQUE KEY `user_setting` (`user_id`,`name`),
+  KEY `by_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
