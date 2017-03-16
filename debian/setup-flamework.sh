@@ -6,7 +6,7 @@ UBUNTU=`dirname $WHOAMI`
 ROOT=`dirname $UBUNTU`
 
 sudo apt-get update
-sudo apt-get -y install apache2 apache2-utils mysql-server mysql-client
+sudo apt-get -y install apache2 apache2-utils mysql-server-5.6 mysql-client-5.6 mysql-client-core-5.6
 sudo apt-get -y install php5 php5-cli php5-curl php5-mcrypt php5-memcache php5-mysql
 
 for mod in proxy_wstunnel.load rewrite.load proxy.load proxy.conf proxy_http.load ssl.conf ssl.load socache_shmcb.load headers.load

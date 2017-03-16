@@ -10,7 +10,7 @@ It's almost there, but still not quite yet ready.
 
 You should start by setting up the [Vagrant virtual machine](https://github.com/smoldata/vagrant-thingmonger). It's not required, but it will make things go a lot smoother.
 
-This is a [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) web application, written for PHP 5.6, MySQL 5.5 and Apache 2.4. It inherits its back-end approach from [Flamework](https://github.com/exflickr/flamework) (see: [philosophy](https://github.com/exflickr/flamework/blob/master/docs/philosophy.md) and [style guide](https://github.com/exflickr/flamework/blob/master/docs/style_guide.md)) and uses [Bootstrap](http://getbootstrap.com/) for the front-end implementation.
+This is a [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) web application, written for PHP 5.6, MySQL 5.6 and Apache 2.4. It inherits its back-end approach from [Flamework](https://github.com/exflickr/flamework) (see: [philosophy](https://github.com/exflickr/flamework/blob/master/docs/philosophy.md) and [style guide](https://github.com/exflickr/flamework/blob/master/docs/style_guide.md)) and uses [Bootstrap](http://getbootstrap.com/) for the front-end implementation.
 
 ## How to install
 
