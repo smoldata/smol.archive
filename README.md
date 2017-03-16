@@ -32,3 +32,13 @@ make setup
 ## Load it up in a browser
 
 If everything goes as planned, you should be able to load up http://localhost:4700/ in your browser.
+
+## I OAuth'd my account but ... nothing is happening?
+
+You will need to edit `/etc/crontab` to run `bin/download.php` every 1 minute.
+
+```
+* * * * * www-data /usr/bin/php /usr/local/smoldata/thingmonger/bin/download.php
+```
+
+And don't forget the thing about crontabs needing line breaks after each entry.
