@@ -33,6 +33,29 @@ make setup
 
 If everything goes as planned, you should be able to load up http://localhost:4700/ in your browser.
 
+## Services
+
+Right now there is support for archiving [Twitter](https://twitter.com/) and [mlkshk](https://mlkshk.com/) accounts (the latter got a priority boost because it is shutting down soon). Instagram is next in line, then maybe Wikipedia?
+
+## Secrets
+
+Each service you add will need API keys and secrets. Here are some links for you to set up your own applications:
+
+* [Twitter](https://apps.twitter.com/)
+* [mlkshk](http://mlkshk.com/developers)
+
+Then add the following to your `www/include/secrets.php`:
+
+```
+# Twitter API
+$GLOBALS['cfg']['twitter_api_consumer_key'] = '...';
+$GLOBALS['cfg']['twitter_api_consumer_secret'] = '...';
+
+# mlkshk API
+$GLOBALS['cfg']['mlkshk_api_key'] = '...';
+$GLOBALS['cfg']['mlkshk_api_secret'] = '...';
+```
+
 ## I OAuth'd my account but ... nothing is happening?
 
 You will need to edit `/etc/crontab` to run `bin/download.php` every 1 minute.
