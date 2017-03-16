@@ -58,10 +58,17 @@ $GLOBALS['cfg']['mlkshk_api_secret'] = '...';
 
 ## I OAuth'd my account but ... nothing is happening?
 
-You will need to edit `/etc/crontab` to run `bin/download.php` every 1 minute.
+The script you want to run is `bin/download.php`. Here is how you can test it out to make sure things are working as expected.
+
+```
+cd /usr/local/smoldata/thingmonger
+sudo -u www-data php bin/download.php --verbose
+```
+
+Here is an entry for your `/etc/crontab` to run `bin/download.php` every 1 minute.
 
 ```
 * * * * * www-data /usr/bin/php /usr/local/smoldata/thingmonger/bin/download.php
 ```
 
-And don't forget the thing about crontabs needing line breaks after each entry.
+And don't forget the thing about crontabs needing a line break at the end of the file.
