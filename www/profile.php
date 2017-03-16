@@ -103,7 +103,11 @@
 		$pagination = $rsp['pagination'];
 		$GLOBALS['smarty']->assign_by_ref("pagination", $pagination);
 
-		$pagination_url = $GLOBALS['cfg']['abs_root_url'] . "$username/";
+		if ($arg_service){
+			$pagination_url = $GLOBALS['cfg']['abs_root_url'] . "$username/$arg_service/";
+		} else {
+			$pagination_url = $GLOBALS['cfg']['abs_root_url'] . "$username/";
+		}
 		$GLOBALS['smarty']->assign("pagination_url", $pagination_url);
 		$GLOBALS['smarty']->assign("per_page", $per_page);
 

@@ -5,10 +5,10 @@
 	{* previous/next buttons *}
 
 	{if $pagination.page > 1}
-		<li>{if $pagination_page_as_queryarg}</li>
-		<li><a href="{$pagination_url}&page={$pagination.page-1}">previous</a></li>
+		{if $pagination_page_as_queryarg}
+			<li><a href="{$pagination_url}&page={$pagination.page-1}">previous</a></li>
 		{else}
-		<li><a href="{$pagination_url}page{$pagination.page-1}">previous</a></li>
+			<li><a href="{$pagination_url}page{$pagination.page-1}">previous</a></li>
 		{/if}
 	{else}
 		<li class="disabled"><span>previous</span></li>
