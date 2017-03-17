@@ -40,20 +40,24 @@ done
 
 for ctx in apache2 cli
 do
-    for mod in mcrypt.ini
-    do
-        if [ -L /etc/php5/${ctx}/conf.d/${mod} ]
-        then
-            sudo rm /etc/php5/${ctx}/conf.d/${mod}
-        fi
 
-        if [ -f /etc/php5/${ctx}/conf.d/${mod} ]
-        then
-            sudo mv /etc/php5/${ctx}/conf.d/${mod} /etc/php5/${ctx}/conf.d/${mod}.bak
-        fi
+    # We don't really need this part as long as 20-mcrypt.ini gets symplinked by default.
+    # (20170317/dphiffer)
+    
+    #for mod in mcrypt.ini
+    #do
+    #    if [ -L /etc/php5/${ctx}/conf.d/${mod} ]
+    #    then
+    #        sudo rm /etc/php5/${ctx}/conf.d/${mod}
+    #    fi
 
-        sudo ln -s /etc/php5/mods-available/${mod} /etc/php5/${ctx}/conf.d/${mod}
-    done
+    #    if [ -f /etc/php5/${ctx}/conf.d/${mod} ]
+    #    then
+    #        sudo mv /etc/php5/${ctx}/conf.d/${mod} /etc/php5/${ctx}/conf.d/${mod}.bak
+    #    fi
+
+    #    sudo ln -s /etc/php5/mods-available/${mod} /etc/php5/${ctx}/conf.d/${mod}
+    #done
     sudo perl -p -i -e "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/${ctx}/php.ini;
 done
 
