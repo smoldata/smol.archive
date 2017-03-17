@@ -27,7 +27,7 @@ if [ "${MYSQL}" = "" ]
 then
 
 	sudo apt-get update
-	sudo apt-get install -y mysql-server mysql-client
+	sudo apt-get install -y mysql-server-5.6 mysql-client-5.6
 fi
 
 # We probably don't care about any errors...
