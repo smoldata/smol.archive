@@ -1,6 +1,10 @@
 #!/bin/sh
 
-PROJECT=$1
+WHOAMI=`python -c 'import os, sys; print os.path.realpath(sys.argv[1])' $0`
+
+DEBIAN=`dirname $WHOAMI`
+PROJECT=`dirname $DEBIAN`
+
 SECRETS=${PROJECT}/www/include/secrets.php
 
 if [ ! -f ${SECRETS} ]
