@@ -72,3 +72,9 @@ Here is an entry for your `/etc/crontab` to run `bin/download.php` every 1 minut
 ```
 
 And don't forget the thing about crontabs needing a line break at the end of the file.
+
+## Shoutouts
+
+* [Starmonger](https://github.com/dphiffer/starmonger/)
+* [Parallel Flickr](http://straup.github.io/parallel-flickr/)
+* [ThinkUp](https://github.com/ThinkUpLLC/ThinkUp)
