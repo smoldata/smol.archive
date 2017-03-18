@@ -1,7 +1,11 @@
 {assign var="tweet" value=$item.data}
 <article id="tweet-{$tweet.id}" class="item tweet">
 	<div class="content">
-		{if $tweet.retweeted}
+		{if $tweet.retweeted and $tweet.faved}
+			{assign var="event_type" value="retweet"}
+			{assign var="event_icon" value="retweet"}
+			{assign var="event_label" value="retweeted and faved"}
+		{elseif $tweet.retweeted}
 			{assign var="event_type" value="retweet"}
 			{assign var="event_icon" value="retweet"}
 			{assign var="event_label" value="retweeted"}

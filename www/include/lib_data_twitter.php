@@ -6,9 +6,14 @@
 
 	########################################################################
 
-	function data_twitter_template_values($account, $item, $data){
+	function data_twitter_template_values($account, $item, $data, $merge_data=null){
 
 		$status = json_decode($data['json'], 'as hash');
+
+		if ($merge_data){
+			$data = $merge_data;
+		}
+
 		if ($status['retweeted_status']){
 			$data['retweeted'] = true;
 			$status = $status['retweeted_status'];
@@ -79,6 +84,7 @@
 			'plaintext' => true
 		);
 		$esc_id = addslashes($status['id_str']);
+		$target_id = $esc_id; # Overridden if this is a RT
 		$esc_screen_name = addslashes($status['user']['screen_name']);
 		$created_at = date('Y-m-d H:i:s', strtotime($status['created_at']));
 		$now = date('Y-m-d H:i:s');
@@ -92,6 +98,7 @@
 		// From here on out we're talking about the RT'd status
 		if ($is_retweet){
 			$status = $status['retweeted_status'];
+			$target_id = $status['id_str'];
 		}
 
 		$favorite_count = $status['favorite_count'];
@@ -147,6 +154,7 @@
 		return array(
 			'ok' => 1,
 			'data_id' => $esc_id,
+			'target_id' => $target_id,
 			'content' => $content,
 			'created_at' => $created_at
 		);

@@ -16,11 +16,19 @@
 	########################################################################
 
 	function smol_archive_escaped_item($account, $filter, $saved){
+
+		# Most services won't need to care about this, but for Twitter:
+		# retweets should be providing their own target_id.
+		if (! $saved['target_id']){
+			$saved['target_id'] = $saved['data_id'];
+		}
+
 		$timestamp = strtotime($saved['created_at']);
 		$created_at = date('Y-m-d H:i:s', $timestamp);
 		$archived_at = date('Y-m-d H:i:s');
 		$esc_item = array(
 			'data_id' => addslashes($saved['data_id']),
+			'target_id' => addslashes($saved['target_id']),
 			'account_id' => addslashes($account['id']),
 			'service' => addslashes($account['service']),
 			'filter' => addslashes($filter),
