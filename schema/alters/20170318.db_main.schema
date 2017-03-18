@@ -1,0 +1,1 @@
+ALTER TABLE `smol_archive` ADD COLUMN target_id varchar(32) NOT NULL DEFAULT '' AFTER data_id;

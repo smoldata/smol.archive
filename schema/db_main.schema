@@ -112,6 +112,7 @@ CREATE TABLE `smol_archive` (
   `service` varchar(32) DEFAULT NULL,
   `filter` varchar(32) NOT NULL DEFAULT '',
   `data_id` varchar(32) NOT NULL DEFAULT '',
+  `target_id` varchar(32) NOT NULL DEFAULT '',
   `content` text CHARACTER SET utf8mb4,
   `created_at` datetime DEFAULT NULL,
   `archived_at` datetime DEFAULT NULL,
