@@ -1,5 +1,9 @@
 <?php
 
+	# Usage:
+	#   cd /usr/local/smoldata/thingmonger
+	#   sudo -u www-data php bin/migrate_db.php
+
 	include('init_local.php');
 	loadlib('smol_meta');
 
@@ -9,13 +13,12 @@
 	set_time_limit(0);
 	$lockfile_path = $GLOBALS['cfg']['smol_data_dir'] . 'migrate_db.lock';
 	if (file_exists($lockfile_path)){
-		if ($verbose){
-			echo "Aborting because lockfile exists: $lockfile_path\n";
-		}
+		echo "Aborting because lockfile exists: $lockfile_path\n";
 		exit;
 	}
 	touch($lockfile_path);
 	if (! file_exists($lockfile_path)){
+		echo "Aborting because lockfile was not created: $lockfile_path\n";
 		exit;
 	}
 

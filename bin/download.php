@@ -1,4 +1,9 @@
 <?php
+
+	# Usage:
+	#   cd /usr/local/smoldata/thingmonger
+	#   sudo -u www-data php bin/download.php --verbose
+
 	include('init_local.php');
 	loadlib('smol_accounts');
 	loadlib('smol_archive');
@@ -22,6 +27,12 @@
 		exit;
 	}
 	touch($lockfile_path);
+	if (! file_exists($lockfile_path)){
+		if ($verbose){
+			echo "Aborting because lockfile was not created: $lockfile_path\n";
+		}
+		exit;
+	}
 
 	$rsp = db_fetch("
 		SELECT smol_account.*, users.username
