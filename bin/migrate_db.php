@@ -49,10 +49,15 @@
 			continue;
 		}
 
-		echo "Processing $alter_file\n";
-
 		$date = $matches[1];
 		$cluster = $matches[2];
+
+		if ($date <= $db_version) {
+			echo "Skipping $alter_file (db_version > $date)\n";
+			continue;
+		}
+
+		echo "Running $alter_file\n";
 
 		$dbhost = $GLOBALS['cfg'][$cluster]['host'];
 		$dbname = $GLOBALS['cfg'][$cluster]['name'];
