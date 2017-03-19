@@ -1,13 +1,19 @@
 {if not $page_title}
 	{assign var='page_title' value=$user.username|escape}
 {/if}
+{if $user.id == $cfg.user.id}
+	{assign var='nav_tab' value='data'}
+{/if}
 
-{include file='inc_head.txt' nav_tab='data'}
+{include file='inc_head.txt'}
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<h2>{$user.username|escape}</h2>
+			{if $cfg.user and $user.id != $cfg.user.id}
+				<a href="#follow" id="user-follow" class="btn {if $is_following}btn-primary{else}btn-default{/if}">{if $is_following}Following{else}Follow{/if}</a>
+			{/if}
 		</div>
 	</div>
 	<div class="row">

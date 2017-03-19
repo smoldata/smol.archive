@@ -22,6 +22,10 @@
 
 	$user = $rsp['rows'][0];
 	$smarty->assign_by_ref('user', $user);
+	if ($GLOBALS['cfg']['user'] && $user['id'] != $GLOBALS['cfg']['user']['id']){
+		$is_following = smol_accounts_is_following($GLOBALS['cfg']['user'], $user);
+		$smarty->assign('is_following', $is_following);
+	}
 
 	$accounts = smol_accounts_get_accounts($user);
 	$services = smol_accounts_get_services($user);

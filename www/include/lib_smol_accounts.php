@@ -4,6 +4,20 @@
 
 	########################################################################
 
+	function smol_accounts_is_following($user, $check_user){
+		$esc_user_id = addslashes($user['id']);
+		$esc_follow_id = addslashes($check_user['id']);
+		$rsp = db_fetch("
+			SELECT *
+			FROM smol_follow
+			WHERE user_id = $esc_user_id
+			  AND follow_id = $esc_follow_id
+		");
+		return ($rsp['rows']) ? true : false;
+	}
+
+	########################################################################
+
 	function smol_accounts_get_services($user){
 		$services = array();
 		$accounts = smol_accounts_get_accounts($user);
