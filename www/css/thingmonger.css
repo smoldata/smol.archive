@@ -460,11 +460,13 @@ footer li {
 
 ul.network-users {
 	padding-left: 0;
+	border-top: 1px solid #dedede;
 }
 
 ul.network-users > li {
 	list-style: none;
-	margin-bottom: 0.5em;
+	border-bottom: 1px solid #dedede;
+	padding: 0.5em 0;
 }
 
 ul.network-users h2 {
@@ -477,4 +479,8 @@ ul.network-users a.username {
 
 ul.network-users a.username:hover {
 	text-decoration: underline;
+}
+
+ul.network-users .user-follow {
+	float: right;
 }

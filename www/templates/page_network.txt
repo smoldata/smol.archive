@@ -11,7 +11,7 @@
 		<div class="col-md-3">
 			<p>Follow other users to add their activity to your <a href="{$cfg.abs_root_url|escape}">Flow</a>.
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<ul class="network-users">
 				{foreach from=$usernames item=username}
 					<li>
