@@ -107,8 +107,8 @@ RewriteRule  ^api/rest/?$                  api_rest.php?%{QUERY_STRING}  [L]
 RewriteRule ^faves/page(\d+)/?$            index.php?filter=faves&page=$1 [L,QSA]
 RewriteRule ^faves/?$                      index.php?filter=faves [L,QSA]
 RewriteRule ^page(\d+)/?$                  index.php?page=$1 [L,QSA]
-RewriteRule ^(\w+)/page(\d+)/?$            index.php?service=$1&page=$2 [L,QSA]
-RewriteRule ^(\w+)/?$                      index.php?service=$1 [L,QSA]
+RewriteRule ^(twitter|mlkshk)/page(\d+)/?$ index.php?service=$1&page=$2 [L,QSA]
+RewriteRule ^(twitter|mlkshk)/?$           index.php?service=$1 [L,QSA]
 
 # Profile stuff
 
