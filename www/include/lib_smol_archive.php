@@ -65,6 +65,15 @@
 		$pagination = $rsp['pagination'];
 		$data = array();
 
+		if (! $items){
+			# We got nothin'
+			return array(
+				'ok' => 1,
+				'items' => $items,
+				'pagination' => false
+			);
+		}
+
 		$service_ids = array();
 		$target_id_lookup = array();
 		foreach ($items as $item){
