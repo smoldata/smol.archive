@@ -121,6 +121,20 @@
 
 	#################################################################
 
+	function users_get_by_username($username){
+
+		$sql = "SELECT * FROM users WHERE username='" . addslashes($username) . "'";
+
+		$rsp = db_fetch_accounts($sql);
+		$user = db_single($rsp);
+
+		cache_set("USER-{$user['id']}", $user);
+
+		return $user;
+	}
+
+	#################################################################
+
 	function users_get_by_email($email){
 
 		$enc_email = AddSlashes($email);
