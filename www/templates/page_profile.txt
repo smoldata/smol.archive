@@ -17,7 +17,7 @@
 							<span class="glyphicon glyphicon-ok"></span>
 							Following
 						{else}
-							<span class="glyphicon glyphicon-plus"></span>
+							<span class="glyphicon glyphicon-flash"></span>
 							Follow
 						{/if}
 					</a>
