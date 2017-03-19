@@ -2,7 +2,7 @@
 	{assign var='page_title' value=$user.username|escape}
 {/if}
 {if $user.id == $cfg.user.id}
-	{assign var='nav_tab' value='data'}
+	{assign var='nav_tab' value='archive'}
 {/if}
 
 {include file='inc_head.txt'}
