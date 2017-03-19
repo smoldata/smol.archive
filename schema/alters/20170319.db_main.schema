@@ -62,3 +62,21 @@ CREATE TABLE `smol_follow` (
   `follow_id` bigint(20) unsigned NOT NULL,
   `followed_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `Tickets32`;
+
+CREATE TABLE `Tickets32` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stub` char(1) NOT NULL DEFAULT '',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `stub` (`stub`)
+) ENGINE=MyISAM;
+
+DROP TABLE IF EXISTS `Tickets64`;
+
+CREATE TABLE `Tickets64` (
+  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stub` char(1) NOT NULL DEFAULT '',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `stub` (`stub`)
+) ENGINE=MyISAM;

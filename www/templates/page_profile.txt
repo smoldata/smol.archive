@@ -11,17 +11,7 @@
 	<div class="row">
 		<div class="col-md-9">
 			<h2>{$user.username|escape}
-				{if $cfg.user and $user.id != $cfg.user.id}
-					<a href="#follow" id="user-follow" class="btn {if $is_following}btn-primary{else}btn-default{/if} btn-sm">
-						{if $is_following}
-							<span class="glyphicon glyphicon-ok"></span>
-							Following
-						{else}
-							<span class="glyphicon glyphicon-flash"></span>
-							Follow
-						{/if}
-					</a>
-				{/if}
+				{include file='inc_follow_btn.txt' user=$user follow_crumb=$follow_crumb}
 			</h2>
 		</div>
 	</div>

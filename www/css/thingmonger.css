@@ -101,12 +101,14 @@ body.about p {
 	line-height: 2.5em;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:focus {
 	background-color: #df146a;
 	border-color: #df146a;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active {
 	background-color: #333;
 	border-color: #333;
 }
@@ -421,15 +423,37 @@ footer li {
 	margin-right: 15px;
 }
 
-#user-follow {
+.user-follow {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	letter-spacing: 1px;
 }
 
-#user-follow.btn-primary {
+.user-follow.btn-primary {
 	opacity: 0.33;
 }
 
-#user-follow.btn-primary:hover {
+.user-follow.btn-primary:hover {
 	opacity: 1;
+}
+
+.user-follow .label-following,
+.user-follow .label-loading {
+	display: none;
+}
+
+.user-follow-following .label-following {
+	display: inline;
+}
+
+.user-follow-following .label-not-following {
+	display: none;
+}
+
+.user-follow-loading .label-loading {
+	display: inline;
+}
+
+.user-follow-loading .label-following,
+.user-follow-loading .label-not-following {
+	display: none;
 }

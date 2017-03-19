@@ -16,6 +16,10 @@
 		<!--[if lt IE 9]>
 			<script src="{$cfg.abs_root_url}js/html5.js"></script>
 		<![endif]-->
+
+		<script src="{$cfg.abs_root_url}js/thingmonger.api.js"></script>
+		<script src="{$cfg.abs_root_url}js/thingmonger.follow.js"></script>
+		{$smarty.capture.scripts}
 	</head>
 
 	<body class="{$user_signed_in} {$user_can_edit} {$nav_tab}" data-abs-root-url="{$cfg.abs_root_url}" {if "api"|@features_is_enabled}data-api-endpoint="{$cfg.api_abs_root_url}{$cfg.api_endpoint}"{/if}{if "api_site_tokens"|@features_is_enabled} data-api-access-token="{$site_token|@escape}"{/if}>

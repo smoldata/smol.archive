@@ -4,7 +4,7 @@
 
 	$GLOBALS['cfg']['api']['methods'] = array_merge(array(
 
-		"user.follow" => array (
+		"users.follow" => array (
 			"description" => "Follow a user",
 			"documented" => 1,
 			"enabled" => 1,
@@ -13,6 +13,18 @@
 			"request_method" => "POST",
 			"parameters" => array(
 				array("name" => "username", "description" => "The user you wish to follow", "documented" => 1, "required" => 1)
+			)
+		),
+
+		"users.unfollow" => array (
+			"description" => "Unfollow a user",
+			"documented" => 1,
+			"enabled" => 1,
+			"library" => "api_users",
+			"requires_crumb" => 1,
+			"request_method" => "POST",
+			"parameters" => array(
+				array("name" => "username", "description" => "The user you wish to unfollow", "documented" => 1, "required" => 1)
 			)
 		),
 

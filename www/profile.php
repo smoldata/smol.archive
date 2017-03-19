@@ -189,6 +189,12 @@
 		$view = $arg_service;
 	}
 
+	$crumb_follow = crumb_generate('api', 'users.follow');
+	$GLOBALS['smarty']->assign('crumb_follow', $crumb_follow);
+
+	$crumb_unfollow = crumb_generate('api', 'users.unfollow');
+	$GLOBALS['smarty']->assign('crumb_unfollow', $crumb_unfollow);
+
 	$GLOBALS['smarty']->assign('page_title', $page_title);
 	$GLOBALS['smarty']->assign('view', $view);
 	$GLOBALS['smarty']->display('page_profile.txt');
