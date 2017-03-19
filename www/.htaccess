@@ -102,7 +102,15 @@ RewriteRule  ^api/oauth2/tokens/([a-zA-Z0-9]+)/?$ api_oauth2_token.php?api_key=$
 
 RewriteRule  ^api/rest/?$                  api_rest.php?%{QUERY_STRING}  [L]
 
-# Account stuff
+# Flow stuff
+
+RewriteRule ^faves/page(\d+)/?$            index.php?filter=faves&page=$1 [L,QSA]
+RewriteRule ^faves/?$                      index.php?filter=faves [L,QSA]
+RewriteRule ^page(\d+)/?$                  index.php?page=$1 [L,QSA]
+RewriteRule ^(\w+)/page(\d+)/?$            index.php?service=$1&page=$2 [L,QSA]
+RewriteRule ^(\w+)/?$                      index.php?service=$1 [L,QSA]
+
+# Profile stuff
 
 RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1 [L]
 RewriteRule ^(\w+)/faves/page(\d+)/?$      profile.php?username=$1&filter=faves&page=$2 [L,QSA]

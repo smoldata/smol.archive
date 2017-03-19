@@ -18,9 +18,9 @@
 
 	########################################################################
 
-	function smol_accounts_get_services($user){
+	function smol_accounts_get_services($accounts){
+
 		$services = array();
-		$accounts = smol_accounts_get_accounts($user);
 
 		foreach ($accounts as $account){
 			$service = $account['service'];
@@ -41,7 +41,7 @@
 
 	########################################################################
 
-	function smol_accounts_get_accounts($user, $include_disabled=false){
+	function smol_accounts_get_user_accounts($user, $include_disabled=false){
 
 		$esc_id = addslashes($user['id']);
 		$where_clause = "user_id = $esc_id";
@@ -49,6 +49,43 @@
 		if (! $include_disabled){
 			$where_clause .= " AND enabled = 1";
 		}
+
+		$rsp = db_fetch("
+			SELECT *
+			FROM smol_account
+			WHERE $where_clause
+			ORDER BY added_at DESC
+		");
+		if ($rsp['ok']){
+			return $rsp['rows'];
+		} else {
+			return array();
+		}
+	}
+
+	########################################################################
+
+	function smol_accounts_get_following_accounts($user){
+
+		$esc_id = addslashes($user['id']);
+		$where_clause = "user_id = $esc_id";
+
+		$rsp = db_fetch("
+			SELECT *
+			FROM smol_follow
+			WHERE $where_clause
+			ORDER BY followed_at
+		");
+		if (! $rsp['ok']){
+			return array();
+		}
+
+		$user_ids = array();
+		foreach ($rsp['rows'] as $follow){
+			$user_ids[] = addslashes($follow['follow_id']);
+		}
+		$user_id_list = implode(', ', $user_ids);
+		$where_clause = "user_id IN ($user_id_list)";
 
 		$rsp = db_fetch("
 			SELECT *

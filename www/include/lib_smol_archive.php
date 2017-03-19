@@ -1,7 +1,143 @@
 <?php
 
+	loadlib('data_twitter');
+	loadlib('data_mlkshk');
 	loadlib('smol_archive_twitter');
 	loadlib('smol_archive_mlkshk');
+
+	########################################################################
+
+	function smol_archive_get_items($accounts, $args){
+
+		# This is probably not a good idea
+		extract($args);
+
+		$account_ids = array();
+		$account_lookup = array();
+
+		foreach ($accounts as $account){
+			$esc_id = addslashes($account['id']);
+			$account_ids[] = $esc_id;
+			$account_lookup[$esc_id] = $account;
+		}
+		$account_ids = implode(', ', $account_ids);
+
+		$args = array(
+			'count_fields' => '*'
+		);
+
+		$where_clause = "account_id IN ($account_ids)";
+
+		if ($search){
+			$esc_search = addslashes($search);
+			$where_clause .= " AND MATCH (content) AGAINST ('$esc_search')";
+			$GLOBALS['smarty']->assign("search", $search);
+		}
+
+		if ($service){
+			$esc_service = addslashes($service);
+			$where_clause .= " AND service = '$esc_service'";
+		}
+
+		if ($filter){
+			$esc_filter = addslashes($filter);
+			$where_clause .= " AND filter = '$esc_filter'";
+		}
+
+		if ($page){
+			$args['page'] = $page;
+		}
+
+		if ($per_page && $per_page > 0 && $per_page <= 1000){
+			$args['per_page'] = $per_page;
+		} else {
+			$per_page = $GLOBALS['cfg']['pagination_per_page'];
+		}
+
+		$rsp = db_fetch_paginated("
+			SELECT DISTINCT data_id, target_id, account_id, service, filter
+			FROM smol_archive
+			WHERE $where_clause
+			ORDER BY created_at DESC, id DESC
+		", $args);
+
+		$items = $rsp['rows'];
+		$pagination = $rsp['pagination'];
+		$data = array();
+
+		$service_ids = array();
+		$target_id_lookup = array();
+		foreach ($items as $item){
+			$service = $item['service'];
+			if (! $service_ids[$service]){
+				$service_ids[$service] = array();
+			}
+			$esc_data_id = addslashes($item['data_id']);
+			array_push($service_ids[$service], $esc_data_id);
+
+			if (! $target_ids[$service]){
+				$target_ids[$service] = array();
+			}
+			$target_id_lookup[$service][$esc_data_id] = $item['target_id'];
+		}
+
+		foreach ($service_ids as $service => $data_ids){
+			$data_table = "data_$service";
+			$data_ids = "'" . implode("', '", $data_ids) . "'";
+			$rsp = db_fetch("
+				SELECT *
+				FROM $data_table
+				WHERE id IN ($data_ids)
+			");
+			foreach ($rsp['rows'] as $row){
+				$id = $row['id'];
+				$data[$id] = $row;
+			}
+		}
+
+		# This is a structure for exchanging 'target_id's for 'index's
+		$target_id_rev_lookup = array();
+
+		foreach ($items as $index => $item){
+
+			$data_id = $item['data_id'];
+			$service = $item['service'];
+
+			# This next part is kind of fiddly. It is meant to
+			# group common target_id items together, like if you
+			# faved *and* retweeted the same thing. This will make
+			# a single item reflect both fave and RT.
+			# (20170318/dphiffer)
+			$target_id = $target_id_lookup[$service][$data_id];
+			if ($target_id_rev_lookup[$target_id]){
+				# Ok, we are now dealing with an old item index
+				unset($items[$index]);
+				$index = $target_id_rev_lookup[$target_id];
+				$merge_data_item = $items[$index]['data'];
+			} else {
+				$target_id_rev_lookup[$target_id] = $index;
+				$merge_data_item = null;
+			}
+
+			$data_item = $data[$data_id];
+
+			$account_id = $item['account_id'];
+			$account = $account_lookup[$account_id];
+
+			# this is inefficient (better to bundle into a SELECT ... IN () query)
+			$items[$index]['user'] = users_get_by_id($account['user_id']);
+
+			$values_function = "data_{$service}_template_values";
+			$items[$index]['data'] = $values_function($account, $item, $data_item, $merge_data_item);
+			$items[$index]['template'] = "inc_{$service}_item.txt";
+		}
+		
+		return array(
+			'ok' => 1,
+			'items' => $items,
+			'pagination' => $pagination
+		);
+	}
 
 	########################################################################
 

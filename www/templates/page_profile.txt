@@ -9,7 +9,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-9">
+		<div class="col-md-12">
 			<h2>{$user.username|escape}
 				{include file='inc_follow_btn.txt' user=$user follow_crumb=$follow_crumb}
 			</h2>

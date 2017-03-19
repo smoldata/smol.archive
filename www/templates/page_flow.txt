@@ -3,8 +3,42 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-12">
 			<h1>Flow</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			{if $services}
+				<ul id="profile-services" class="nav nav-pills nav-stacked">
+					{if $view == 'search'}
+						<li class="active"><a href="{$cfg.abs_root_url}?search={$search|escape}">Search results</a></li>
+					{/if}
+					<li{if $view == 'everything'} class="active"{/if}><a href="{$cfg.abs_root_url}">Everything</a></li>
+					{foreach from=$services item=service key=slug}
+						<li{if $view == $slug} class="active"{/if}><a href="{$cfg.abs_root_url}{$slug|escape}/">{$service.label|escape}</a></li>
+					{/foreach}
+					<li{if $view == 'faves'} class="active"{/if}><a href="{$cfg.abs_root_url}faves/">Faves</a></li>
+				</ul>
+			{/if}
+		</div>
+		<div class="col-md-6">
+			{if not $items}
+				<div class="alert alert-info"><strong>Nothing here</strong><br>If you <a href="{$cfg.abs_root_url|escape}network">follow friends</a> this is where you would see their things.</div>
+			{/if}
+			{foreach from=$items item=item}
+				{include file=$item.template item=$item}
+			{/foreach}
+		</div>
+		<div class="col-md-3">
+			<form action="{$cfg.abs_root_url}{$user.username|escape}/">
+				<input type="text" name="search" value="{$search|escape}" class="form-control" placeholder="Search">
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-9 col-md-offset-3">
+			{include file="inc_pagination.txt"}
 		</div>
 	</div>
 </div>
