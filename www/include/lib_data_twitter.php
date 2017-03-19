@@ -262,7 +262,7 @@
 					"<span class=\"name\">{$name}</span> " .
 					"<span class=\"screen_name\">@$screen_name</span>" .
 				"</a>" .
-				" <span class=\"meta\"> &middot; $permalink</span>" .
+				" <span class=\"meta text-muted\"> / $permalink</span>" .
 			"</div>";
 			$options['is_quoted'] = true;
 			$quoted_content = data_twitter_content($status['quoted_status'], $options);
