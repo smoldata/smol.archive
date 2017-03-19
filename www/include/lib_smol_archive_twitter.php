@@ -5,6 +5,14 @@
 	loadlib('data_twitter');
 
 	########################################################################
+	
+	function smol_archive_twitter_views($account){
+		return array(
+			'label' => 'Twitter'
+		);
+	}
+
+	########################################################################
 
 	function smol_archive_twitter_save_data($account, $verbose=false) {
 

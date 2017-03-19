@@ -81,6 +81,8 @@ RewriteRule ^auth/mlkshk/?$                auth_mlkshk.php [L]
 # Account stuff
 
 RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1 [L]
+RewriteRule ^(\w+)/faves/page(\d+)/?$      profile.php?username=$1&filter=faves&page=$2 [L,QSA]
+RewriteRule ^(\w+)/faves/?$                profile.php?username=$1&filter=faves [L,QSA]
 RewriteRule ^(\w+)/page(\d+)/?$            profile.php?username=$1&page=$2 [L,QSA]
 RewriteRule ^(\w+)/(\w+)/page(\d+)/?$      profile.php?username=$1&service=$2&page=$3 [L,QSA]
 RewriteRule ^(\w+)/(\w+)/?$                profile.php?username=$1&service=$2 [L,QSA]

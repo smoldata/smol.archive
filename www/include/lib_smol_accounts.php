@@ -1,12 +1,24 @@
 <?php
 
+	loadlib('smol_archive_twitter');
+
+	########################################################################
+
 	function smol_accounts_get_services($user){
 		$services = array();
 		$accounts = smol_accounts_get_accounts($user);
 
 		foreach ($accounts as $account){
-			if (! in_array($account['service'], $services)){
-				$services[] = $account['service'];
+			$service = $account['service'];
+			if (! $services[$service]){
+				$views_function = "smol_archive_{$service}_views";
+				if (function_exists($views_function)){
+					$services[$service] = $views_function($account);
+				} else {
+					$services[$service] = array(
+						'label' => $service
+					);
+				}
 			}
 		}
 

@@ -18,14 +18,10 @@
 						<li class="active"><a href="{$cfg.abs_root_url}{$user.username|escape}/?search={$search|escape}">Search results</a></li>
 					{/if}
 					<li{if $view == 'everything'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/">Everything</a></li>
-					{foreach from=$services item=service}
-						{if $service == 'twitter'}
-							<li{if $view == 'tweets'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=tweets">Tweets</a></li>
-							<li{if $view == 'faves'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/?service=twitter&amp;filter=faves">Faves</a></li>
-						{else}
-							<li{if $view == $service} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/{$service|escape}/">{$service|escape}</a></li>
-						{/if}
+					{foreach from=$services item=service key=slug}
+						<li{if $view == $slug} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/{$slug|escape}/">{$service.label|escape}</a></li>
 					{/foreach}
+					<li{if $view == 'faves'} class="active"{/if}><a href="{$cfg.abs_root_url}{$user.username|escape}/faves/">Faves</a></li>
 				</ul>
 			{/if}
 			{if $user.id == $cfg.user.id}

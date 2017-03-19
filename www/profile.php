@@ -8,7 +8,7 @@
 
 	$username = get_str('username');
 	$esc_username = addslashes($username);
-	$rsp = db_fetch_accounts("
+	$rsp = db_fetch("
 		SELECT *
 		FROM users
 		WHERE username = '$esc_username'
@@ -27,15 +27,6 @@
 	$services = smol_accounts_get_services($user);
 	$smarty->assign_by_ref('services', $services);
 
-	if (empty($services) && $user['id'] == $GLOBALS['cfg']['user']['id']){
-
-		# No accounts? Let's add at least one.
-
-		$url = $GLOBALS['cfg']['abs_root_url'] . "$username/accounts/";
-		header("Location: {$url}");
-		exit;
-	}
-	
 	if (empty($accounts)){
 		$smarty->assign('no_accounts', 1);
 	} else {
@@ -65,7 +56,7 @@
 
 		$arg_service = get_str('service');
 		if ($arg_service){
-			if (! in_array($arg_service, $services)){
+			if (! $services[$arg_service]){
 				error_404();
 			}
 			$esc_service = addslashes($arg_service);
