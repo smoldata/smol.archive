@@ -11,7 +11,7 @@
 		error_403();
 	}
 
-	$accounts = smol_accounts_get_accounts($GLOBALS['cfg']['user'], 'include disabled');
+	$accounts = smol_accounts_get_user_accounts($GLOBALS['cfg']['user'], 'include disabled');
 
 	$twitter_accounts = array();
 	$account_ids = array();
