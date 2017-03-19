@@ -13,7 +13,7 @@
 			<div id="signup-cta" class="col-md-3">
 				<h2>Join us</h2>
 				<p>Try Smol Data free for 30 days. <mark>Become a member for $12/year</mark>, or host a shared archive server, gratis.</p>
-				<p><a href="/signup/" class="btn btn-primary">Sign up</a></p>
+				<p><a href="/signup/" class="btn btn-primary btn-block btn-lg">Sign up</a></p>
 				<p>Already a member? <a href="/login/">Log in</a></p>
 			</div>
 		{/if}

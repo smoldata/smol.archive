@@ -91,11 +91,8 @@ body.about p {
 }
 
 .btn {
-	width: 100%;
 	border-radius: 2px;
-	line-height: 2.5em;
 	text-transform: uppercase;
-	font-size: 13px;
 	letter-spacing: 2px;
 }
 
