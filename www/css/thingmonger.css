@@ -96,6 +96,11 @@ body.about p {
 	letter-spacing: 2px;
 }
 
+.btn-lg {
+	font-size: 13px;
+	line-height: 2.5em;
+}
+
 .btn-primary {
 	background-color: #df146a;
 	border-color: #df146a;
