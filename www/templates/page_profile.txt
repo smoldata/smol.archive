@@ -12,7 +12,7 @@
 		<div class="col-md-9">
 			<h2>{$user.username|escape}
 				{if $cfg.user and $user.id != $cfg.user.id}
-					<a href="#follow" id="user-follow" class="btn {if $is_following}btn-primary{else}btn-default{/if}">
+					<a href="#follow" id="user-follow" class="btn {if $is_following}btn-primary{else}btn-default{/if} btn-sm">
 						{if $is_following}
 							<span class="glyphicon glyphicon-ok"></span>
 							Following
