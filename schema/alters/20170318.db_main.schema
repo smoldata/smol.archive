@@ -1,1 +1,3 @@
 ALTER TABLE `smol_archive` ADD COLUMN target_id varchar(32) NOT NULL DEFAULT '' AFTER data_id;
+ALTER TABLE smol_meta DROP PRIMARY KEY;
+ALTER TABLE smol_meta ADD INDEX `account_id_name` (account_id, name);
