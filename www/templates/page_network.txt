@@ -1,0 +1,30 @@
+{assign var='page_title' value='Network'}
+{include file='inc_head.txt' nav_tab='network'}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<h2>Network</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<p>Follow other users to add their activity to your <a href="{$cfg.abs_root_url|escape}">Flow</a>.
+		</div>
+		<div class="col-md-4">
+			<ul class="network-users">
+				{foreach from=$usernames item=username}
+					<li>
+						<h2>
+							<a href="{$cfg.abs_root_url|escape}{$username|escape}/" class="username">{$username|escape}</a>
+							{assign var='is_following' value=$username|in_array:$following}
+							{include file='inc_follow_btn.txt' username=$username}
+						</h2>
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+</div>
+
+{include file='inc_foot.txt'}

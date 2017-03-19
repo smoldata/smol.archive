@@ -113,6 +113,7 @@ RewriteRule ^(twitter|mlkshk)/?$           index.php?service=$1 [L,QSA]
 # Profile stuff
 
 RewriteRule ^(\w+)/accounts/?$             accounts.php?username=$1 [L]
+RewriteRule ^(\w+)/network/?$              network.php?username=$1 [L]
 RewriteRule ^(\w+)/faves/page(\d+)/?$      profile.php?username=$1&filter=faves&page=$2 [L,QSA]
 RewriteRule ^(\w+)/faves/?$                profile.php?username=$1&filter=faves [L,QSA]
 RewriteRule ^(\w+)/page(\d+)/?$            profile.php?username=$1&page=$2 [L,QSA]

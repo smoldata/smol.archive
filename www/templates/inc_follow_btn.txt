@@ -1,5 +1,5 @@
-{if $cfg.user and $user.id != $cfg.user.id}
-	<a href="#follow" id="user-follow-{$user.username|@escape}" class="user-follow {if $is_following}user-follow-following{/if} btn {if $is_following}btn-primary{else}btn-default{/if} btn-sm" data-username="{$user.username|@escape}" data-follow-crumb="{$crumb_follow|@escape}" data-unfollow-crumb="{$crumb_unfollow|@escape}">
+{if $cfg.user and $username != $cfg.user.username}
+	<a href="#follow" id="user-follow-{$username|@escape}" class="user-follow {if $is_following}user-follow-following{/if} btn {if $is_following}btn-primary{else}btn-default{/if} btn-sm" data-username="{$username|@escape}" data-follow-crumb="{$crumb_follow|@escape}" data-unfollow-crumb="{$crumb_unfollow|@escape}">
 		<span class="label-following">
 			<span class="glyphicon glyphicon-ok"></span>
 			Following
@@ -14,6 +14,6 @@
 		</span>
 	</a>
 	<script>
-	thingmonger.follow.init('#user-follow-{$user.username}');
+	thingmonger.follow.init('#user-follow-{$username}');
 	</script>
 {/if}

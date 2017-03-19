@@ -6,7 +6,7 @@
 
 	$username = get_str('username');
 	login_ensure_loggedin("$username/accounts/");
-	
+
 	if ($username != $GLOBALS['cfg']['user']['username']){
 		error_403();
 	}
@@ -59,10 +59,10 @@
 		exit;
 	}
 
-	$smarty->assign_by_ref('twitter_accounts', $twitter_accounts);
-	$smarty->assign_by_ref('mlkshk_accounts', $mlkshk_accounts);
+	$GLOBALS['smarty']->assign_by_ref('twitter_accounts', $twitter_accounts);
+	$GLOBALS['smarty']->assign_by_ref('mlkshk_accounts', $mlkshk_accounts);
 
-	$smarty->assign('crumb_auth_account', 'auth_account');
-	$smarty->assign('crumb_modify_account', 'modify_account');
+	$GLOBALS['smarty']->assign('crumb_auth_account', 'auth_account');
+	$GLOBALS['smarty']->assign('crumb_modify_account', 'modify_account');
 
 	$GLOBALS['smarty']->display('page_accounts.txt');

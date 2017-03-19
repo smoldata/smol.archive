@@ -3,6 +3,49 @@
 	loadlib('smol_archive_twitter');
 
 	########################################################################
+	
+	function smol_accounts_get_following_usernames($user){
+		$esc_user_id = addslashes($user['id']);
+		$esc_follow_id = addslashes($check_user['id']);
+		$rsp = db_fetch("
+			SELECT users.username
+			FROM users, smol_follow
+			WHERE smol_follow.user_id = $esc_user_id
+			  AND smol_follow.follow_id = users.id
+		");
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+
+		$usernames = array();
+		foreach ($rsp['rows'] as $user){
+			$usernames[] = $user['username'];
+		}
+
+		return $usernames;
+	}
+
+	########################################################################
+
+	function smol_accounts_get_all_usernames(){
+		$rsp = db_fetch("
+			SELECT username
+			FROM users
+			ORDER BY username
+		");
+		if (! $rsp['ok']){
+			return $rsp;
+		}
+
+		$usernames = array();
+		foreach ($rsp['rows'] as $user){
+			$usernames[] = $user['username'];
+		}
+
+		return $usernames;
+	}
+
+	########################################################################
 
 	function smol_accounts_is_following($user, $check_user){
 		$esc_user_id = addslashes($user['id']);
