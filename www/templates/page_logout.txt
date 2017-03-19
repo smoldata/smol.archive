@@ -9,7 +9,7 @@
 			<form action="{$cfg.abs_root_url}logout/" method="post">
 				{$crumb_key|crumb_input}
 				<input type="hidden" name="done" value="1">
-				<input type="submit" class="btn btn-primary" value="Yes, really logout">
+				<input type="submit" class="btn btn-primary btn-block btn-lg" value="Yes, really logout">
 			</form>
 		</div>
 	</div>
