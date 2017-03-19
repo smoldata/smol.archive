@@ -25,7 +25,7 @@
 							<li class="{if $nav_tab == 'signup'}active{/if}"><a href="{$signup_url}">Sign up</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="{if $nav_tab == 'about'}active{/if}"><a href="/about">About</a></li>
+							<li class="{if $nav_tab == 'about'}active{/if}"><a href="{$cfg.abs_root_url}about/">About</a></li>
 						</ul>
 					{/if}	
 				</div>
