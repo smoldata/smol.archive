@@ -12,7 +12,7 @@
 		{if ! $cfg.user}
 			<div id="signup-cta" class="col-md-3">
 				<h2>Join us</h2>
-				<p>Try Smol Data free for 30 days. <mark>Become a member for $12/year</mark>, or host a shared archive server, gratis.</p>
+				<p>Try Smol Data free for 30 days. <mark>Become a member for $12/year</mark> (note that this is presently <em>theoretical</em> since we don’t yet have a way to charge people). You can also <a href="https://github.com/smoldata/thingmonger">host your own</a>!</p>
 				<p><a href="/signup/" class="btn btn-primary btn-block btn-lg">Sign up</a></p>
 				<p>Already a member? <a href="/login/">Log in</a></p>
 			</div>
