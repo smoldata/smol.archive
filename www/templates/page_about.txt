@@ -19,13 +19,13 @@
 		{/if}
 		<div id="feature-list" class="col-md-6{if ! $cfg.user} col-md-offset-1{/if}">
 			<h2>💾 Archive your stuff</h2>
-			<p>Automatically save all of your social media things—your photos, tweets, links, comments—as much as we can access via the APIs. Search a single personalized index of your archived data.</p>
+			<p>Automatically save all of your social media things—your photos, tweets, links, comments—as much as we can access via the APIs. Search <mark>a single personalized index</mark> of your archived data.</p>
 
 			<h2>✌️ Share with friends</h2>
-			<p>Create channels for different social contexts; make spaces that you feel comfortable in. Selectively share on your own terms. Discover what other people on the network are up to. Don’t worry about algorithmic timelines, we keep things chronological.</p>
+			<p>Create channels for different social contexts; make spaces that you feel comfortable in. Selectively share on your own terms. <mark>Discover what other people on the network are up to.</mark> Don’t worry about algorithmic timelines, we keep things chronological.</p>
 
-			<h2>🔥 Ditch the cloud</h2>
-			<p>Once you have an archived copy of your stuff, you can opt out of the surveillance economy. Migrate your data out of <del>the cloud</del> corporate datacenters and into member-run archive servers (or run your own). Know exactly where your data is and who is looking after it.</p>
+			<h2>🌩 Ditch the cloud</h2>
+			<p>Once you have an archived copy of your stuff, you can opt out of the surveillance economy. <mark>Migrate your data out of <del>the cloud</del> <em>corporate datacenters</em></mark> and into member-run archive servers (or run your own). Know exactly where your data is and who is looking after it.</p>
 		</div>
 	</div>
 </div>
