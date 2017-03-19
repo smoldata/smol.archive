@@ -415,3 +415,7 @@ footer li {
 .pagination-buttons {
 	margin-right: 15px;
 }
+
+#user-follow.btn-primary {
+	color: #808080;
+}
