@@ -16,7 +16,7 @@ This is a [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) web appli
 
 The software is being designed with a federated hosting model in mind. Something like: you plug a Raspberry Pi into your home internet router, it connects to the Smol Data VPN, and joins a kind of mini-cloud to host your data on your own hardware. The idea being that at any time you could unplug the thumb drive from the Raspberry Pi and back it up somewhere of your choosing.
 
-But, the software is just not there yet. It's aspriational, it won't be required of all users, but it's an important design constraint going forward.
+But, the software is just not there yet. It's aspriational, and self-hosting won't be required of all users. But it's an important design constraint going forward.
 
 ## How to install
 
