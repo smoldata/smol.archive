@@ -12,6 +12,12 @@ You should start by setting up the [Vagrant virtual machine](https://github.com/
 
 This is a [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) web application, written for PHP 5.6, MySQL 5.6 and Apache 2.4. It inherits its back-end approach from [Flamework](https://github.com/exflickr/flamework) (see: [philosophy](https://github.com/exflickr/flamework/blob/master/docs/philosophy.md) and [style guide](https://github.com/exflickr/flamework/blob/master/docs/style_guide.md)) and uses [Bootstrap](http://getbootstrap.com/) for the front-end implementation.
 
+## This <del>is</del> *will be* a federated service
+
+The software is being designed with a federated hosting model in mind. Something like: you plug a Raspberry Pi into your home internet router, it connects to the Smol Data VPN, and joins a kind of mini-cloud to host your data on your own hardware. The idea being that at any time you could unplug the thumb drive from the Raspberry Pi and back it up somewhere of your choosing.
+
+But, the software is just not there yet. It's aspriational, it won't be required of all users, but it's an important design constraint going forward.
+
 ## How to install
 
 This assumes either [Ubuntu 14.04](https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes) (dev) or [Raspbian Jessie](https://www.raspberrypi.org/downloads/raspbian/) (prod):
@@ -78,3 +84,4 @@ And don't forget the thing about crontabs needing a line break at the end of the
 * [Starmonger](https://github.com/dphiffer/starmonger/)
 * [Parallel Flickr](http://straup.github.io/parallel-flickr/)
 * [ThinkUp](https://github.com/ThinkUpLLC/ThinkUp)
+* [Tilde Club](http://tilde.club/)
