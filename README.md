@@ -35,7 +35,7 @@ If everything goes as planned, you should be able to load up http://localhost:47
 
 ## Services
 
-Right now there is support for archiving [Twitter](https://twitter.com/) and [mlkshk](https://mlkshk.com/) accounts (the latter got a priority boost because it is shutting down soon). Instagram is next in line, then maybe Wikipedia?
+Right now there is support for archiving [Twitter](https://twitter.com/) and [mlkshk](https://mlkshk.com/) accounts (the latter got a priority boost because it is shutting down soon). Instagram is next in line, then maybe Wikipedia? Jeez, maybe [YouTube should come sooner than later](https://twitter.com/coolerpatrol/status/843614265693147138) if they [can't get their shit together](https://www.theguardian.com/media/2017/mar/16/guardian-pulls-ads-google-placed-extremist-material).
 
 ## Secrets
 
