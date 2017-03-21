@@ -92,13 +92,11 @@
 
 			if ($ret['ok']){
 
-				$redir = strlen($redir) ? $redir : '/';
+				$redir = strlen($redir) ? $redir : "$username/accounts/";
 
 				login_do_login($ret['user'], $redir);
 				exit;
 			}
-
-			dumper($ret);
 
 			$smarty->assign('error_failed', 1);
 			$ok = 0;

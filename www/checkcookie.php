@@ -18,9 +18,12 @@
 	#
 
 	$url = $GLOBALS['cfg']['abs_root_url'];
+	$redir = get_str('redir');
 
 	if ($redir){
-		if (substr($redir, 0, 1) == '/') $redir = substr($redir, 1);
+		if (substr($redir, 0, 1) == '/') {
+			$redir = substr($redir, 1);
+		}
 		$url .= $redir;
 	}
 
