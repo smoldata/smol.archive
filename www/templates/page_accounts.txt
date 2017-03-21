@@ -11,7 +11,7 @@
 		</div>
 		<div class="col-md-3">
 			<h2>What next?</h2>
-			<p>After you authenticate your accounts, it will take a little time for things to show up in your <a href="{$cfg.abs_root_url|escape}{$cfg.user.username|escape}/archive/">archive</a>. Until then, maybe go <a href="{$cfg.abs_root_url|escape}{$cfg.user.username|escape}/network/">follow some other users</a>?</p>
+			<p>After you authenticate your accounts, it will take a little time for things to show up in your <a href="{$cfg.abs_root_url|escape}{$cfg.user.username|escape}/">archive</a>. Until then, maybe go <a href="{$cfg.abs_root_url|escape}{$cfg.user.username|escape}/network/">follow some other users</a>?</p>
 		</div>
 	</div>
 	<div class="row accounts-service">
