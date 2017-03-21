@@ -10,10 +10,11 @@
 	<div class="row">
 		<div class="col-md-3">
 
-			{if $error_missing}         <p class="alert alert-danger">Please fill out all the fields</p>{/if}
-			{if $error_email_taken}     <p class="alert alert-danger">Email address already registered.</p>{/if}
-			{if $error_username_taken}  <p class="alert alert-danger">Username is taken.</p>{/if}
-			{if $error_failed}          <p class="alert alert-danger">Failed for an unknown reason :(</p>{/if}
+			{if $error_missing}           <p class="alert alert-danger">Please fill out all the fields</p>{/if}
+			{if $error_email_taken}       <p class="alert alert-danger">Email address already registered.</p>{/if}
+			{if $error_username_taken}    <p class="alert alert-danger">Username is taken.</p>{/if}
+			{if $error_username_invalid}  <p class="alert alert-danger">Username can only have letters, numbers, or underscores.</p>{/if}
+			{if $error_failed}            <p class="alert alert-danger">Failed for an unknown reason :(</p>{/if}
 
 			<form action="{$cfg.abs_root_url}signup/" method="POST" accept-encoding="UTF-8" class="form" role="form" id="signup">
 				{$crumb_key|crumb_input}

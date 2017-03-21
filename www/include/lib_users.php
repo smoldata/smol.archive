@@ -200,6 +200,19 @@
 
 	#################################################################
 
+	function users_is_username_valid($username){
+
+		if (strlen($username) > 31) {
+			return false;
+		}
+		if (! preg_match('/^\w+$/', $username)){
+			return false;
+		}
+		return true;
+	}
+
+	#################################################################
+
 	function users_get_by_password_reset_code($code){
 
 		$enc_code = AddSlashes($code);

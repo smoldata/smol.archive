@@ -66,6 +66,18 @@
 			$ok = 0;
 		}
 
+
+		#
+		# username available?
+		#
+
+		if ($ok && ! users_is_username_valid($username)){
+
+			$smarty->assign('error_username_invalid', 1);
+			$ok = 0;
+		}
+
+
 		#
 		# create account
 		#
