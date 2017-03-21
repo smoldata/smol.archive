@@ -1,6 +1,6 @@
 # Thingmonger
 
-:robot: A web application for :floppy_disk: archiving your :cloud: cloud-y bits.
+:v: A social network :floppy_disk: for archiving :cloud: your cloud-y bits :dog:
 
 ## Are you looking to try this out?
 
