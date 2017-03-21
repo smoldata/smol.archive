@@ -484,3 +484,7 @@ ul.network-users a.username:hover {
 ul.network-users .user-follow {
 	float: right;
 }
+
+#feedback-link {
+	color: #df146a;
+}
