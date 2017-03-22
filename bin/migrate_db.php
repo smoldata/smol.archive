@@ -3,12 +3,15 @@
 	# Usage:
 	#   cd /usr/local/smoldata/thingmonger
 	#   sudo -u www-data php bin/migrate_db.php
+	#
+	# There is also a `make migrate_db` target, but you just gotta work
+	# out the lockfile file permissions.
+	#
+	# n.b. this should be run by a human, do not put this on a crontab,
+	# at least not for now. (20170318/dphiffer)
 
 	include('init_local.php');
 	loadlib('smol_meta');
-
-	# n.b. this should be run by a human, do not put this on a crontab,
-	# at least not for now. (20170318/dphiffer)
 
 	set_time_limit(0);
 	$lockfile_path = $GLOBALS['cfg']['smol_data_dir'] . 'migrate_db.lock';
