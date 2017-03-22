@@ -30,9 +30,10 @@ cd thingmonger
 make setup
 ```
 
+See also: [Raspberry Pi install instructions](https://github.com/smoldata/raspberry-pi/)
+
 ## Things you may be asked during setup
 
-* Accept the defaults for unattended upgrades
 * Choose a root MySQL password (choose something you will remember later)
 
 ## Load it up in a browser
