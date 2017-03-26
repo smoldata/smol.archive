@@ -107,6 +107,8 @@
 		# This is a structure for exchanging 'target_id's for 'index's
 		$target_id_rev_lookup = array();
 
+		$service_ids = array();
+
 		foreach ($items as $index => $item){
 
 			$data_id = $item['data_id'];
@@ -139,8 +141,37 @@
 			$values_function = "data_{$service}_template_values";
 			$items[$index]['data'] = $values_function($account, $item, $data_item, $merge_data_item);
 			$items[$index]['template'] = "inc_{$service}_item.txt";
+
+			$service_ids[] = addslashes("$service.$target_id");
 		}
-		
+
+		$service_ids = "'" . implode("', '", $service_ids) . "'";
+		$accounts = smol_accounts_get_user_accounts($GLOBALS['cfg']['user']);
+		$account_ids = array();
+		foreach ($accounts as $account){
+			$account_ids[] = $account['id'];
+		}
+		$account_ids = implode(', ', $account_ids);
+
+		$rsp = db_fetch("
+			SELECT CONCAT(service,  '.', target_id) AS service_id
+			FROM smol_archive
+			WHERE filter = 'faves'
+			  AND account_id IN ($account_ids)
+			  AND CONCAT(service,  '.', target_id) IN ($service_ids)
+		");
+
+		$faved = array();
+		foreach ($rsp['rows'] as $fave){
+			$faved[] = $fave['service_id'];
+		}
+		foreach ($items as $index => $item){
+			$service_id = "{$item['service']}.{$item['target_id']}";
+			if (in_array($service_id, $faved)){
+				$items[$index]['is_faved'] = true;
+			}
+		}
+
 		return array(
 			'ok' => 1,
 			'items' => $items,

@@ -33,5 +33,6 @@
 		<div class="text">
 			{$tweet.html}
 		</div>
+		{include file='inc_item_fave.txt'}
 	</div>
 </article>

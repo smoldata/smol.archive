@@ -1,0 +1,1 @@
+<a href="#" class="item-fave{if $item.is_faved} item-fave-active{/if}" data-service="{$item.service|escape}" data-target-id="{$item.target_id|escape}"><span class="glyphicon glyphicon-star"></span></a>

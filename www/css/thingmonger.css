@@ -488,3 +488,19 @@ ul.network-users .user-follow {
 #feedback-link {
 	color: #df146a;
 }
+
+.item-fave {
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: 16px;
+	background: #dedede;
+	padding: 6px 6px 4px 7px;
+	border-radius: 2px;
+	color: #808080;
+}
+
+.item-fave-active {
+	color: #fff;
+	background: #df146a;
+}
