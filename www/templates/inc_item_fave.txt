@@ -1,1 +1,2 @@
-<a href="#" class="item-fave{if $item.is_faved} item-fave-active{/if}" data-service="{$item.service|escape}" data-target-id="{$item.target_id|escape}"><span class="glyphicon glyphicon-star"></span></a>
+<a href="#" id="item-fave-{$item.service|escape}-{$item.target_id|escape}" class="item-fave{if $item.is_faved} item-fave-active{/if}" data-service="{$item.service|escape}" data-id="{$item.target_id|escape}" data-crumb="{$crumb_fave|escape}"><span class="glyphicon glyphicon-star"></span></a>
+<script>thingmonger.fave.init('#item-fave-{$item.service|escape}-{$item.target_id|escape}');</script>

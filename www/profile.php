@@ -104,4 +104,7 @@
 	$crumb_unfollow = crumb_generate('api', 'users.unfollow');
 	$GLOBALS['smarty']->assign('crumb_unfollow', $crumb_unfollow);
 
+	$crumb_fave = crumb_generate('api', 'item.fave');
+	$GLOBALS['smarty']->assign('crumb_fave', $crumb_fave);
+
 	$GLOBALS['smarty']->display('page_profile.txt');

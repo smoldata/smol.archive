@@ -504,3 +504,8 @@ ul.network-users .user-follow {
 	color: #fff;
 	background: #df146a;
 }
+
+.item-fave-loading {
+	color: #fff;
+	background: #808080;
+}

@@ -4,6 +4,20 @@
 
 	$GLOBALS['cfg']['api']['methods'] = array_merge(array(
 
+		"action.fave" => array (
+			"description" => "Fave or unfave an item",
+			"documented" => 1,
+			"enabled" => 1,
+			"library" => "api_action",
+			"requires_crumb" => 1,
+			"request_method" => "POST",
+			"parameters" => array(
+				array("name" => "service", "description" => "The item's service", "documented" => 1, "required" => 1),
+				array("name" => "data_id", "description" => "The item's data ID", "documented" => 1, "required" => 1),
+				array("name" => "action", "description" => "Either 'fave' or 'unfave'", "documented" => 1, "required" => 1)
+			)
+		),
+
 		"users.follow" => array (
 			"description" => "Follow a user",
 			"documented" => 1,

@@ -19,6 +19,7 @@
 
 		<script src="{$cfg.abs_root_url}js/thingmonger.api.js"></script>
 		<script src="{$cfg.abs_root_url}js/thingmonger.follow.js"></script>
+		<script src="{$cfg.abs_root_url}js/thingmonger.fave.js"></script>
 		{$smarty.capture.scripts}
 	</head>
 

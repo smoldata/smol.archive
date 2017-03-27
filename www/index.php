@@ -74,5 +74,8 @@
 
 		$GLOBALS['smarty']->assign_by_ref('items', $items);
 
+		$crumb_fave = crumb_generate('api', 'action.fave');
+		$GLOBALS['smarty']->assign('crumb_fave', $crumb_fave);
+
 		$GLOBALS['smarty']->display('page_flow.txt');
 	}
