@@ -60,7 +60,7 @@
 		$method = 'POST';
 		$query = http_build_query($params);
 		$url = $GLOBALS['cfg']['twitter_api_endpoint'] . $path . '.json';
-
+		
 		$token = array(
 			'key' => $account['access_token'],
 			'secret' => $account['access_secret']
@@ -70,9 +70,8 @@
 			'Authorization' => $auth_header
 		);
 		$more = twitter_api_http_more();
-		$url .= "?$query";
 		
-		$rsp = http_post($url, '', $headers, $more);
+		$rsp = http_post($url, $query, $headers, $more);
 		if (! $rsp['ok']){
 			return $rsp;
 		}
