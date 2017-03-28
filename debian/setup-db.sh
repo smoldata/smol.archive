@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 WHOAMI=`python -c 'import os, sys; print os.path.realpath(sys.argv[1])' $0`
 UBUNTU=`dirname $WHOAMI`
@@ -25,7 +25,15 @@ MYSQL=`which mysql`
 
 if [ "${MYSQL}" = "" ]
 then
-
+	CHIPSET=`uname -m`
+	if [[ $CHIPSET == arm* ]]
+	then
+		# This isn't foolproof, but it kiiiiiinda looks like we're
+		# running on a Raspberry Pi. Let's assume that's the case. For
+		# now this just means we need to convince apt-get into letting
+		# us install MySQL 5.6. (20170317/dphiffer)
+		sudo sh -c 'echo "deb http://archive.raspbian.org/raspbian/ stretch main" >> /etc/apt/sources.list'
+	fi
 	sudo apt-get update
 	sudo apt-get install -y mysql-server-5.6 mysql-client-5.6
 fi
