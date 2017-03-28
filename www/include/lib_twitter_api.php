@@ -59,19 +59,20 @@
 	function twitter_api_post($account, $path, $params){
 		$method = 'POST';
 		$query = http_build_query($params);
-		$url = $GLOBALS['cfg']['twitter_api_endpoint'] . $path . '.json';
+		$base_url = $GLOBALS['cfg']['twitter_api_endpoint'] . $path . '.json';
+		$url = "$base_url?$query";
 		
 		$token = array(
 			'key' => $account['access_token'],
 			'secret' => $account['access_secret']
 		);
-		$auth_header = twitter_api_oauth_authorization_header($method, $url, $params, $token);
+		$auth_header = twitter_api_oauth_authorization_header($method, $base_url, $params, $token);
 		$headers = array(
 			'Authorization' => $auth_header
 		);
 		$more = twitter_api_http_more();
 		
-		$rsp = http_post($url, $query, $headers, $more);
+		$rsp = http_post($url, '', $headers, $more);
 		if (! $rsp['ok']){
 			return $rsp;
 		}
