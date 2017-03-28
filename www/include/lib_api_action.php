@@ -40,7 +40,7 @@
 
 		$rsp = $api_function($account, $target_id);
 		if (! $rsp['ok']){
-			api_output_error(400, "Error calling $api_function API: {$rsp['body']}");
+			api_output_error(400, "Error calling $api_function API with {$account['id']}: {$rsp['body']}");
 		}
 
 		$esc_account_id = addslashes($account_id);
