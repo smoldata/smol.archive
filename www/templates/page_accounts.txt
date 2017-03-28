@@ -24,8 +24,6 @@
 	</div>
 </div>
 
-{capture name='scripts'}
 <script src="{$cfg.abs_root_url}js/thingmonger.accounts.js"></script>
-{/capture}
 
 {include file='inc_foot.txt'}

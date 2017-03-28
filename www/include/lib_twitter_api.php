@@ -27,14 +27,18 @@
 
 	########################################################################
 
-	function twitter_api_get($account, $path, $params){
+	function twitter_api_get($account, $path, $params=array()){
 		$method = 'GET';
 		$query = http_build_query($params);
 		$base_url = $GLOBALS['cfg']['twitter_api_endpoint'] . $path . '.json';
-		$url = "$base_url?$query";
+		if ($query){
+			$url = "$base_url?$query";
+		} else {
+			$url = $base_url;
+		}
 		$token = array(
-			'key' => $account['access_token'],
-			'secret' => $account['access_secret']
+			'key' => $account['token'],
+			'secret' => $account['secret']
 		);
 		$auth_header = twitter_api_oauth_authorization_header($method, $base_url, $params, $token);
 		$headers = array(
@@ -60,11 +64,15 @@
 		$method = 'POST';
 		$query = http_build_query($params);
 		$base_url = $GLOBALS['cfg']['twitter_api_endpoint'] . $path . '.json';
-		$url = "$base_url?$query";
+		if ($query){
+			$url = "$base_url?$query";
+		} else {
+			$url = $base_url;
+		}
 		
 		$token = array(
-			'key' => $account['access_token'],
-			'secret' => $account['access_secret']
+			'key' => $account['token'],
+			'secret' => $account['secret']
 		);
 		$auth_header = twitter_api_oauth_authorization_header($method, $base_url, $params, $token);
 		$headers = array(
@@ -130,7 +138,7 @@
 	########################################################################
 
 	function twitter_api_oauth_auth_url($request_token){
-		$url = $GLOBALS['cfg']['twitter_api_oauth_endpoint'] . 'authenticate';
+		$url = $GLOBALS['cfg']['twitter_api_oauth_endpoint'] . 'authorize';
 		$url .= '?oauth_token=' . twitter_api_urlencode($request_token);
 		return $url;
 	}
