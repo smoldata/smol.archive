@@ -22,7 +22,10 @@
 			api_output_error(400, 'Please set action to fave or unfave.');
 		}
 
-		# TODO: hit external APIs to fave
+		$api_function = "{$service}_api_$action";
+		if (! function_exists($api_function)){
+			api_output_error(400, "No function found: $api_function.");
+		}
 
 		$accounts = smol_accounts_get_user_accounts($GLOBALS['cfg']['user']);
 		foreach ($accounts as $account){
@@ -33,6 +36,11 @@
 		}
 		if (! $account_id){
 			api_output_error(400, "Could not find $service account to $action with.");
+		}
+
+		$rsp = $api_function($account, $target_id);
+		if (! $rsp['ok']){
+			api_output_error(400, "Error calling $api_function API.");
 		}
 
 		$esc_account_id = addslashes($account_id);

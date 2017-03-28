@@ -5,6 +5,28 @@
 
 	########################################################################
 
+	function twitter_api_fave($account, $id){
+		$path = "favorites/create";
+		$params = array(
+			'id' => $id
+		);
+		$rsp = twitter_api_post($account, $path, $params);
+		return $rsp;
+	}
+
+	########################################################################
+
+	function twitter_api_unfave($account, $id){
+		$path = "favorites/destroy";
+		$params = array(
+			'id' => $id
+		);
+		$rsp = twitter_api_post($account, $path, $params);
+		return $rsp;
+	}
+
+	########################################################################
+
 	function twitter_api_get($account, $path, $params){
 		$method = 'GET';
 		$query = http_build_query($params);
