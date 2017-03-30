@@ -108,11 +108,14 @@
 			if ($verbose){
 				var_export($rsp);
 			}
-		} else {
+		} else if ($rsp['result']['sharedfiles']){
 			$rsp['result'] = $rsp['result']['sharedfiles'];
-			if ($verbose){
-				echo " found " . count($rsp['result']) . " items\n";
-			}
+		} else if ($rsp['result']['favorites']){
+			$rsp['result'] = $rsp['result']['favorites'];
+		}
+
+		if ($verbose){
+			echo " found " . count($rsp['result']) . " items\n";
 		}
 
 		return $rsp;
