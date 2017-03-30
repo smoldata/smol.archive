@@ -7,7 +7,7 @@ thingmonger.accounts = (function() {
 		$('.account').each(function(i, account) {
 			$(account).find('.edit-account').click(function(e) {
 				e.preventDefault();
-				$(account).find('form').toggleClass('hidden');
+				$(account).closest('.account').toggleClass('account-edit');
 			});
 			$(account).find('.remove-account').click(function(e) {
 				if (! confirm('Are you sure you want to remove that?')) {

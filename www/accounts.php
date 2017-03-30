@@ -14,29 +14,35 @@
 	$accounts = smol_accounts_get_user_accounts($GLOBALS['cfg']['user'], 'include disabled');
 
 	$twitter_accounts = array();
-	$account_ids = array();
+	$account_lookup = array();
 
 	foreach ($accounts as $account){
-		$account_ids[] = $account['id'];
+
+		$account_id = $account['id'];
+		$account_lookup[$account_id] = $account;
+
+		$rsp = smol_archive_filters($account);
+		if ($rsp['ok']){
+			$account['filters'] = $rsp['filters'];
+		}
+
 		if ($account['service'] == 'twitter'){
-			$account['tweet_count'] = smol_archive_filter_count($account, 'tweets');
-			$account['fave_count'] = smol_archive_filter_count($account, 'faves');
 			$twitter_accounts[] = $account;
 		} else if ($account['service'] == 'mlkshk'){
-			# $account['tweet_count'] = smol_archive_filter_count($account, 'tweets');
-			# $account['fave_count'] = smol_archive_filter_count($account, 'faves');
+			$account['add_filters'] = smol_archive_mlkshk_add_filters($account);
 			$mlkshk_accounts[] = $account;
 		}
 	}
 
 	$account_id = post_int32('account_id');
 	$action = post_str('action');
+	$add_filter = post_str('add_filter');
 
 	if ($account_id && $action){
 
 		$crumb_key = 'modify_account';
 		if (! crumb_check($crumb_key) ||
-		    ! in_array($account_id, $account_ids)){
+		    ! $account_lookup[$account_id]){
 			error_403();
 		}
 
@@ -49,6 +55,30 @@
 		}
 		else if ($action == 'enable'){
 			$rsp = smol_accounts_enable_account($account_id);
+		}
+
+		$url = $GLOBALS['cfg']['abs_root_url'] . $username . "/accounts/";
+		if (! $rsp['ok']){
+			$url .= '?error=1';
+		}
+		header("Location: $url");
+		exit;
+	}
+
+	if ($add_filter && $account_id){
+
+		$account = $account_lookup[$account_id];
+
+		$crumb_key = 'modify_account';
+		if (! crumb_check($crumb_key) ||
+		    ! $account_lookup[$account_id]){
+			error_403();
+		}
+
+		if ($account['service'] == 'twitter'){
+			$rsp = smol_archive_twitter_add_filter($account, $add_filter);
+		} else if ($account['service'] == 'mlkshk'){
+			$rsp = smol_archive_mlkshk_add_filter($account, $add_filter);
 		}
 
 		$url = $GLOBALS['cfg']['abs_root_url'] . $username . "/accounts/";

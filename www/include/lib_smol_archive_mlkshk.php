@@ -8,10 +8,12 @@
 
 	function smol_archive_mlkshk_save_data($account, $verbose=false) {
 
-		$endpoints = smol_archive_mlkshk_get_endpoints($account, $verbose);
+		$filters = smol_archive_mlkshk_filters($account, $verbose);
 
 		$items = array();
-		foreach ($endpoints as $filter => $endpoint){
+		foreach ($filters as $filter => $details){
+
+			$endpoint = $details['endpoint'];
 
 			if ($verbose){
 				echo "querying mlkshk $filter $endpoint\n";
@@ -51,7 +53,7 @@
 					$last_id = $last_item['sharekey'];
 					smol_meta_set($account, "pivot_id_$filter", $last_id);
 				}
-			} else {
+			} else if ($rsp['result']) {
 				// Continue where we left off next time
 				$last_item = array_pop($rsp['result']);
 				$last_id = $last_item['sharekey'];
@@ -62,15 +64,17 @@
 				echo "saving $filter data\n";
 			}
 			$saved_items = array();
-			foreach ($items[$filter] as $item){
-				$rsp = data_mlkshk_save($item, $verbose);
-				if ($rsp['ok']){
-					$saved_item = smol_archive_escaped_item($account, $filter, $rsp);
-					$data_id = $saved_item['data_id'];
-					$saved_items[$data_id] = $saved_item;
-				} else {
-					echo "error saving item ";
-					var_export($rsp);
+			if ($items[$filter]){
+				foreach ($items[$filter] as $item){
+					$rsp = data_mlkshk_save($item, $verbose);
+					if ($rsp['ok']){
+						$saved_item = smol_archive_escaped_item($account, $filter, $rsp);
+						$data_id = $saved_item['data_id'];
+						$saved_items[$data_id] = $saved_item;
+					} else {
+						echo "error saving item ";
+						var_export($rsp);
+					}
 				}
 			}
 
@@ -113,43 +117,124 @@
 
 		return $rsp;
 	}
-	
-	function smol_archive_mlkshk_get_endpoints($account, $verbose=false){
 
-		$endpoints = smol_meta_get($account, 'endpoints');
-		if (! $endpoints){
+	########################################################################
+
+	function smol_archive_mlkshk_filters($account, $verbose=false){
+
+		$filters = smol_meta_get($account, 'filters');
+		if (! $filters ||
+		    ! is_array($filters['user'])){
 
 			if ($verbose){
-				echo "calculating mlkshk endpoints\n";
+				echo "setting up default mlkshk filters\n";
 			}
 
-			$shakes = smol_meta_get($account, 'shakes');
-			if (! $shakes){
-
-				if ($verbose){
-					echo "loading mlkshk shakes\n";
-				}
-
-				$rsp = mlkshk_api_get($account, 'shakes');
-				if (! $rsp['ok']){
-					if ($verbose){
-						var_export($rsp);
-					}
-					return array();
-				}
-				$shakes = $rsp['result'];
-				$shakes['updated_at'] = date('Y-m-d H:i:s');
-				smol_meta_set($account, 'shakes', $shakes);
-			} else if ($verbose){
-				echo "found cached shakes\n";
-			}
+			$shakes = smol_archive_mlkshk_shakes($account, $verbose);
 			$user_shake = $shakes['shakes'][0]['id'];
-			$endpoints = array(
-				'user' => "shakes/$user_shake"
+			$filters = array(
+				'user' => array(
+					'endpoint' => "shakes/$user_shake",
+					'label' => 'User'
+				),
+				'faves' => array(
+					'endpoint' => 'favorites',
+					'label' => 'Faves'
+				)
 			);
-			smol_meta_set($account, 'endpoints', $endpoints);
+			smol_meta_set($account, 'filters', $filters);
 		} else if ($verbose){
-			echo "found cached endpoints\n";
+			echo "found cached filters\n";
 		}
-		return $endpoints;
+		return $filters;
 	}
+
+	########################################################################
+
+	function smol_archive_mlkshk_shakes($account, $verbose=false){
+		$shakes = smol_meta_get($account, 'shakes');
+		if (! $shakes){
+
+			if ($verbose){
+				echo "loading mlkshk shakes\n";
+			}
+
+			$rsp = mlkshk_api_get($account, 'shakes');
+			if (! $rsp['ok']){
+				if ($verbose){
+					var_export($rsp);
+				}
+				return array();
+			}
+			$shakes = $rsp['result'];
+			$shakes['updated_at'] = date('Y-m-d H:i:s');
+			smol_meta_set($account, 'shakes', $shakes);
+		} else if ($verbose){
+			echo "found cached shakes\n";
+		}
+		return $shakes;
+	}
+
+	########################################################################
+
+	function smol_archive_mlkshk_add_filters($account, $verbose=false){
+
+		$shakes = smol_archive_mlkshk_shakes($account);
+		$add_filters = array();
+
+		foreach ($shakes['shakes'] as $shake){
+			$id = substr($shake['url'], 18); // http://mlkshk.com/[...]
+			if (preg_match('/^user\//', $id)){
+				$id = 'user';
+				$add_filters[$id] = 'User';
+			} else {
+				$add_filters[$id] = $shake['name'];
+			}
+		}
+
+		$filters = smol_archive_mlkshk_filters($account);
+		foreach ($add_filters as $filter => $details){
+			if ($filters[$filter]){
+				unset($add_filters[$filter]);
+			}
+		}
+		return $add_filters;
+	}
+
+	########################################################################
+
+	function smol_archive_mlkshk_add_filter($account, $filter){
+
+		$filters = smol_archive_mlkshk_filters($account);
+		$shakes = smol_archive_mlkshk_shakes($account);
+
+		foreach ($shakes['shakes'] as $shake){
+			$id = substr($shake['url'], 18); // http://mlkshk.com/[...]
+			if (preg_match('/^user\//', $id)){
+				$id = 'user';
+				$label = 'User';
+			} else {
+				$label = $shake['name'];
+			}
+			$endpoint = "shakes/{$shake['id']}";
+			if ($id == $filter){
+				$filters[$filter] = array(
+					'label' => $label,
+					'endpoint' => $endpoint
+				);
+			}
+		}
+
+		if ($filters[$filter]){
+			smol_meta_set($account, 'filters', $filters);
+			return array(
+				'ok' => 1
+			);
+		}
+		return array(
+			'ok' => 0,
+			'error' => 'Did not add filter'
+		);
+	}
+	
+	# the end

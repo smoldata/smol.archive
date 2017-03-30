@@ -509,3 +509,27 @@ ul.network-users .user-follow {
 	color: #fff;
 	background: #808080;
 }
+
+.account form {
+	display: none;
+}
+
+.account-edit form {
+	display: block;
+}
+
+.add-filter {
+	margin-bottom: 1.5em;
+	padding: 0 15px;
+}
+
+.add-filter select {
+	max-width: 220px;
+	float: left;
+}
+
+.add-filter input {
+	float: left;
+	line-height: 25px;
+	margin-left: 5px;
+}

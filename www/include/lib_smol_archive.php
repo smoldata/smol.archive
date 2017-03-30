@@ -265,19 +265,33 @@
 
 	########################################################################
 
-	function smol_archive_filter_count($account, $filter){
+	function smol_archive_filters($account){
+		if ($account['service'] == 'twitter'){
+			$filters = smol_archive_twitter_filters($account);
+		} else if ($account['service'] == 'mlkshk'){
+			$filters = smol_archive_mlkshk_filters($account);
+		}
+
 		$esc_id = addslashes($account['id']);
-		$esc_filter = addslashes($filter);
 		$rsp = db_fetch("
-			SELECT COUNT(*) AS count
+			SELECT filter, COUNT(*) AS count
 			FROM smol_archive
 			WHERE account_id = $esc_id
-			  AND filter = '$esc_filter'
+			GROUP BY filter
 		");
 		if (! $rsp['ok']){
-			return '(error)';
+			return $rsp;
 		}
-		return number_format($rsp['rows'][0]['count']);
+
+		foreach ($rsp['rows'] as $row){
+			$filter = $row['filter'];
+			$filters[$filter]['count'] = $row['count'];
+		}
+
+		return array(
+			'ok' => 1,
+			'filters' => $filters
+		);
 	}
 
 	# the end

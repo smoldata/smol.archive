@@ -2,14 +2,15 @@
 	<div class="account">
 		<h2{if not $account.enabled} class="text-muted"{/if}>{$account.screen_name|escape}</h2>
 		{if $account.enabled}
-			<div>Tweets: {$account.tweet_count|escape}</div>
-			<div>Faves: {$account.fave_count|escape}</div>
+			{foreach from=$account.filters item='filter'}
+				<div>{$filter.label}: {$filter.count|number_format|escape}</div>
+			{/foreach}
 		{else}
 			<div class="text-muted">Account disabled</div>
 		{/if}
 		{assign var="timestamp" value=$account.updated_at|strtotime}
 		<div class="text-muted">Updated {"F j, Y g:ia"|date:$timestamp} / <a href="#edit-account" class="text-muted edit-account">Edit account</a></div>
-		<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post" class="row hidden">
+		<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post" class="row">
 			{$crumb_modify_account|crumb_input}
 			<input type="hidden" name="account_id" value="{$account.id|escape}">
 			<div class="col-md-6">

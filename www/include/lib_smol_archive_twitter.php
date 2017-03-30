@@ -16,13 +16,12 @@
 
 	function smol_archive_twitter_save_data($account, $verbose=false) {
 
-		$endpoints = array(
-			'tweets' => 'statuses/user_timeline',
-			'faves' => 'favorites/list'
-		);
+		$filters = smol_archive_twitter_filters($account);
 
 		$items = array();
-		foreach ($endpoints as $filter => $endpoint){
+		foreach ($filters as $filter => $details){
+
+			$endpoint = $details['endpoint'];
 
 			$items[$filter] = array();
 
@@ -122,4 +121,21 @@
 		}
 
 		return $rsp;
+	}
+
+	function smol_archive_twitter_filters($account){
+		return array(
+			'tweets' => array(
+				'endpoint' => 'statuses/user_timeline',
+				'label' => 'Tweets'
+			),
+			'faves' => array(
+				'endpoint' => 'favorites/list',
+				'label' => 'Faves'
+			)
+		);
+	}
+	
+	function smol_archive_twitter_add_filters($account){
+		return array();
 	}

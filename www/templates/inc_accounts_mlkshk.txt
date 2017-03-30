@@ -2,24 +2,35 @@
 	<div class="account">
 		<h2{if not $account.enabled} class="text-muted"{/if}>{$account.screen_name|escape}</h2>
 		{if $account.enabled}
-			(Stuff goes here)
+			{foreach from=$account.filters item='filter'}
+				<div>{$filter.label}: {$filter.count|number_format|escape}</div>
+			{/foreach}
 		{else}
 			<div class="text-muted">Account disabled</div>
 		{/if}
 		{assign var="timestamp" value=$account.updated_at|strtotime}
 		<div class="text-muted">Updated {"F j, Y g:ia"|date:$timestamp} / <a href="#edit-account" class="text-muted edit-account">Edit account</a></div>
-		<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post" class="row hidden">
+		<form action="{$cfg.abs_root_url}{$cfg.user.username|escape}/accounts/" method="post" class="row">
 			{$crumb_modify_account|crumb_input}
 			<input type="hidden" name="account_id" value="{$account.id|escape}">
+			<div class="add-filter clearfix">
+				<select name="add_filter" class="form-control">
+					<option>Add filter</option>
+					{foreach from=$account.add_filters item='label' key='filter'}
+						<option value="{$filter|escape}">{$label|escape}</option>
+					{/foreach}
+				</select>
+				<input type="submit" class="btn btn-primary" value="Add">
+			</div>
 			<div class="col-md-6">
 				{if $account.enabled}
-					<input type="submit" class="btn btn-default" name="action" value="Disable">
+					<input type="submit" class="btn btn-default btn-block" name="action" value="Disable">
 				{else}
-					<input type="submit" class="btn btn-default" name="action" value="Enable">
+					<input type="submit" class="btn btn-default btn-block" name="action" value="Enable">
 				{/if}
 			</div>
 			<div class="col-md-6">
-				<input type="submit" class="btn btn-default remove-account" name="action" value="Remove">
+				<input type="submit" class="btn btn-default btn-block remove-account" name="action" value="Remove">
 			</div>
 		</form>
 	</div>
